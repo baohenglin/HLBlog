@@ -1,3 +1,10 @@
+# 第30条 以ARC简化引用计数
+要点：
+
+* ARC管理对象生命期的办法基本上就是：在合适的地方插入“retain”和“release”操作。在ARC环境下，变量的内存管理语义可以通过修饰符指明，而原来则需要手工执行‘保留’及‘释放’操作。
+* 调用上述四种方法（alloc、new、copy、mutableCopy）的那段代码要负责释放方法所返回的对象。
+* ARC只负责管理Objective-C对象的内存。尤其要注意：CoreFoundation对象不归ARC管理，开发者必须适时调用CFRetain/CFRelease。
+
 ## 以ARC简化引用计数
 
 &emsp;&emsp;Clang编译器项目带有一个“静态分析器”(static analyzer)，用于指明程序里引用计数出问题的地方。假设下面这段代码采用手动方式管理引用计数：
@@ -69,6 +76,30 @@ if([self shouldLogMessage]) {
 我们经常给局部变量加上修饰符，用以打破由“block”所引入的“保留环”（retain cycle），block会自动保留其所捕获的全部对象，而如果这其中有某个对象又保留了block本身，那么就可能导致保留环。可以用__weak局部变量来打破这种“保留环”。
 
 ## ARC如何清理实例变量
+
+ARC也负责对实例变量进行内存管理。要管理其内存，ARC就必须在“回收分配给对象的内存”（deallocate）时生成必要的清理代码。凡是具备强引用的变量，都必须释放，ARC会在dealloc方法中插入这些代码。当手动管理引用计数时，你可能会像下面这样自己来编写dealloc方法：
+
+```
+- (void)dealloc {
+	[_foo release];
+	[_bar release];
+	[super dealloc];
+}
+```
+使用ARC之后，就不需要再手动编写这种dealloc方法了，因为ARC会借用Objective-C++的一项特性来生成清理例程（cleanup routine）。回收Objective-C++对象时，待回收的对象会调用所有C++对象的析构函数（destructor）。编译器如果发现某个对象里含有C++对象，就会生成名为.cxx_destruct的方法。而ARC则借助此特性，在该方法中生成清理内存所需的代码。
+
+&emsp;&emsp;不过，如果有非Objective-C的对象，比如CoreFoundation中的对象或是由malloc()分配在堆中的内存，那么仍然需要清理。然而不需要像原来那样调用超类的dealloc方法。前文说过，在ARC下不能直接调用dealloc。ARC会自动在.cxx_destruct方法中生成代码并运行此方法，而在生成的代码中会自动调用超类的dealloc方法。ARC环境下，dealloc方法可以像这样来写：
+
+```
+- (void) dealloc {
+	CFRelease(_coreFoundationObject);
+	free(_heapAllocatedMemoryBlob);
+  }
+```
+因为ARC会自动生成回收对象时所执行的代码，所以通常无须再编写dealloc方法。这能减少项目源代码的大小，而且可以省去其中的一些样板代码。
+
+
+
 
 
 

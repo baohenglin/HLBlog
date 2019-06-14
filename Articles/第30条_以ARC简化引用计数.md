@@ -1,9 +1,11 @@
 # 第30条 以ARC简化引用计数
+
 要点：
 
 * ARC管理对象生命期的办法基本上就是：在合适的地方插入“retain”和“release”操作。在ARC环境下，变量的内存管理语义可以通过修饰符指明，而原来则需要手工执行‘保留’及‘释放’操作。
 * 调用上述四种方法（alloc、new、copy、mutableCopy）的那段代码要负责释放方法所返回的对象。
 * ARC只负责管理Objective-C对象的内存。尤其要注意：CoreFoundation对象不归ARC管理，开发者必须适时调用CFRetain/CFRelease。
+
 
 ## 以ARC简化引用计数
 
@@ -32,7 +34,9 @@ if([self shouldLogMessage]) {
 
 &emsp;&emsp;实际上，ARC在调用retain、release、autorelease等操作方法时，并不是通过普通的Objective-C消息派发机制，而是直接调用其底层C语言版本。这样做性能更好，因为保留及释放操作需要频繁执行，所以直接调用底层函数能节省很多CPU周期。比方说，ARC会调用与retain等价的底层函数objc_retain。这也是不能覆写retain、release和autorelease的缘由，因为这些方法从来不会被直接调用。
 
+
 ## 使用ARC时必须遵循的方法命名规则
+
 
 &emsp;&emsp;将内存管理语义在方法名中表示出来早已成为Objective-C的惯例，而ARC则将之确立为硬性规定。这些规则简单地体现在方法名上。若方法名以下列词语开头，则其返回的对象归调用者所有。这些词语包括：
 
@@ -48,6 +52,7 @@ if([self shouldLogMessage]) {
 &emsp;&emsp;除了会自动调用“保留”与“释放”方法外，使用ARC还有其他好处，它可以执行一些手动操作很难甚至无法完成的优化。例如在编译期，ARC会把能够互相抵消的retain、release、autorelease操作约简。如果发现在同一个对象上执行了多次“保留”与“释放”操作，那么ARC有时可以成对地移除这两个操作。
 
 &emsp;&emsp;将内存管理交由编译器和运行期组件来完成，可以使代码得到多种优化。所以推荐使用ARC。
+
 
 ## 变量的内存管理语义
 
@@ -75,7 +80,9 @@ if([self shouldLogMessage]) {
 
 我们经常给局部变量加上修饰符，用以打破由“block”所引入的“保留环”（retain cycle），block会自动保留其所捕获的全部对象，而如果这其中有某个对象又保留了block本身，那么就可能导致保留环。可以用__weak局部变量来打破这种“保留环”。
 
+
 ## ARC如何清理实例变量
+
 
 ARC也负责对实例变量进行内存管理。要管理其内存，ARC就必须在“回收分配给对象的内存”（deallocate）时生成必要的清理代码。凡是具备强引用的变量，都必须释放，ARC会在dealloc方法中插入这些代码。当手动管理引用计数时，你可能会像下面这样自己来编写dealloc方法：
 

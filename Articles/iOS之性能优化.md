@@ -260,7 +260,7 @@ dispatch_async(dispatch_get_global_queue(0, 0), ^{
 
 &emsp;&emsp; ✅ 编译器优化。（1）开启编译优化。比如将Strip Linked Product、Make Strings Read-Only、Symbols Hidden by Default设置为YES；（2）去掉异常支持。比如将Enable C++ Exceptions、Enable Objective-C Exceptions设置为NO， Other C Flags添加-fno-exceptions；（3）避免编译多个架构。可以放弃对armv7，armv7s架构的支持，因为iPhone5s之后的所有设备都是arm64架构的，这样动态库和二进制可执行文件体积会减少很多。
 
-&emsp;&emsp; ✅ 利用AppCode（https://www.jetbrains.com/objc/）检测未使用的代码：菜单栏 -> Code -> Inspect Code
+&emsp;&emsp; ✅ 利用[AppCode](https://www.jetbrains.com/objc/)检测未使用的代码：菜单栏 -> Code -> Inspect Code
 
 &emsp;&emsp; ✅ 生成LinkMap文件，可以查看可执行文件的具体组成。在Target->Build Settings->Linking中将Write Link Map File设置为YES；也可以借助第三方工具分析LinkMap文件，比如[第三方分析工具LinkMap](https://github.com/huanxsd/LinkMap) 。
 <br>

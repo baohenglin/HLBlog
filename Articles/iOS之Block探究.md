@@ -244,6 +244,8 @@ NSLog(@"[HLBlock1 class] = %@",[HLBlock1 class]);
 * (3) __NSStackBlock__调用copy方法，就会将block内存搬到堆上，变成了__NSMallocBlock。
 
 
+三种类型的block分别调用copy方法后产生的结果如下图所示：
+
 ![block调用copy方法.png](https://upload-images.jianshu.io/upload_images/4164292-4bc44e72a156c286.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 

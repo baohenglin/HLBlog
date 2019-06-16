@@ -203,7 +203,49 @@ block底层实现逻辑示意图如下：
 
 ## block的类型
 
-block有3种类型。可以通过调用class方法或者isa指针查看具体类型，但是无论是3种类型中的哪种类型，都是继承自NSBlock类型的。
+block有3种类型。可以通过调用class方法或者isa指针查看具体类型，但是无论是3种类型中的哪种类型，都是继承自NSBlock类型的。block的3种类型分别为：
+
+* __NSGlobalBlock__(_NSConcreteGlobalBlock)
+* __NSStackBlock__(_NSConcreteStackBlock)
+* __NSMallocBlock__(_NSConcreteMallocBlock)
+
+![应用程序的内存分布示意图.png](https://upload-images.jianshu.io/upload_images/4164292-2a6cedb6f04ba8da.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+* .text区：也称代码段，主要是用来存放代码的。
+* .data区：也称数据段，用来存储 全局变量。
+* 堆：用来动态分配内存（需要程序员申请内存，也需要程序员自己管理内存），比如alloc/malloc出来的对象一般都存储在堆段。
+* 栈：用来存放局部变量（auto变量），特点是系统会自动分配内存，并且在超出其作用域时自动销毁该变量的内存。
+
+
+## 3种类型的block是如何产生的？
+
+那么这3种类型的block都是怎样产生的呢？总结如下：
+
+![3种block产生场景示意图.png](https://upload-images.jianshu.io/upload_images/4164292-b9bd8134e611fe92.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+* (1)没有访问auto变量产生的是__NSGlobalBlock__。
+
+```
+void(^HLBlock1)(void) = ^{
+    NSLog(@"Hello world");
+};
+NSLog(@"[HLBlock1 class] = %@",[HLBlock1 class]);
+```
+
+打印如下：
+
+```
+[HLBlock1 class] = __NSGlobalBlock__
+```
+
+【总结】访问static变量或者全局变量 生成的是__NSGlobalBlock__。
+
+* (2)访问auto变量，在关闭ARC的情况下，生成的是__NSStackBlock。__NSStackBlock存在一个问题，因为超出作用于后变量已经被系统自动销毁，此时再访问该变量存在安全问题。如果开启ARC，编译器会自动进行copy操作，将__NSStackBlock转变为__NSMallocBlock。
+* (3) __NSStackBlock__调用copy方法，就会将block内存搬到堆上，变成了__NSMallocBlock。
+
+
+![block调用copy方法.png](https://upload-images.jianshu.io/upload_images/4164292-4bc44e72a156c286.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
 
 ## block常见的面试题
 (1)block的本质是什么?底层原理是怎样的?

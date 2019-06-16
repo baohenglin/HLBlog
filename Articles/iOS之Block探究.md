@@ -172,7 +172,7 @@ static struct __main_block_desc_0 {
 ```
 
 * int _age参数, 也就是构造函数 __main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, int _age, int flags=0) : age(_age) {}中的参数 int _age，这里_age是具体值，而不是地址，也就是说这里用到的是“值传递”，不是“地址传递”。
-* HLblock->FuncPtr(HLblock); 调用block，这里的FuncPtr存放的是下面这段代码的函数地址：
+* HLblock->FuncPtr(HLblock); 调用block，从block中获取FuncPtr，再利用FuncPtr找到构造函数__main_block_func_0并调用（将HLblock作为参数传递给__main_block_func_0）。也就是说这里的FuncPtr存放的是下面这段代码的函数地址：
 
 ```
 static void __main_block_func_0(struct __main_block_impl_0 *__cself) {
@@ -182,11 +182,24 @@ static void __main_block_func_0(struct __main_block_impl_0 *__cself) {
 }
 ```
 
+
 block底层实现逻辑示意图如下：
 
 ![block底层实现逻辑图](https://upload-images.jianshu.io/upload_images/4164292-57baf7f0cff2d3d6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240 'block底层实现逻辑图')
 
 综上所述，block经过编译后生成了一个__main_block_impl_0类型的结构体，该结构体内部有一个__block_impl结构体类型的成员变量，并且__block_impl内部有一个isa指针，这就说明block本质上是一个OC对象。
+
+
+## block的变量捕获（capture）
+
+为了保证block内部能够正常访问外部的变量，block有一个变量捕获机制。什么是block的变量捕获机制呢？block的变量捕获机制是指block底层的结构体内部会专门新增一个成员变量用于存储捕获到的外部值。block的变量捕获分为以下几种：
+
+![block变量捕获的几种类型](https://upload-images.jianshu.io/upload_images/4164292-c4d296b626735bf4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240 'block变量捕获的几种类型')
+
+* auto修饰符：auto修饰的变量称为自动变量，也就是说auto变量离开作用于就立即销毁。默认情况下，默认使用auto修饰。访问方式是“值传递”。
+* static修饰符：使用static修饰的变量一直会存储在内存中，访问方式是“地址传递”。
+
+只要是局部变量，不管是auto修饰的还是static修饰的局部变量，block都可以成功捕获。而全局变量不会被捕获到block内部(因为全局变量都可以访问，无须捕获到block内部)。
 
 ## block常见的面试题
 (1)block的本质是什么?底层原理是怎样的?

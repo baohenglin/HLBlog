@@ -291,7 +291,89 @@ int main(int argc, const char * argv[]) {
     return 0;
 }
 ```
-* 
+* (2)将block赋值给__strong指针时
+
+未将block赋值给强指针的情况，在ARC环境下编译器不会自动执行copy操作。代码如下：
+
+```
+int main(int argc, const char * argv[]) {
+    @autoreleasepool {        
+        int age = 1110;
+        NSLog(@"----%@",[^{
+            //由于block访问了auto变量，因此是__NSStaticBlock__类型
+            NSLog(@"block：age---%d",age);
+            //2019-06-17 11:13:06.358166+0800 Block的copy操作[1139:44714] ----__NSStackBlock__
+            //由以上打印结果可知：没有将block赋值给强指针时，在ARC环境下编译器不会自动执行copy操作
+        } class]);
+    }
+    return 0;
+}
+```
+
+将block赋值给强指针的情况，在ARC环境下，编译器对block自动进行一次copy操作[block copy]，block的类型由__NSStaticBlock__变为了__NSMallocBlock__。代码如下：
+
+```
+int main(int argc, const char * argv[]) {
+    @autoreleasepool {
+        int age = 1110;
+        //将block赋值给强指针的情况
+        HLBlock block = ^{
+            //由于block访问了auto变量，因此是__NSStaticBlock__类型
+            NSLog(@"block：age---%d",age);
+        };
+        block();
+        NSLog(@"----%@",[block class]);
+        //2019-06-17 11:01:11.834323+0800 Block的copy操作[1058:40766] ----__NSMallocBlock__
+       //由以上打印结果可知：将block赋值给强指针时，在ARC环境下，编译器对block自动进行一次copy操作[block copy]，block的类型由__NSStaticBlock__变为了__NSMallocBlock__。
+
+    }
+    return 0;
+}
+```
+
+* (3)block作为Cocoa的API中方法名含有usingBlock的方法的参数时
+
+```
+NSArray *arr1 = @[@"100",@"20",@"31",@"42",@"56"];
+[arr1 enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    NSLog(@"obj=%@-------idx=%lu",obj,(unsigned long)idx);
+}];
+```
+* (4)block作为GCD API的方法参数时。比如：
+
+```
+static dispatch_once_t onceToken;
+dispatch_once(&onceToken, ^{
+    
+});
+```
+再比如：
+
+```
+dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+});
+```
+
+block属性的写法：
+
+（1）MRC环境下
+
+```
+@property (nonatomic, copy) void(^block)(void);
+
+```
+
+（2）ARC环境下
+
+```
+//这两种写法都可以，没有区别（因为只要是对block进行强引用，就会自动对block进行copy）
+@property (nonatomic, strong) void(^block)(void);
+@property (nonatomic, copy) void(^block)(void);
+
+```
+
+不管MRC还是ARC环境，建议统一都使用“copy”来修饰block。
 
 
 ## block常见的面试题

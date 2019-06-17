@@ -189,6 +189,10 @@ block底层实现逻辑示意图如下：
 
 综上所述，block经过编译后生成了一个__main_block_impl_0类型的结构体，该结构体内部有一个__block_impl结构体类型的成员变量，并且__block_impl内部有一个isa指针，这就说明block本质上是一个OC对象。
 
+block在内存中的布局，如下图所示：
+
+![block在内存中的布局.png](https://upload-images.jianshu.io/upload_images/4164292-7045c4c2c191266a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
 
 ## block的变量捕获（capture）
 

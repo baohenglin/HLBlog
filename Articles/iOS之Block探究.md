@@ -253,7 +253,7 @@ NSLog(@"[HLBlock1 class] = %@",[HLBlock1 class]);
 ![block调用copy方法.png](https://upload-images.jianshu.io/upload_images/4164292-4bc44e72a156c286.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
-#ARC环境下 block的copy操作
+## ARC环境下 block的copy操作
 
 在ARC环境下，编译器会根据情况自动将栈上的block复制到堆上。比如以下情况：
 

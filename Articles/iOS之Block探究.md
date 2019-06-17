@@ -559,7 +559,7 @@ int main(int argc, const char * argv[]) {
 
 ![__block的__forwarding指针.png](https://upload-images.jianshu.io/upload_images/4164292-afb2a15da907e116.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-从上图可知，对于block从栈copy到堆的情况，结构体__Block_byref_age_0中的__forwarding的指针不再指向自身，而是指向copy到堆空间的__Block_byref_age_0，堆上的__Block_byref_age_0的__forwarding指针指向自身，此时(age->__forwarding->age) = 12赋值时，改变的age变量就是存储在堆空间的age变量了。
+从上图可知，对于block从栈copy到堆的情况，结构体__Block_byref_age_0中的__forwarding的指针不再指向自身，而是指向copy到堆空间的__Block_byref_age_0，堆上的__Block_byref_age_0的__forwarding指针指向自身，此时执行(age->__forwarding->age) = 12赋值操作时，改变的age变量就是存储在堆空间的age变量了，而不是栈中的age变量。
 
 ## block常见的面试题
 (1)block的本质是什么?底层原理是怎样的?

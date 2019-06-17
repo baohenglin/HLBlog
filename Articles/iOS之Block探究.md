@@ -255,7 +255,7 @@ NSLog(@"[HLBlock1 class] = %@",[HLBlock1 class]);
 
 ## ARC环境下 block的copy操作
 
-在ARC环境下，编译器会根据情况自动将栈上的block复制到堆上。比如以下情况：
+在ARC环境下，编译器会根据情况自动将栈上的block复制(copy)到堆上。比如以下情况：
 
 * (1)block作为函数返回值时
 
@@ -376,6 +376,17 @@ block属性的写法：
 不管MRC还是ARC环境，建议统一都使用“copy”来修饰block。
 
 
+## block访问对象类型的auto变量
+
+当block内部访问了对象类型的auto变量时，如果block是在栈上（也就是_NSConcreteStackBlock类型的block），那么将不会对auto变量产生强引用。
+
+当block被拷贝到堆上时，那么会自动调用block内部的copy函数(__main_block_copy_0函数)，__main_block_copy_0函数内部会调用_Block_object_assign函数，然后_Block_object_assign函数会根据auto变量的修饰符(__strong、__weak、__unsafe_unretained)做出相应的操作，类似于retain（形成强引用或者弱引用）。
+
+当block从堆中被移除时，会调用block内部的dispose函数(__main_block_dispose_0函数)，__main_block_dispose_0函数内部会调用_Block_object_dispose函数，_Block_object_dispose函数会自动释放引用的auto变量类似于release操作。
+
+## __block修饰符
+
+
 ## block常见的面试题
 (1)block的本质是什么?底层原理是怎样的?
 
@@ -386,6 +397,8 @@ block本质上是一个OC对象,因为它内部有一个isa指针。更确切地
 (3)block的属性修饰词为什么是copy？使用block有哪些注意事项？
 
 (4)block在修改NSMutableArray时，需不需要加__block？
+
+(5)
 
 <br>
 <br>

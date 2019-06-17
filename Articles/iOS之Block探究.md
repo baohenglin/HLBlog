@@ -448,6 +448,119 @@ __Block_byref_age_0 *__forwarding;
 
 
 
+## __block的内存管理
+
+* 当block在栈上（也就是_NSConcreteStackBlock类型的block）时，那么将不会对__block变量产生强引用。
+
+* 当block被拷贝到堆时，那么会自动调用block内部的copy函数(__main_block_copy_0函数)，__main_block_copy_0函数内部会调用_Block_object_assign函数，然后_Block_object_assign函数会对__block变量形成强引用(retain)。
+
+__block的内存管理示意图，如下所示：
+
+![__block的内存管理示意图.png](https://upload-images.jianshu.io/upload_images/4164292-8c36a6f3228238f7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+
+假设有两个block：block0和block1，而且这两个block都访问了__block变量。一开始这两个block都在栈上，__block变量也在栈上。当block0被拷贝到堆上时，会自动将block内部使用到的__block变量也拷贝到堆上，而且被拷贝到堆上的block0对被拷贝到栈上的__block变量是强引用；block1也会被拷贝到堆上面，由于之前已经将__block变量拷贝到堆上了，所以这一次不再拷贝，而且被拷贝到堆上的block1堆__block变量也是强引用。
+
+* 当block从堆中被移除时，会调用block内部的dispose函数(__main_block_dispose_0函数)，__main_block_dispose_0函数内部会调用_Block_object_dispose函数，_Block_object_dispose函数会自动释放引用的__block变量,类似于release操作。
+
+![block移除时的内存管理.png](https://upload-images.jianshu.io/upload_images/4164292-3196af94ae66cdd7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+
+## 对象类型的auto变量和__block变量的异同
+
+相同点如下：
+
+* 当block在栈上时，对它们都不会产生强引用；
+* 当block拷贝到堆上时，都会通过copy函数来处理它们；
+* 当block从堆上移除时，都会通过dispose函数来释放它们。
+
+不同点：
+不同点主要在于引用方面（强引用还是弱引用）。
+
+* 对于OC对象类型的auto变量来说，如果block是通过弱引用来访问OC对象的话，那么block对OC对象产生的弱引用；如果block是通过强引用来访问OC对象的话，那么block对OC对象产生的是强引用。
+* 对于__block变量来说，block对__block变量直接产生的就是强引用。
+
+
+## __block 的 __forwarding 指针
+
+
+通过一个例子来说明，代码如下：
+
+```
+typedef void(^HLBlock) (void);
+int main(int argc, const char * argv[]) {
+    @autoreleasepool {
+        __block int age = 11;
+        HLBlock block = ^{
+            age = 12;
+            NSLog(@"age is %d",age);
+        };
+        block();
+    }
+    return 0;
+}
+```
+
+利用Clang编译器将上述代码转化为C++代码，代码如下：
+
+```
+struct __Block_byref_age_0 {
+  void *__isa;
+__Block_byref_age_0 *__forwarding;
+ int __flags;
+ int __size;
+ int age;
+};
+
+struct __main_block_impl_0 {
+  struct __block_impl impl;
+  struct __main_block_desc_0* Desc;
+  __Block_byref_age_0 *age; // by ref
+  __main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, __Block_byref_age_0 *_age, int flags=0) : age(_age->__forwarding) {
+    impl.isa = &_NSConcreteStackBlock;
+    impl.Flags = flags;
+    impl.FuncPtr = fp;
+    Desc = desc;
+  }
+};
+static void __main_block_func_0(struct __main_block_impl_0 *__cself) {
+  __Block_byref_age_0 *age = __cself->age; // bound by ref
+
+    (age->__forwarding->age) = 12;
+    NSLog((NSString *)&__NSConstantStringImpl__var_folders_5__mtg9xgxd1d38kgcthl4yryb80000gn_T_main_c9cab7_mi_0,(age->__forwarding->age));
+}
+static void __main_block_copy_0(struct __main_block_impl_0*dst, struct __main_block_impl_0*src) {_Block_object_assign((void*)&dst->age, (void*)src->age, 8/*BLOCK_FIELD_IS_BYREF*/);}
+
+static void __main_block_dispose_0(struct __main_block_impl_0*src) {_Block_object_dispose((void*)src->age, 8/*BLOCK_FIELD_IS_BYREF*/);}
+
+static struct __main_block_desc_0 {
+  size_t reserved;
+  size_t Block_size;
+  void (*copy)(struct __main_block_impl_0*, struct __main_block_impl_0*);
+  void (*dispose)(struct __main_block_impl_0*);
+} __main_block_desc_0_DATA = { 0, sizeof(struct __main_block_impl_0), __main_block_copy_0, __main_block_dispose_0};
+int main(int argc, const char * argv[]) {
+    /* @autoreleasepool */ { __AtAutoreleasePool __autoreleasepool; 
+        __attribute__((__blocks__(byref))) __Block_byref_age_0 age = {(void*)0,(__Block_byref_age_0 *)&age, 0, sizeof(__Block_byref_age_0), 11};
+        HLBlock block = ((void (*)())&__main_block_impl_0((void *)__main_block_func_0, &__main_block_desc_0_DATA, (__Block_byref_age_0 *)&age, 570425344));
+        ((void (*)(__block_impl *))((__block_impl *)block)->FuncPtr)((__block_impl *)block);
+    }
+    return 0;
+}
+```
+其中，构造函数__main_block_func_0中有下列赋值代码：
+
+```
+(age->__forwarding->age) = 12;
+```
+
+赋值过程是这样的：首先利用结构体__Block_byref_age_0，查找到里面的__forwarding成员变量，对于栈上的block，__forwarding指向自身，也就是指向__Block_byref_age_0，之后通过__forwarding找到自身(__Block_byref_age_0)，最后找到里面的age成员变量进行赋值。那么为什么要先利用__forwarding指针查找一次自己呢？这是为了保证拷贝到堆上的block访问外部的__block变量时，被访问的__block变量也必须存放在堆空间。
+
+
+![__block的__forwarding指针.png](https://upload-images.jianshu.io/upload_images/4164292-afb2a15da907e116.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+从上图可知，对于block从栈copy到堆的情况，结构体__Block_byref_age_0中的__forwarding的指针不再指向自身，而是指向copy到堆空间的__Block_byref_age_0，堆上的__Block_byref_age_0的__forwarding指针指向自身，此时(age->__forwarding->age) = 12赋值时，改变的age变量就是存储在堆空间的age变量了。
+
 ## block常见的面试题
 (1)block的本质是什么?底层原理是怎样的?
 

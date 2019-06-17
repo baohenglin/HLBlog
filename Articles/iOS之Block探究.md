@@ -253,6 +253,47 @@ NSLog(@"[HLBlock1 class] = %@",[HLBlock1 class]);
 ![block调用copy方法.png](https://upload-images.jianshu.io/upload_images/4164292-4bc44e72a156c286.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
+#ARC环境下 block的copy操作
+
+在ARC环境下，编译器会根据情况自动将栈上的block复制到堆上。比如以下情况：
+
+* (1)block作为函数返回值时
+
+```
+typedef void(^HLBlock) (void);
+//test方法
+HLBlock test()
+{
+    //定义block,
+    int age = 1111;
+    HLBlock block = ^{
+        //block访问了auto变量age，是__NSStackBlock__类型的block，存储在栈上
+        NSLog(@"block作为函数的参数返回值的情况---%d",age);
+    };
+    
+    //block作为函数的返回值
+    return block;
+    //在MRC环境下，由于block访问了auto变量age，存储在栈上，当超出test函数的作用域时，block在栈上的内存会被系统自动回收。那么在test函数外再调用block时就会出问题。这种情况下，就需要手动进行一次copy操作。
+    //在ARC环境下，编译器会自动执行copy操作，将栈上的block拷贝到堆上，由__NSStackBlock__变为__NSMallocBlock__。
+    //return [block copy];
+  
+}
+
+int main(int argc, const char * argv[]) {
+    @autoreleasepool {
+        HLBlock block = test();
+        //调用block
+        block();
+        NSLog(@"----%@",[block class]);
+        //2019-06-17 10:50:31.038489+0800 Block的copy操作[1003:37627] ----__NSMallocBlock__
+
+    }
+    return 0;
+}
+```
+* 
+
+
 ## block常见的面试题
 (1)block的本质是什么?底层原理是怎样的?
 

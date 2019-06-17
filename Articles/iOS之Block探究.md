@@ -386,6 +386,67 @@ block属性的写法：
 
 ## __block修饰符
 
+默认情况下，block不能直接修改block外部的局部变量(auto变量)。那么怎么才能修改呢？有以下几种方案：
+
+* （1）使用static修饰符修饰局部变量（不推荐）
+* （2）将局部变量修改为全局变量（不推荐）
+* （3）使用__block修饰符（推荐）
+
+代码如下：
+
+```
+typedef void(^HLBlock) (void);
+int main(int argc, const char * argv[]) {
+    @autoreleasepool {
+        __block int age = 11;
+        HLBlock block = ^{
+            age = 12;
+            NSLog(@"age is %d",age);
+        };
+        block();
+    }
+    return 0;
+}
+```
+
+打印结果如下：
+
+```
+2019-06-17 15:41:47.716010+0800 Block之__block修饰符[2641:125625] age is 12
+
+```
+
+__block可以用于解决block内部无法修改外部的auto变量值得问题。__block不能修饰全局变量，也不能修饰静态变量(static变量)。使用__block修饰符不会修改变量的性质，变量还是自动变量。所以我们推荐使用__block来修改auto变量值（因为前两种方法会使变量一直占用内存，不会释放内存）
+
+
+将上面代码转化为C++代码，如下：
+
+```
+struct __main_block_impl_0 {
+  struct __block_impl impl;
+  struct __main_block_desc_0* Desc;
+  __Block_byref_age_0 *age; // by ref
+  __main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, __Block_byref_age_0 *_age, int flags=0) : age(_age->__forwarding) {
+    impl.isa = &_NSConcreteStackBlock;
+    impl.Flags = flags;
+    impl.FuncPtr = fp;
+    Desc = desc;
+  }
+};
+
+//__Block_byref_age_0结构体
+struct __Block_byref_age_0 {
+  void *__isa;
+__Block_byref_age_0 *__forwarding;
+ int __flags;
+ int __size;
+ int age;//age=11
+};
+```
+
+当使用__block修饰auto变量时，编译器会将__block变量封装成一个对象__Block_byref_age_0。该对象的成员变量包括__isa指针、__forwarding指针、__flags、__size以及age。其中__forwarding指针指向自身。
+
+
 
 ## block常见的面试题
 (1)block的本质是什么?底层原理是怎样的?

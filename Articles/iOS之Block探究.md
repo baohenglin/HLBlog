@@ -384,7 +384,7 @@ block属性的写法：
 
 当block从堆中被移除时，会调用block内部的dispose函数(__main_block_dispose_0函数)，__main_block_dispose_0函数内部会调用_Block_object_dispose函数，_Block_object_dispose函数会自动释放引用的auto变量类似于release操作。
 
-## __block修饰符
+## 被__block修饰符修饰的基本类型
 
 默认情况下，block不能直接修改block外部的局部变量(auto变量)。那么怎么才能修改呢？有以下几种方案：
 
@@ -561,18 +561,114 @@ int main(int argc, const char * argv[]) {
 
 从上图可知，对于block从栈copy到堆的情况，结构体__Block_byref_age_0中的__forwarding的指针不再指向自身，而是指向copy到堆空间的__Block_byref_age_0，堆上的__Block_byref_age_0的__forwarding指针指向自身，此时执行(age->__forwarding->age) = 12赋值操作时，改变的age变量就是存储在堆空间的age变量了，而不是栈中的age变量。
 
-## block常见的面试题
+
+<!--## 被__block修饰的对象类型-->
+
+## 循环引用
+
+导致循环引用的原因是Block通过内部的__strong self指针持有某对象，同时该对象通过其成员变量_block持有该Block，从而使对象和Block二者相互强引用，都不能被释放。
+
+![循环引用示意图](https://upload-images.jianshu.io/upload_images/4164292-d6c1da4d9c02faf5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240 '循环引用示意图')
+
+### ARC环境下的循环引用解决方法
+
+ARC环境下解决循环引用的方法有以下3种：
+
+* __ unsafe_unretained
+
+```
+//方法(1)
+__unsafe_unretained typeof(self) weakSelf = self;
+self.block = ^{
+	NSLog(@"%p", weakSelf);
+};
+```
+
+* __block
+
+```
+//方法(2)
+__block id weakSelf = self;
+self.block = ^{
+	NSLog(@"%p",weakSelf);
+	weakSelf = nil;//必须写
+};
+self.block();//必须写
+```
+
+* __weak
+
+```
+//方法(3)
+__weak typeof(self) weakSelf = self;
+self.block = ^{
+	NSLog(@"%p", weakSelf);
+};
+
+```
+
+ARC环境下，可以通过 __ unsafe_unretained 修饰符来解决，但是由于__ unsafe_unretained是不安全的，当指针指向的对象销毁时，指针存储的地址值不变，也就是不会自动将指针置为nil，从而产生野指针；所以不推荐使用 __unsafe_unretained。
+
+ARC环境下，也可以通过__block来解决循环引用。缺点是必须要调用block，而且在block内部要将指向对象的指针置为nil。
+
+
+ARC环境下，可以通过 __weak 修饰符来解决循环引用。__weak是安全的，当指针指向的对象销毁时，会自动将指针置为nil。
+
+综上所述，优先推荐使用__weak修饰符来解决循环引用问题。
+
+
+### ARC环境下 __ unsafe_unretained和__weak的异同点
+
+相同点：__ unsafe_unretained和__weak都是弱引用，不会产生强引用。
+
+不同点：__ unsafe_unretained是不安全的，当指针指向的对象销毁时，指针存储的地址值不变，也就是不会自动将指针置为nil，从而产生野指针；__weak是安全的，当指针指向的对象销毁时，会自动将指针置为nil。
+
+
+### MRC环境下的循环引用解决方法
+
+MRC环境下，不支持__weak，不能通过__weak来解决循环引用。但是可以通过 __ unsafe_unretained和__block来解决MRC环境下的循环引用问题。
+
+* __ unsafe_unretained
+
+```
+__unsafe_unretained typeof(self) weakSelf = self;
+self.block = ^{
+	NSLog(@"%p", weakSelf);
+};
+```
+
+* __block: MRC环境下， __block修饰的对象，不会被 __block变量的结构体对象强引用，也就打破了循环引用。
+
+```
+__block id weakSelf = self;
+self.block = ^{
+	NSLog(@"%p",weakSelf);
+};
+
+```
+
+## block知识总结
 (1)block的本质是什么?底层原理是怎样的?
 
-block本质上是一个OC对象,因为它内部有一个isa指针。更确切地说，block是封装了函数调用以及函数调用环境的OC的对象。
+&emsp;&emsp;block本质上是一个OC对象,因为它内部有一个isa指针。更确切地说，block是封装了函数调用以及函数调用环境的OC的对象。
 
 (2)__block的作用是什么?使用时需要注意什么?
 
+&emsp;&emsp; __block可以用于解决block内部无法修改auto变量值的问题。一旦使用 __block，那么编译器会将 __block变量包装成一个对象 ( __Block _byref _变量 _0)。该对象内部包含isa指针以及与外部auto变量同名且同类型的成员变量。
+
+使用注意点：注意 __ block的内存管理问题；再就是在MRC环境下，使用__block修饰的对象类型不会被block强引用。
+
 (3)block的属性修饰词为什么是copy？使用block有哪些注意事项？
+
+&emsp;&emsp;block如果不执行copy操作，就不会被拷贝到堆上，通过copy操作来保证block在堆上的目的是开发者可以控制block的生命周期，并对该block进行内存管理。
+
+注意事项：循环引用问题。
 
 (4)block在修改NSMutableArray时，需不需要加__block？
 
-(5)
+不需要加__block。
+
+(5)__weak只能用来修饰对象类型的变量，不能修饰基本数据类型的变量。
 
 <br>
 <br>

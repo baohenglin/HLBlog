@@ -654,7 +654,7 @@ self.block = ^{
 
 (2)__block的作用是什么?使用时需要注意什么?
 
-&emsp;&emsp; __block可以用于解决block内部无法修改auto变量值的问题。一旦使用 __block，那么编译器会将 __block变量包装成一个对象 ( __Block _byref _变量 _0)。该对象内部包含isa指针以及与外部auto变量同名且同类型的成员变量。
+&emsp;&emsp; __block可以用于解决block内部无法修改auto变量值的问题。一旦使用 __block，那么编译器会将 __block变量包装成一个对象 ( __Block _byref _变量名 _0)。该对象内部包含isa指针以及与外部auto变量同名且同类型的成员变量。
 
 使用注意点：注意 __ block的内存管理问题；再就是在MRC环境下，使用__block修饰的对象类型不会被block强引用。
 

@@ -9,7 +9,10 @@ Apple源码下载地址：<https://opensource.apple.com/tarballs/objc4/>
 
 ## isa详解
 
-学习Runtime之前，我们需要了解它底层涉及的一些知识，比如isa指针。在arm64架构之前，isa就是一个普通的指针，存放着Class对象或者Meta-Class对象的内存地址。从arm64架构开始，苹果对isa进行了优化，变成了一个共用体(union)结构，还使用了“位域”来存储更多的信息。
+学习Runtime之前，我们需要了解它底层涉及的一些知识，比如isa指针。在arm64架构之前，isa就是一个普通的指针，存放着Class对象或者Meta-Class对象的内存地址。但是从arm64架构开始，苹果对isa进行了优化，采用了一个共用体(union)结构，还使用了“位域”来将一个64bit的内存空间存储了更多的信息，其中44bit用来存储Class对象或Meta-Class对象的内存地址。这也就是从arm64开始isa指针只有&ISA_MASK才能得到Class对象或Meta-Class对象的地址值的原因。
+
+
+![&ISA_MASK.png](https://upload-images.jianshu.io/upload_images/4164292-153631fd8c38f12d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 共用体结构源码如下：
 
@@ -45,8 +48,19 @@ union isa_t {
       uintptr_t extra_rc          : 8
 ```
 
+共用体的概念：所有成员变量共用同一块内存。
 
+结构体ISA_BITFIELD中各个参数的含义如下：
 
+* nonpointer：0代表普通的指针，存储着Class、Meta-Class对象的内存地址；1代表优化过，使用位域存储更多信息。
+* has_assoc：是否设置过关联对象，如果没有，释放时会更快。
+* has_cxx_dtor：是否有C++的析构函数（.cxx_destruct），如果没有，释放时会更快。
+* **shiftcls**：存储着Class、Meta-Class对象的内存地址信息，最后面的3bit一定是0。
+* magic：用于在调试时分辨对象是否未完成初始化。
+* weakly_referenced：是否有被弱引用指向过，如果没有，释放时会更快。
+* deallocating：对象是否正在释放。
+* has_sidetable_rc：引用计数器是否过大无法存储在isa中，如果为1，那么引用计数会存储在一个叫SideTable的类的属性中。
+* extra_rc：里面存储的值是引用计数器减1后的值。
 
 
 

@@ -9,7 +9,7 @@ Apple源码下载地址：<https://opensource.apple.com/tarballs/objc4/>
 
 ## isa详解
 
-学习Runtime之前，我们需要了解它底层涉及的一些知识，比如isa指针。在arm64架构之前，isa就是一个普通的指针，存放着Class对象或者Meta-Class对象的内存地址。但是从arm64架构开始，苹果对isa进行了优化，采用了一个共用体(union)结构，还使用了“位域”来将一个64bit的内存空间存储了更多的信息，其中44bit用来存储Class对象或Meta-Class对象的内存地址。这也就是从arm64开始isa指针只有&ISA_MASK才能得到Class对象或Meta-Class对象的地址值的原因。
+学习Runtime之前，我们需要了解它底层涉及的一些知识，比如isa指针。在arm64架构之前，isa就是一个普通的指针，存放着Class对象或者Meta-Class对象的内存地址。但是从arm64架构开始，苹果对isa进行了优化，采用了一个共用体(union)结构，还使用了“位域”使一个64bit的内存空间存储了更多的信息，其中44bit用来存储Class对象或Meta-Class对象的内存地址。这也就是从arm64开始isa指针只有&ISA_MASK才能得到Class对象或Meta-Class对象的地址值的原因。
 
 
 ![&ISA_MASK.png](https://upload-images.jianshu.io/upload_images/4164292-153631fd8c38f12d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)

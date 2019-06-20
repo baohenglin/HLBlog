@@ -244,14 +244,14 @@ OC的方法调用是指给方法调用者发送消息，也称为**消息机制*
 
 objc_msgSend函数的执行流程可以分为3大阶段：
 
-* （1）消息发送阶段。objc_msgSend(person, @selector(test))，在此阶段会查找test是否存在，如果存在，直接调用，如果不存在，再进行步骤（2）动态方法解析。
+* （1）**消息发送阶段**。objc_msgSend(person, @selector(test))，在此阶段会查找test是否存在，如果存在，直接调用，如果不存在，再进行步骤（2）动态方法解析。
 
 ![objc_msgSend执行流程-消息发送阶段示意图.png](https://upload-images.jianshu.io/upload_images/4164292-f7eb12d7a09294a5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-消息发送阶段详细过程：首先判断receiver是否为nil，为nil的话，直接retrun。如果receiver不为nil，那么就利用receiver的isa找到receiver的Class对象或Meta-Class对象。接下来，先从receiver自己的Class的cache中查找方法，如果找到了该方法，直接调用，并结束查找。如果没有找到方法，那么就从receiver的Class对象的class_rw_t中methods数组里查找方法，如果数组已经排序，采用“二分查找”；如果没有排序，则采用普通遍历查找。如果在methods数组里找到了方法，则调用方法，结束查找并将该方法缓存到receiver的Class的cache中；如果没有找到方法，那么就通过receiver Class的superclass指针找到SuperClass，接下来从SuperClass的cache中查找方法，如果找到了方法，则调用该方法，结束查找，并将该方法缓存到receiver的Class对象的cache中；如果没有找到方法，接着会从SuperClass的class _rw _t 中查找方法，同样地，也存在采用“二分查找”和“遍历查找”的判断，如果找到了方法，则调用方法，结束查找并将该方法缓存到receiver的Class的cache中；如果没有找到方法，此时会判断是否存在更高一级的superClass（父类），如果存在superClass，那么继续从superClass的cache中查找方法，继续上面的所述的在superClass中的查找过程；如果上层不存在superClass了，那么此时就会进入**动态方法解析阶段**。
+**消息发送阶段详细过程**：首先判断receiver是否为nil，为nil的话，直接retrun。如果receiver不为nil，那么就利用receiver的isa找到receiver的Class对象或Meta-Class对象。接下来，先从receiver自己的Class的cache中查找方法，如果找到了该方法，直接调用，并结束查找。如果没有找到方法，那么就从receiver的Class对象的class_rw_t中methods数组里查找方法，如果数组已经排序，采用“二分查找”；如果没有排序，则采用普通遍历查找。如果在methods数组里找到了方法，则调用方法，结束查找并将该方法缓存到receiver的Class的cache中；如果没有找到方法，那么就通过receiver Class的superclass指针找到SuperClass，接下来从SuperClass的cache中查找方法，如果找到了方法，则调用该方法，结束查找，并将该方法缓存到receiver的Class对象的cache中；如果没有找到方法，接着会从SuperClass的class _rw _t 中查找方法，同样地，也存在采用“二分查找”和“遍历查找”的判断，如果找到了方法，则调用方法，结束查找并将该方法缓存到receiver的Class的cache中；如果没有找到方法，此时会判断是否存在更高一级的superClass（父类），如果存在superClass，那么继续从superClass的cache中查找方法，继续上面的所述的在superClass中的查找过程；如果上层不存在superClass了，那么此时就会进入**动态方法解析阶段**。
 
-* （2）动态方法解析。此阶段允许开发者动态创建方法用来调用。如果动态方法解析阶段，开发者没有执行任何操作，那么将进入“消息转发”阶段。
-* （3）消息转发。将该方法交由其他对象去调用。
+* （2）**动态方法解析阶段**。此阶段允许开发者动态创建方法用来调用。如果动态方法解析阶段，开发者没有执行任何操作，那么将进入“消息转发”阶段。
+* （3）**消息转发阶段**。将该方法交由其他对象去调用。
 
 如果以上3个阶段都无法完成消息调用，那么将报错"unrecognized selector sent to instance XXX"。
 

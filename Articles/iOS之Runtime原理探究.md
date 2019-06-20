@@ -79,7 +79,7 @@ union isa_t {
 
 ### class_ro _t
 
-class_rw _ t 结构体里面的ro指针指向结构体class_ro _t。 class _ ro _t 里面的baseMethodList、baseProtocols、ivars、baseProperties是一维数组，而且是只读的，只包含了类的初始内容。
+class_rw _ t 结构体里面的 class_ro _ t *ro 指针指向结构体class_ro _t。 class _ ro _t 里面的baseMethodList、baseProtocols、ivars、baseProperties是一维数组，而且是只读的，只包含了类的初始内容。
 
 结构体class_ro _t 底层结构示意图，如下所示：
 
@@ -113,14 +113,19 @@ SEL：代表方法或函数名，一般叫选择器，底层结构跟char*类似
 
 name：表示函数名。
 
-types：表示存放着函数的返回值类型、参数类型的字符串。
+types：表示存放着函数的返回值类型、参数类型的字符串编码。比如定义一个 -(void)test方法，types是“v16@0:8”，其中的“v”表示函数返回值类型void，“@”表示“id”，“:”表示“SEL”，“16”表示整个字符串编码占16个字节，“0”和“8”表示对应的id和SEL分别从第几个字节开始。
 
 IMP：代表函数的具体实现。
 
 imp：是指向函数的指针（函数地址）。
 
 
+### Type Encoding(类型编码)
 
+iOS中提供了一个叫做@encode的指令，可以将具体的类型表示成字符串编码。比如@encode(id)转化为“@”，@encode(SEL)转化为“:”。
+
+@encode指令表如下图所示：
+![TypeEncoding指令表.png](https://upload-images.jianshu.io/upload_images/4164292-079113457883962d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
 ## Runtime相关知识

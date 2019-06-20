@@ -128,6 +128,100 @@ iOS中提供了一个叫做@encode的指令，可以将具体的类型表示成�
 ![TypeEncoding指令表.png](https://upload-images.jianshu.io/upload_images/4164292-079113457883962d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
+### cache_t cache（方法缓存）
+
+Class内部结构中有一个“方法缓存”，也就是 struct objc_ class中有一个成员变量 cache_ t cache。cache_t cache是用“**散列表**(也称为哈希表)”来缓存曾经调用过的方法的，这样就提高方法的查找速度。
+
+为什么说使用cache_t方法缓存技术可以提高查找方法的速度呢？首先我们来回顾一下OC中是如何调用对象方法的。举个例子，比如：
+
+```
+HLPerson *person = [[HLPerson alloc]init];
+[person test];
+
+```
+
+第一次执行[person test]，其方法调用过程是这样的：
+
+* (1)首先通过实例对象person的isa指针找到其Class对象。
+* (2)通过遍历数组的方式查找Class对象中的对象方法列表method _list _ t *methods，看对象方法列表中是否存在方法名为test的对象方法，如果存在，直接调用并将该方法缓存到Class对象中的cache_t cache里面；如果不存在，那么就通过superclass指针找到其父类的Class对象。
+* (3)通过遍历数组的方式查找其父类的Class对象中的对象方法method _list _ t *methods，看是否存在方法名为test的对象方法，如果存在，直接调用并将该方法缓存到Class对象中的 cache_t cache里面；如果不存在，那么就通过superclass指针找到其父类的Class对象....这样一层一层向下查找
+
+当再次调用test方法时，通过实例对象的isa指针找到其Class对象，然后查找cache_t cache中是否缓存了test方法，如果存在，那么就直接调用cache_t cache中缓存的test方法，不必再一层一层往下查找。这样就提高了方法查找调用的速度。
+
+
+cache_ t的底层实现如下：
+
+```
+struct cache_t {
+    struct bucket_t *_buckets;//散列表，是一个数组
+    mask_t _mask;//散列表的长度减1
+    mask_t _occupied;//已经缓存的方法数量
+};
+```
+_ buckets代表 散列表，是一个数组。 _ mask的值等于_ buckets这个数组的长度减1。_occupied表示已经缓存的方法的数量。
+
+bucket_t 的底层结构如下所示：
+
+```
+struct bucket_t {
+	cache_key_t _key;//SEL作为key，也就是@selector(methodName)作为key
+	IMP _imp;//函数的内存地址
+};
+```
+
+_ buckets散列表这个数组的每一个元素都是 bucket_t结构体数据，bucket_t中有两个成员变量：_key和 _imp。其中key=@selector(methodName)。
+
+当缓存test方法时，先通过位运算 @selector(methodName) & _mask计算出index，然后将 bucket _ t(_key=@selector(test),_imp)存储在 _ buckets数组中index下标对应的位置。
+
+当查找缓存中的方法时，并不是通过遍历数组这种普通的方式来查找，而是像缓存方法时一样，先通过位运算 @selector(methodName) & _mask计算出index(计算出的index值肯定小于等于 _mask)，然后直接获取index下标对应的元素 bucket _t,并从中获取 _imp,进而直接调用 _imp这个函数地址值对应的函数。由于采取了位运算的方式缓存方法， _buckets这个数组有些元素是NULL，这种“以空间换时间”的方式，虽然牺牲掉了一些内存空间，但是很大程度上提高了执行效率。
+
+【注意】当数组_buckets空间不足时会扩容，扩容时 _mask也会随之变化。那么此时就会将 _buckets数组中的元素全部清空。这一点我们可以从数组_buckets扩容函数expand底层实现源码可以看到。具体源码如下：
+
+```
+//expand 扩容函数
+void cache_t::expand()
+{
+    cacheUpdateLock.assertLocked();
+    
+    uint32_t oldCapacity = capacity();
+    uint32_t newCapacity = oldCapacity ? oldCapacity*2 : INIT_CACHE_SIZE;//扩容为原来的2倍
+
+    if ((uint32_t)(mask_t)newCapacity != newCapacity) {
+        // mask overflow - can't grow further
+        // fixme this wastes one bit of mask
+        newCapacity = oldCapacity;
+    }
+
+    reallocate(oldCapacity, newCapacity);//调用reallocate函数
+}
+
+//reallocate函数实现
+void cache_t::reallocate(mask_t oldCapacity, mask_t newCapacity)
+{
+    bool freeOld = canBeFreed();
+
+    bucket_t *oldBuckets = buckets();
+    bucket_t *newBuckets = allocateBuckets(newCapacity);
+
+    // Cache's old contents are not propagated. 
+    // This is thought to save cache memory at the cost of extra cache fills.
+    // fixme re-measure this
+
+    assert(newCapacity > 0);
+    assert((uintptr_t)(mask_t)(newCapacity-1) == newCapacity-1);
+
+    setBucketsAndMask(newBuckets, newCapacity - 1);
+    
+    if (freeOld) {
+        cache_collect_free(oldBuckets, oldCapacity);
+        cache_collect(false);
+    }
+}
+```
+我们可以看到reallocate函数调用了cache_ collect_free方法将原来的数据清空了，setBucketsAndMask重新设置了 _buckets = newBuckets， _mask = newCapacity - 1。
+
+
+
 ## Runtime相关知识
 
 （1）简述一下OC的消息机制

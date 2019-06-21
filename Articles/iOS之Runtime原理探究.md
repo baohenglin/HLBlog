@@ -222,7 +222,7 @@ void cache_t::reallocate(mask_t oldCapacity, mask_t newCapacity)
 我们可以看到reallocate函数调用了cache_ collect_free方法将原来的数据清空了，setBucketsAndMask重新设置了 _buckets = newBuckets， _mask = newCapacity - 1。
 
 
-## objc_msgSend
+## objc_msgSend的实现原理
 
 接下来探究objc_msgSend的底层实现。首先创建一个HLPerson类，并声明和实现test方法。然后调用，代码如下：
 
@@ -240,7 +240,7 @@ objc_msgSend(person, sel_registerName(@"test"));
 
 ### objc_msgSend执行流程
 
-OC的方法调用是指给方法调用者发送消息，也称为**消息机制**。其中，方法调用方也称为**消息接受者（receiver）**。OC中的方法调用，不管是对象方法还是类方法，本质上都是转换为**objc_msgSend函数的调用**。
+OC的方法调用是指给方法调用者发送消息，也称为**消息机制**。其中，方法调用方也称为**消息接受者（receiver）**。OC中的方法调用，不管是对象方法还是类方法，本质上都是转换为**objc_msgSend函数的调用**。objc_msgSend的核心源码在objc4-750文件中的objc-runtime-new.mm中的4901行(retry:)~4978行
 
 objc_msgSend函数的执行流程可以分为3大阶段：
 
@@ -256,9 +256,115 @@ objc_msgSend函数的执行流程可以分为3大阶段：
 
 **动态方法解析阶段**详细过程：首先判断“是否已经动态解析”(if(resolver && !triedResolver))，如果没有动态解析过，那么就会调用+resolveInstanceMethod:或者+resolveClassMethod:方法来动态解析方法，开发者可以在+resolveInstanceMethod:或者+resolveClassMethod:方法里面利用runtime API来动态添加方法实现；动态解析完成后，会标记为已经动态解析(triedResolver = YES)，重新执行“消息发送”的流程，也就是重新从receiver Class的cache中查找方法。如果一开始判断为经动态解析过，那么将转入“**消息转发阶段**”。需要特别注意的是：如果是为“类方法”动态添加实现的话，class_addMethod的第一个参数必须是Meta-Class对象,也就是objc_getClass(self)。
 
-* （3）**消息转发阶段**。将该方法交由其他对象去调用。
+那么在+resolveInstanceMethod方法中具体如何动态添加方法实现呢？有三种方法：
 
-如果以上3个阶段都无法完成消息调用，那么将报错"unrecognized selector sent to instance XXX"。
+方法1：推荐使用此方法
+
+```
+//动态添加为test方法的实现
+- (void)other
+{
+    NSLog(@"%s",__func__);
+}
+//调用+resolveInstanceMethod方法进行动态解析方法，可以在此方法中动态添加方法。
++ (BOOL)resolveInstanceMethod:(SEL)sel
+{
+    if (sel == @selector(test)) {
+        //方法1，如果是为“类方法”动态添加实现的话，class_addMethod的第一个参数必须是Meta-Class对象,也就是objc_getClass(self)
+        //获取其他方法(比如other方法)：class_getInstanceMethod(Class _Nullable cls, SEL _Nonnull name)
+        Method method = class_getInstanceMethod(self, @selector(other));
+        //利用runtime为test方法动态添加方法实现（other方法）
+        //class_addMethod(Class _Nullable cls, SEL _Nonnull name, IMP _Nonnull imp,const char * _Nullable types)
+        class_addMethod(self, sel, method_getImplementation(method), method_getTypeEncoding(method));
+        return YES;
+    }
+    return [super resolveInstanceMethod:sel];
+}
+```
+
+方法2：利用struct objc_method 与 struct method_t 的等价性
+
+```
+//自定义结构体 method_t
+struct method_t {
+    SEL sel;
+    char *types;
+    IMP imp;
+};
++ (BOOL)resolveInstanceMethod:(SEL)sel
+{
+    if (sel == @selector(test)) {
+        struct method_t *method = (struct objc_method *)class_getInstanceMethod(self, @selector(other));
+        class_addMethod(self, sel, method->imp, method->types);
+        return YES;
+    }
+    return [super resolveInstanceMethod:sel];
+}
+
+```
+
+方法3：利用C语言函数
+
+```
+//C语言函数,将该方法动态添加为test方法的实现
+void c_other(id self, SEL _cmd)
+{
+    NSLog(@"c_other-%@ - %@",self, NSStringFromSelector(_cmd));
+}
+//调用+resolveInstanceMethod方法进行动态解析方法，可以在此方法中动态添加方法。
++ (BOOL)resolveInstanceMethod:(SEL)sel
+{
+    if (sel == @selector(test)) {
+
+    //方法3:添加C语言函数，如果是为“类方法”动态添加实现的话，class_addMethod的第一个参数必须是Meta-Class对象,也就是objc_getClass(self)
+        class_addMethod(self, sel, (IMP)c_other, "v16@0:8");
+        //YES表示已经动态添加方法（其实返回NO效果也一样，为了遵守规范，最好使用YES）
+        return YES;
+    }
+    return [super resolveInstanceMethod:sel];
+}
+```
+
+* （3）**消息转发阶段**。消息转发是指将方法转发给其他调用者。
+
+![objc_msgSend的执行流程03-消息转发流程示意图.png](https://upload-images.jianshu.io/upload_images/4164292-9b726d453273809c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+**消息转发流程**：首先调用forwardingTargetForSelector:方法，如果方法返回值不为nil，那么就执行objc_msgSend(返回值,SEL)，如果返回值为nil，则调用methodSignnatureForSelector:方法，如果返回值为nil，则调用doesNotRecognizeSelector:方法并抛出错误"unrecognized selector sent to instance"；如果methodSignnatureForSelector:方法的返回值不为nil，就会调用forwardInvocation:方法，开发者可以在forwardInvocation:方法里自定义任何处理逻辑。
+
+```
+//消息转发
+- (id)forwardingTargetForSelector:(SEL)aSelector
+{
+    if (aSelector == @selector(test)) {
+        //objc_msgSend(cat,aSelector);
+        return [[Cat alloc]init];
+        //如果返回nil，则调用methodSignatureForSelector:方法
+//        return nil;
+    }
+    return [super forwardingTargetForSelector:aSelector];
+}
+//方法签名：返回值类型、参数类型
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
+{
+    if (aSelector == @selector(test)) {
+        //方法签名,如果返回的方法签名为空，那么将不再调用-(void)forwardInvocation:(NSInvocation *)anInvocation方法，并抛出错误
+        return [NSMethodSignature signatureWithObjCTypes:"v16@0:8"];
+        //如果返回nil，则调用forwardInvocation:方法。
+//        return nil;
+    }
+    return [super methodSignatureForSelector:aSelector];
+}
+//NSInvocation封装了一个方法调用，包括方法调用者、方法名、方法参数
+//anInvocation.target 方法调用者
+//anInvocation.selector 方法名
+//[anInvocation getArgument:NULL atIndex:0];
+-(void)forwardInvocation:(NSInvocation *)anInvocation
+{
+    [anInvocation invokeWithTarget:[[Cat alloc]init]];
+}
+```
+
+如果以上3个阶段都无法完成消息调用，那么将调用doesNotRecognizeSelector:方法报错"unrecognized selector sent to instance XXX"。
 
 
 ### objc_msgSend执行流程 - 源码跟读

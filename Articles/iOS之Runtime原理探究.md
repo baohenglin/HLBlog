@@ -349,7 +349,7 @@ void c_other(id self, SEL _cmd)
     if (aSelector == @selector(test)) {
         //方法签名,如果返回的方法签名为空，那么将不再调用-(void)forwardInvocation:(NSInvocation *)anInvocation方法，并抛出错误
         return [NSMethodSignature signatureWithObjCTypes:"v16@0:8"];
-        //如果返回nil，则调用forwardInvocation:方法。
+        //如果返回nil，调用doesNotRecognizeSelector:方法并抛出错误"unrecognized selector sent to instance";如果返回不为nil，则调用forwardInvocation:方法。
 //        return nil;
     }
     return [super methodSignatureForSelector:aSelector];
@@ -366,8 +366,12 @@ void c_other(id self, SEL _cmd)
 
 如果以上3个阶段都无法完成消息调用，那么将调用doesNotRecognizeSelector:方法报错"unrecognized selector sent to instance XXX"。
 
+## @dynamic
 
-### objc_msgSend执行流程 - 源码跟读
+@dynamic是用来通知编译器不要自动生成getter方法和setter方法的实现(并且不要自动生成成员变量)，等到运行时再添加方法实现的。
+
+
+<!--### objc_msgSend执行流程 - 源码跟读
 
 搜索“objc_msgSend”，然后找到"objc-msg-arm64.s"文件当中的"ENTRY _objc_msgSend"方法，该方法源码如下：
 
@@ -423,12 +427,58 @@ LReturnZero:
 	ret
 
 	END_ENTRY _objc_msgSend
-```
+```-->
 
 ## Runtime相关知识
 
 （1）简述一下OC的消息机制
+	<!--objc_msgSend执行流程的3大阶段：消息发送、动态方法解析、消息转发-->
+&emsp;&emsp;OC的方法调用其实都是转成了objc_msgSend函数的调用，给receiver(方法调用者)发送了一条消息(@selector(方法名))。objc_msgSend底层实现可以分为3大阶段。分别是消息发送阶段、动态方法解析阶段和消息转发阶段。
 
 （2）消息转发机制的流程
 
 （3）什么是Runtime？平时项目中用过么？
+
+（4）下面代码打印结果是什么？
+
+```
+@interface HLPerson : NSObject
+@end
+
+@interface HLStudent : HLPerson
+@end
+
+@implementation HLStudent
+- (instancetype)init
+{
+    if (self = [super init]) {
+        NSLog(@"[self class]=%@",[self class]);//HLStudent
+        NSLog(@"[self superclass]=%@",[self superclass]);//HLPerson
+        
+        //objc_msgSendSuper((self,[HLPerson Class]), @selector(run));
+        //[super class]的消息接收者receiver仍然是子类，也就是HLStudent,只不过查找方法的时候是从父类中查找
+        NSLog(@"[super class]=%@",[super class]);//[super class]=HLStudent
+        NSLog(@"[super superclass]=%@",[super superclass]);//[super superclass]=HLPerson
+    }
+    return self;
+}
+@end 
+```
+
+打印结果如下：
+
+```
+2019-06-21 18:14:08.706538+0800 Interviews_Super_SuperClass[17851:1105221] [self class]=HLStudent
+2019-06-21 18:14:08.706728+0800 Interviews_Super_SuperClass[17851:1105221] [self superclass]=HLPerson
+2019-06-21 18:14:08.706864+0800 Interviews_Super_SuperClass[17851:1105221] [super class]=HLStudent
+2019-06-21 18:14:08.706988+0800 Interviews_Super_SuperClass[17851:1105221] [super superclass]=HLPerson
+```
+
+```
+总结：
+ [super message]的底层实现：
+ （1）消息接收者仍然是子类对象；
+ （2）从父类开始查找方法的实现。
+```
+
+原因：主要是因为消息接收者仍然为子类。

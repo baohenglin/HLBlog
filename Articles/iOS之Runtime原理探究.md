@@ -482,3 +482,41 @@ LReturnZero:
 ```
 
 原因：主要是因为消息接收者仍然为子类。
+
+下面的代码打印结果是什么？
+
+```
+    BOOL res1 = [[NSObject class] isKindOfClass:[NSObject class]];
+    BOOL res2 = [[NSObject class] isMemberOfClass:[NSObject class]];//0
+    BOOL res3 = [[HLPerson class] isKindOfClass:[HLPerson class]];//0
+    BOOL res4 = [[HLPerson class] isMemberOfClass:[HLPerson class]];//0
+    BOOL res5 = [[HLPerson class] isKindOfClass:[NSObject class]];//1
+    BOOL res6 = [[HLPerson class] isMemberOfClass:[NSObject class]];//1
+    NSLog(@"res1=%d,res2=%d,res3=%d,res4=%d,res5=%d,res6=%d",res1,res2,res3,res4,res5,res6);
+   
+    
+    HLPerson *person = [[HLPerson alloc]init];
+    BOOL res7 = [person isKindOfClass:[HLPerson class]];//1
+    BOOL res8 = [person isKindOfClass:[NSObject class]];//1
+    
+    BOOL res9 = [person isMemberOfClass:[HLPerson class]];//1
+    BOOL res10 = [person isMemberOfClass:[NSObject class]];//0
+    NSLog(@"res7=%d,res8=%d,res9=%d,res10=%d",res7,res8,res9,res10);
+
+```
+
+打印结果如下：
+
+```
+res1=1,res2=0,res3=0,res4=0,res5=1,res6=0
+res7=1,res8=1,res9=1,res10=0
+
+```
+总结：主要考察isKindOfClass、isMemberOfClass这两个方法对应的对象方法和类方法的区别。
+
+* -(BOOL)isMemberOfClass：判断左边对象是否刚好等于右边这种类型
+* +(BOOL)isMemberOfClass：判断左边对象的Meta-Class对象是否等于右边的对象
+* -(BOOL)isKindOfClass：判断左边对象是否是右边这种类型或者右边对象的子类。
+* +(BOOL)isKindOfClass：判断左边的对象的Meta-Class对象是否是右边对象或者右边对象的子类
+
+需要特别注意的是：NSObject的superclass指针指向NSObject的类对象，也就是基类的superclass指针指向基类的Class对象。这一点比较特殊。

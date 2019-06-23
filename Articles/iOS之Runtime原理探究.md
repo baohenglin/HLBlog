@@ -429,6 +429,127 @@ LReturnZero:
 	END_ENTRY _objc_msgSend
 ```-->
 
+## Runtime的应用
+
+### Runtime API——类
+
+(1)Class object_getClass(id obj)：获取isa指向的Class。
+
+(2)Class object_setClass(id obj, Class cls):动态地设置实例对象的isa指向的Class。
+
+(3)BOOL object_isClass(id _Nullable obj)：判断一个OC对象是否为Class。
+
+(4)Class class_getSuperclass(Class cls)：获取父类。
+
+(5)Class objc_allocateClassPair(Class superclass, const char *name, size_t extraBytes)：动态创建一个类(参数：父类，类名，额外的内存空间)
+
+(6)void objc_registerClassPair(Class cls)：注册一个类（注意要在类注册之前添加成员变量）
+
+(7)void objc_disposeClassPair(Class cls)：销毁一个类
+
+```
+#import <Foundation/Foundation.h>
+#import "HLPerson.h"
+#import "HLCat.h"
+#import <objc/runtime.h>
+//自定义C语言函数
+void run(id self, SEL _cmd)
+{
+    NSLog(@"^^^^^^^^%@ - %@",self, NSStringFromSelector(_cmd));
+}
+
+int main(int argc, const char * argv[]) {
+    @autoreleasepool {
+        
+        HLPerson *person = [[HLPerson alloc]init];
+        [person run];
+        //(1)object_getClass(id _Nullable obj)：获取isa指向的Class
+        NSLog(@"Class = %p,Class = %p,Meta-Class = %p",object_getClass(person),[person class],object_getClass([person class]));
+        //打印结果：Class = 0x100002390,Class = 0x100002390,Meta-Class = 0x100002368
+        
+        //(2)object_setClass(id _Nullable obj, Class _Nonnull cls):动态地设置实例对象的isa指向的Class。
+        object_setClass(person, [HLCat class]);//将person的isa指针指向HLCat对象
+        [person run];
+        //(3)object_isClass(id _Nullable obj)：判断一个OC对象是否为Class
+        NSLog(@"%d %d %d",object_isClass(person),object_isClass([HLPerson class]),object_isClass(object_getClass([person class])));
+        //打印结果：0 1 1
+        
+        NSString *className = [NSString stringWithFormat:@"HL%@",@"Dog"];
+        //创建类
+        Class newclass = objc_allocateClassPair([NSObject class], className.UTF8String, 0);
+        //(4)添加成员变量，注意添加成员变量必须放在objc_registerClassPair之前，因为成员变量存放在class_ro_t ro中的ivars，是只读的。所以已经注册的类是不能动态添加成员变量的。
+        class_addIvar(newclass, "_age", 4, 1, @encode(int));
+        class_addIvar(newclass, "_weight", 4, 1, @encode(int));//添加成员变量
+        //(5)添加方法，可以放在objc_registerClassPair之后，因为方法存储在class_rw_t中的methods方法列表中，是可读可写的。
+        class_addMethod(newclass, @selector(run), (IMP)run, "v@:");
+        //(6)注册类
+        objc_registerClassPair(newclass);
+        id dog = [[newclass alloc]init];//newclass:HLTest
+        //KVC
+        [dog setValue:@11 forKey:@"_age"];
+        [dog setValue:@12 forKey:@"_weight"];
+        NSLog(@"%zu,age=%@,weight=%@",class_getInstanceSize(newclass),[dog valueForKey:@"_age"],[dog valueForKey:@"_weight"]);
+        //打印结果：16,age=11,weight=12
+        [dog run];
+        //打印结果：^^^^^^^^<HLDog: 0x100500560> - run
+        
+        //动态地设置实例对象的isa指向的Class
+        object_setClass(person, newclass);
+        [person run];
+        //打印结果：^^^^^^^^<HLDog: 0x100510980> - run
+    }
+    return 0;
+}
+```
+
+### Runtime API——成员变量
+
+(1)动态添加成员变量（已经注册的类是不能动态添加成员变量的）：
+
+BOOL class_addIvar(Class cls, const char * name, size_t size, uint8_t alignment, const char * types)
+
+(2)获取一个实例变量：Ivar class_getInstanceVariable(Class cls, const char *name)
+
+(3)**拷贝实例变量列表（最后需要调用free释放）**：Ivar *class_copyIvarList(Class cls, unsigned int *outCount)
+
+(4)设置和获取成员变量的值:
+
+void object_setIvar(id obj, Ivar ivar, id value)
+
+id object_getIvar(id obj, Ivar ivar)
+
+(5)获取成员变量的相关信息:
+
+const char *ivar_getName(Ivar v)
+
+const char *ivar_getTypeEncoding(Ivar v)   
+
+
+代码如下：
+
+```
+//获取一个实例变量信息
+Ivar nameIvar = class_getInstanceVariable([HLPerson class], "_name");
+//设置成员变量的值
+object_setIvar(person, nameIvar, @"BHL");
+//获取成员变量的值
+NSString *name = object_getIvar(person, nameIvar);
+NSLog(@"name=%@",name);//name=BHL
+    
+//获取某个类的成员变量,可以用下面代码遍历系统类，进而获取系统类的成员变量。
+//成员变量数量
+unsigned int count;
+Ivar *ivarsArr = class_copyIvarList([HLPerson class], &count);
+for (int i = 0; i < count; i++) {
+    Ivar ivar = ivarsArr[i];
+    NSLog(@"ivar_getName(ivar)=%s,ivar_getTypeEncoding(ivar) =%s",ivar_getName(ivar),ivar_getTypeEncoding(ivar));
+    //ivar_getName(ivar)=_age,ivar_getTypeEncoding(ivar) =i
+    //ivar_getName(ivar)=_name,ivar_getTypeEncoding(ivar) =@"NSString"
+}
+free(ivars);
+```      
+  
+
 ## Runtime相关知识
 
 （1）简述一下OC的消息机制
@@ -520,3 +641,36 @@ res7=1,res8=1,res9=1,res10=0
 * +(BOOL)isKindOfClass：判断左边的对象的Meta-Class对象是否是右边对象或者右边对象的子类
 
 需要特别注意的是：NSObject的superclass指针指向NSObject的类对象，也就是基类的superclass指针指向基类的Class对象。这一点比较特殊。
+
+（5）以下代码能不能执行成功？如果可以，打印结果是什么？
+
+```
+@interface HLPerson : NSObject
+@property (nonatomic, copy) NSString *name;
+- (void)print;
+@end
+
+@implementation HLPerson
+- (void)print {
+	NSLog(@"my name is %@",self.name);
+}
+@end
+
+@implemetation ViewController
+- (void)viewDidLoad{
+	[super viewDidLoad];
+	
+	NSString *string = @"123";
+	id cls = [HLPerson class];
+	void *obj = &cls;
+	[(__bridge id)obj print];
+}
+@end
+```
+
+能执行成功。打印结果是“my name is 123”
+
+
+
+
+

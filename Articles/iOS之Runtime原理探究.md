@@ -429,7 +429,7 @@ LReturnZero:
 	END_ENTRY _objc_msgSend
 ```-->
 
-## Runtime的应用
+## Runtime的API
 
 ### Runtime API——类
 
@@ -535,7 +535,89 @@ object_setIvar(person, nameIvar, @"BHL");
 //获取成员变量的值
 NSString *name = object_getIvar(person, nameIvar);
 NSLog(@"name=%@",name);//name=BHL
-    
+ 
+``` 
+
+### Runtime API——属性
+
+(1) 获得一个属性：objc_property_t class_getProperty(Class cls, const char *name)
+
+(2)拷贝属性列表(最后需要调用free释放)：
+
+objc_property_t *class_copyPropertyList(Class cls, unsigned int *outCount)
+
+(3)动态添加属性：
+
+BOOL class_addProperty(Class cls, const char *name, const objc_property_attribute_t *attributes,unsigned int attributeCount)
+
+(4)动态替换属性：
+
+void class_replaceProperty(Class cls, const char *name, const objc_property_attribute_t *attributes,unsigned int attributeCount)
+
+(5)获取属性的一些信息：
+   
+   * const char *property_getName(objc_property_t property)
+   * const char *property_getAttributes(objc_property_t property)
+ 
+### Runtime API——方法
+
+(1)获得一个实例方法、类方法
+
+* Method class_getInstanceMethod(Class cls, SEL name)
+* Method class_getClassMethod(Class cls, SEL name)
+
+(2)方法实现相关操作：
+
+* IMP class_getMethodImplementation(Class cls, SEL name)
+* IMP method_setImplementation(Method m, IMP imp)
+
+* 交换方法实现：**void method_exchangeImplementations(Method m1, Method m2)**
+
+交换方法实现的代码如下：
+```
+//交换方法实现
+Method runMethod = class_getInstanceMethod([HLPerson class], @selector(run));
+Method testMethod = class_getInstanceMethod([HLPerson class], @selector(test));
+method_exchangeImplementations(runMethod, testMethod);
+[person test];
+```
+
+(3)拷贝方法列表(最后需要调用free释放)
+
+Method *class_copyMethodList(Class cls, unsigned int *outCount)
+
+(4)动态添加方法：BOOL class_addMethod(Class cls, SEL name, IMP imp, const char *types)
+
+(5)动态替换方法：IMP class_replaceMethod(Class cls, SEL name, IMP imp, const char *types)
+
+(6)获取方法的相关信息（带有copy的需要调用free去释放）：
+
+* SEL method_getName(Method m)
+* IMP method_getImplementation(Method m)
+* const char *method_getTypeEncoding(Method m)
+* unsigned int method_getNumberOfArguments(Method m)
+* char *method_copyReturnType(Method m)
+* char *method_copyArgumentType(Method m, unsigned int index)
+
+(7)选择器相关：
+
+* const char *sel_getName(SEL sel)
+* SEL sel_registerName(const char *str)
+
+(8)用block作为方法实现：
+
+* IMP imp_implementationWithBlock(id block)
+* id imp_getBlock(IMP anImp)
+* BOOL imp_removeBlock(IMP anImp)
+
+ 
+## Runtime的应用
+  
+### Runtime的应用1：遍历查看所有私有成员变量
+
+代码如下：
+
+```
 //获取某个类的成员变量,可以用下面代码遍历系统类，进而获取系统类的成员变量。
 //成员变量数量
 unsigned int count;
@@ -547,8 +629,75 @@ for (int i = 0; i < count; i++) {
     //ivar_getName(ivar)=_name,ivar_getTypeEncoding(ivar) =@"NSString"
 }
 free(ivars);
-```      
-  
+```
+
+### Runtime的应用2：字典转模型
+
+* 利用Runtime遍历所有的属性或者成员变量；
+* 利用KVC设值
+
+### Runtime的应用3：自动归档解档
+
+```
+//归档
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    // 一层层父类往上查找，对父类的属性执行归解档方法
+    Class c = self.class;
+    while (c &&c != [NSObject class]) {
+        //ivar数量
+        unsigned int outCount = 0;
+        //class_copyIvarList：获取类中的成员变量列表
+        Ivar *ivars = class_copyIvarList([self class], &outCount);
+        for (int i = 0; i < outCount; i++) {
+            //获取ivar
+            Ivar ivar = ivars[i];
+            //获取属性名称
+            //ivar_getName:获取类的成员变量名称
+            NSString *key = [NSString stringWithUTF8String:ivar_getName(ivar)];
+            
+            id value = [self valueForKeyPath:key];
+            //归档
+            [aCoder encodeObject:value forKey:key];
+        }
+        //释放内存，C语言中涉及到copy、new、creat等函数的创建的对象都需要手动释放。
+        free(ivars);
+        c = [c superclass];
+    }
+}
+//解档
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    if (self = [super init]) {
+        // 一层层父类往上查找，对父类的属性执行归解档方法
+        Class c = self.class;
+        while (c &&c != [NSObject class]) {
+            unsigned int outCount = 0;
+            //class_copyIvarList：获取类中的成员变量列表
+            Ivar *ivars = class_copyIvarList(c, &outCount);
+            for (int i = 0; i < outCount; i++) {
+                //取出Ivar
+                Ivar ivar = ivars[i];
+                //获取属性名称
+                NSString *key = [NSString stringWithUTF8String:ivar_getName(ivar)];
+                //解档
+                id value = [aDecoder decodeObjectForKey:key];
+                //KVC 设值
+                [self setValue:value forKey:key];
+            }
+            //释放
+            free(ivars);
+            c = [c superclass];
+        }
+    }
+    return self;
+}
+```
+
+### Runtime的应用4：替换(交换)方法实现
+
+* class_replaceMethod
+* method_exchangeImplementations
 
 ## Runtime相关知识
 
@@ -559,6 +708,15 @@ free(ivars);
 （2）消息转发机制的流程
 
 （3）什么是Runtime？平时项目中用过么？
+
+Runtime：OC是一门动态性比较强的编程语言，允许很多操作推迟到程序运行时再进行。OC的动态性就是由Runtime来支撑的，Runtime是一套C语言的API，封装了很多动态性相关的函数。平时编写的OC代码，底层都是转换成了Runtime API进行调用。
+
+Runtime的用途：
+
+* 1.利用关联对象(AssociatedObject)给分类添加属性
+* 2.遍历类的所有成员变量（修改textfield的占位文字颜色、字典转模型，自动归档解档）
+* 3.交换方法实现(交换系统的方法)
+* 4.利用消息转发机制解决方法找不到的异常问题。
 
 （4）下面代码打印结果是什么？
 

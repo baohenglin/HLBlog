@@ -696,8 +696,46 @@ free(ivars);
 
 ### Runtime的应用4：替换(交换)方法实现
 
+实际项目中，主要是用来替换系统自带的方法实现。
+
 * class_replaceMethod
 * method_exchangeImplementations
+
+实例代码如下：
+
+```
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    NSString *obj = nil;
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    dic[@"name"] = @"Jack";
+    //当key为nil时，会崩溃。此时就可以利用runtime交换方法的API来处理。
+    dic[obj] = @"111";
+    NSLog(@"%@",dic);
+}
+
+
+#import "NSMutableDictionary+Extention.h"
+#import <objc/runtime.h>
+@implementation NSMutableDictionary (Extention)
++(void)load
+{
+	////类簇:NSMutableArray、NSString、NSArray的真正类型是其他类型(比如：__NSArrayM).
+    Class cls = NSClassFromString(@"__NSDictionaryM");
+    Method method1 = class_getInstanceMethod(cls, @selector(setObject:forKeyedSubscript:));
+    Method method2 = class_getInstanceMethod(cls, @selector(hl_setObject:forKeyedSubscript:));
+    method_exchangeImplementations(method1, method2);
+    
+}
+- (void)hl_setObject:(id)obj forKeyedSubscript:(id<NSCopying>)key
+{
+    NSLog(@"111");
+    if(key == nil) return;
+    [self hl_setObject:obj forKeyedSubscript:key];
+}
+@end
+```
 
 ## Runtime相关知识
 

@@ -574,6 +574,7 @@ void class_replaceProperty(Class cls, const char *name, const objc_property_attr
 * 交换方法实现：**void method_exchangeImplementations(Method m1, Method m2)**
 
 交换方法实现的代码如下：
+
 ```
 //交换方法实现
 Method runMethod = class_getInstanceMethod([HLPerson class], @selector(run));
@@ -863,10 +864,20 @@ res7=1,res8=1,res9=1,res10=0
 }
 @end
 ```
-
 能执行成功。打印结果是“my name is 123”
 
+<br>
+<br>
+<br>
+<br>
+<br>
+**参考链接**:
 
+[Objective-C Runtime 1小时入门教程](https://www.ianisme.com/ios/2019.html)
+
+[Objective-C Runtime Reference](https://developer.apple.com/documentation/objectivec/objective-c_runtime)
+
+[Objective-C Runtime](http://yulingtianxia.com/blog/2014/11/05/objective-c-runtime/)
 
 
 

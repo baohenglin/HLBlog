@@ -155,15 +155,71 @@ CFRunLoopModeRef中一共有5种Mode，分别是：
 
 * kCFRunLoopDefaultMode(NSDefaultRunLoopMode)：App的默认Mode，通常主线程是在这个Mode下运行。
 * UITrackingRunLoopMode：界面跟踪Mode，用于ScrollView追踪触摸滑动，保证界面滑动时不受其他Mode影响。
+* kCFRunLoopCommonModes：通用模式，一旦设置此模式表示同时监听kCFRunLoopDefaultMode和UITrackingRunLoopMode这两种模式。其实kCFRunLoopMode并不是一种真的模式，它只是一个标记。将定时器的RunLoop模式设置为kCFRunLoopCommonModes意味着定时器(NSTimer)可以在“CFMutableSetRef __commonModes数组中存放的模式”下运行，而且kCFRunLoopDefaultMode和UITrackingRunLoopMode都存放在CFMutableSetRef __commonModes数组中。
+
 * UIInitializationRunLoopMode：在刚启动 App 时进入的第一个 Mode，启动完成后就不再使用。
 * GSEventReceiveRunLoopMode：用来接受系统事件的内部 Mode，通常用不到。
-* kCFRunLoopCommonModes：通用模式，一旦设置此模式表示同时监听kCFRunLoopDefaultMode和UITrackingRunLoopMode这两种模式。
+
 
 CFRunLoopModeRef的5种Mode中最常见常用的模式是kCFRunLoopDefaultMode(NSDefaultRunLoopMode)和UITrackingRunLoopMode这2种。
 
+
+## 添加Observer监听RunLoop的所有状态
+
+RunLoop的所有状态包括：
+
+```
+/* Run Loop Observer Activities */
+typedef CF_OPTIONS(CFOptionFlags, CFRunLoopActivity) {
+    kCFRunLoopEntry = (1UL << 0),	//即将进入RunLoop
+    kCFRunLoopBeforeTimers = (1UL << 1),//即将处理Timer
+    kCFRunLoopBeforeSources = (1UL << 2),//即将处理Source
+    kCFRunLoopBeforeWaiting = (1UL << 5),//即将进入休眠
+    kCFRunLoopAfterWaiting = (1UL << 6),//即将从休眠中唤醒
+    kCFRunLoopExit = (1UL << 7),//即将推出RunLoop
+    kCFRunLoopAllActivities = 0x0FFFFFFFU
+};
+```
+
+添加Observer监听RunLoop的所有状态，代码如下：
+
+```
+CFRunLoopObserverRef observer = CFRunLoopObserverCreateWithHandler(kCFAllocatorDefault, kCFRunLoopAllActivities, YES, 0, ^(CFRunLoopObserverRef observer, CFRunLoopActivity activity) {
+        switch (activity) {
+        case kCFRunLoopEntry:
+            NSLog(@"kCFRunLoopEntry");
+            break;
+        case kCFRunLoopBeforeTimers:
+            NSLog(@"kCFRunLoopBeforeTimers");
+            break;
+            
+        case kCFRunLoopBeforeSources:
+            NSLog(@"kCFRunLoopBeforeSources");
+            break;
+            
+        case kCFRunLoopBeforeWaiting:
+            NSLog(@"kCFRunLoopBeforeWaiting");
+            break;
+        case kCFRunLoopAfterWaiting:
+            NSLog(@"kCFRunLoopAfterWaiting");
+            break;
+        case kCFRunLoopExit:
+            NSLog(@"kCFRunLoopExit");
+            break;
+            
+        default:
+            break;
+    }
+    });
+    //添加Observer到RunLoop中
+    CFRunLoopAddObserver(CFRunLoopGetMain(), observer, kCFRunLoopCommonModes);
+    //释放observer
+    CFRelease(observer);
+```
+
 ## RunLoop的运行逻辑
 
-RunLoop的运行逻辑其实就是循环处理某种模式下的Source0、Source1、Timers、Observers。
+RunLoop的大体上的运行逻辑其实就是循环处理某种模式下的Source0、Source1、Timers、Observers。那么Source0、Source1、Timers、Observers具体表示什么呢？
 
 * Source0:
 
@@ -189,22 +245,108 @@ RunLoop的运行逻辑其实就是循环处理某种模式下的Source0、Source
 
 &emsp;&emsp;(2)UI刷新（BeforeWaiting在休眠之前刷新UI）
 
-&emsp;&emsp;(3)Autoreleasepool
+&emsp;&emsp;(3)Autoreleasepool(BeforeWaiting)
+
+
+RunLoop具体的运行逻辑是这样的：
+
+![RunLoop的运行逻辑.png](https://upload-images.jianshu.io/upload_images/4164292-d817bb1ea03226a2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+* (1)通知Observers：进入RunLoop；
+* (2)通知Observers：即将处理Timers；
+* (3)通知Observers：即将处理Sources；
+* (4)处理Blocks（比如通过CFRunLoopPerformBlock函数添加的Block）；
+* (5)处理Source0（可能会再次处理Blocks）；
+* (6)如果存在Source1，就跳转到第8步，处理Source1；
+* (7)通知Observers：开始休眠，不再占用CPU资源（等待消息唤醒）；
+* (8)通知Observers：结束休眠（被某个消息唤醒）；
+
+
+&emsp;&emsp;✅处理Source1
+
+&emsp;&emsp;✅处理Timer
+
+&emsp;&emsp;✅处理GCD Async To Main Queue
+
+* (9)处理Blocks；
+
+* (10)根据前面的执行结果，决定如何操作：有可能不退出当前的RunLoop，而是回到第2步继续执行；也有可能结束当前RunLoop，切换到其他的模式。如果切换到其他模式的话，则会执行(11)步；
+* (11)通知Observers：退出RunLoop。
+
+
+## RunLoop休眠的实现原理
+
+![RunLoop休眠的实现原理.png](https://upload-images.jianshu.io/upload_images/4164292-0a83e4eb9f90a696.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+
+RunLoop休眠(线程阻塞)的实现原理：平时执行应用层面的代码时处于用户态，当在用户态调用mach_msg()函数时会自动转化到内核态,并调用内核态的mach_msg()函数，此时如果没有消息需要处理就让线程休眠，如果有消息需要处理就唤醒线程，回归到用户态调用应用层面的API去处理消息。
+
+
+## RunLoop在实际开发中的应用
+
+* (1)控制线程生命周期（线程保活）
+
+线程保活的应用场景：频繁执行一个任务或者多个串行（非并发）任务，可以采用线程保活的方式。线程保活的方式比传统的“创建线程-销毁线程-再创建线程-再销毁...”更节省CPU资源且更高效。比如AFNetworking中后台网络请求就使用了线程保活这种技术。
+
+* (2)解决NSTimer在滑动时停止工作(失效)的问题
+
+&emsp;&emsp;NSTimer在滑动时失效的原因是NSTimer默认是工作在NSDefaultRunLoopMode模式下，而当我们滑动时，RunLoop会退出NSDefaultRunLoopMode模式，并进入UITrackingRunLoopMode模式，所有NSTimer失效。
+ 
+* (3)监控应用卡顿
+* (4)性能优化
+
 
 ## RunLoop总结
 
 1.讲讲RunLoop，项目中用过吗？
 
+* 控制线程生命周期（线程保活）
+* 解决NSTimer在滑动时停止工作(失效)的问题
+
 2.RunLoop内部实现逻辑是怎样的？
+
+答：参照RunLoop具体的运行逻辑示意图
 
 3.RunLoop和线程的关系是怎样的？
 
+* 每条线程都有唯一的一个与之对应的RunLoop对象。
+* RunLoop保存在一个全局的Dictionary里，线程作为key，RunLoop作为value。
+* 线程刚创建时并没有RunLoop对象，RunLoop会在第一次获取该线程时创建与之对应的RunLoop对象。
+* RunLoop会在线程结束时销毁。
+* 主线程的RunLoop已经自动获取（创建），子线程默认没有开启RunLoop。
+
 4.timer和RunLoop是怎样的关系？
+
+* 从底层数据结构来看，RunLoop的__CFRunLoop结构体中存储着 CFMutableSetRef _modes,_modes是一个类似数组的集合，其所储存的数据类型是CFRunLoopModeRef, CFRunLoopModeRef结构体中存放着CFMutableArrayRef _timers。此外，如果timer被设置为 kCFRunLoopCommonModes模式，那么timer也将被存放在 __CFRunLoop结构体中的 CFMutableSetRef _commonModeItems数组中。
+* 从RunLoop的运行逻辑来讲，timer会通知Observers结束休眠，唤醒线程来处理timer消息。
 
 5.程序中添加每3秒响应一次的NSTimer，当拖动tableView时，timer可能无法响应要怎么解决？
 
+NSTimer在滑动时失效的原因是NSTimer默认是工作在NSDefaultRunLoopMode模式下，而当我们滑动时，RunLoop会退出NSDefaultRunLoopMode模式，并进入UITrackingRunLoopMode模式，所有NSTimer失效。
+
+【注意】[NSTimer scheduledTimerWithTimeInterval: repeats:block:]方法会自动将定时器添加到主线程的NSDefaultRunLoopMode模式下，如果要自定义RunLoop模式的话，可以使用timerWithTimeInterval方法创建定时器对象，并将定时器添加到当前线程的NSRunLoopCommonModes模式下(实际上是将timer定时器添加到了NSRunLoopCommonModes 模式下的CFMutableSetRef _commonModeItems数组中)，这样就能解决timer失效的问题。代码如下：
+
+```
+NSTimer *timer = [NSTimer timerWithTimeInterval:self.completionDelay target:self selector:@selector(completionDelayTimerFired) userInfo:nil repeats:YES];
+
+[[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+```
+
 6.RunLoop是怎么响应用户操作的，具体流程是什么样的？
+
+当用户点击屏幕时，RunLoop内部的Source1会捕捉到该触屏事件，并将该事件包装成事件队列eventQueue交给Source0中进行处理。
 
 7.说说RunLoop的几种状态
 
+	kCFRunLoopEntry = (1UL << 0),   //即将进入RunLoop
+    kCFRunLoopBeforeTimers = (1UL << 1),//即将处理Timer
+    kCFRunLoopBeforeSources = (1UL << 2),//即将处理Source
+    kCFRunLoopBeforeWaiting = (1UL << 5),//即将进入休眠
+    kCFRunLoopAfterWaiting = (1UL << 6),//即将从休眠中唤醒
+    kCFRunLoopExit = (1UL << 7),//即将推出RunLoop
+
 8.RunLoop的mode作用是什么？
+
+RunLoop常见的mode有2种：kCFRunLoopDefaultMode(NSDefaultRunLoopMode)和UITrackingRunLoopMode。kCFRunLoopDefaultMode是默认模式，通常主线程是在这个模式下运行；UITrackingRunLoopMode用于ScrollView追踪触摸滑动，保证界面滑动时不受其他mode影响。
+
+mode的作用是将不同模式下的Source0/Source1/Timer/Observer隔离开来，互不影响，这样就提高了执行效率和滑动流畅性。

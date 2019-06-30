@@ -114,6 +114,49 @@ GCD的队列可以分为两大类型，分别是
 【注意】只要同时满足以上3个条件就一定会产生死锁。所以解锁死锁，只需要打破以上3个条件中的任意一个，就可以解决死锁问题。
 
 
+### 队列组的使用
+
+队列组的使用场景：利用GCD实现以下功能——异步并发执行任务1、任务2，等任务1、任务2都执行完毕后，再回到主线程执行任务3。
+
+代码如下：
+
+```
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    //创建队列组
+    dispatch_group_t group = dispatch_group_create();
+    //创建并发队列
+    dispatch_queue_t queue = dispatch_queue_create("my_queue", DISPATCH_QUEUE_CONCURRENT);
+    //添加异步任务
+    dispatch_group_async(group, queue, ^{
+        for (int i = 0; i < 5; i++) {
+            NSLog(@"任务1---%@",[NSThread currentThread]);
+        }
+    });
+    dispatch_group_async(group, queue, ^{
+        for (int i = 0; i < 5; i++) {
+            NSLog(@"任务2---%@",[NSThread currentThread]);
+        }
+    });
+    //等前面的任务执行完毕后，会自动执行这个任务
+    //方法1
+//    dispatch_group_notify(group, queue, ^{
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            for (int i = 0; i < 5; i++) {
+//                NSLog(@"任务3---%@",[NSThread currentThread]);
+//            }
+//        });
+//    });
+    //方法2
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        for (int i = 0; i < 5; i++) {
+            NSLog(@"任务3---%@",[NSThread currentThread]);
+        }
+    });
+    
+}
+```
+
 
 ## 多线程总结
 
@@ -132,3 +175,11 @@ GCD的队列可以分为两大类型，分别是
 * 7.OC中的锁你了解哪些？使用以上这些锁需要注意哪些问题？自旋锁和互斥锁的异同？
 
 * 8.任选C/OC/C++其中一种语言，实现自旋锁和互斥锁？
+
+* 9.performSelector: withObject: afterDelay:方法的本质是往RunLoop中添加定时器，子线程默认没有启动RunLoop。
+
+
+## GNUstep
+
+GNUstep是GNU计划的项目之一，它将Cocoa的OC库重新实现了一遍并将其开源。虽然GNUstep不是苹果官方源码，但还是具有一定的参考价值。[GNUstep源码地址](http://www.gnustep.org/resources/downloads.php)
+

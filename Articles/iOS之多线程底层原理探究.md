@@ -1,5 +1,8 @@
 iOS之多线程底层原理探究
 
+# iOS的几种多线程方案
+
+![iOS中的常见多线程方案.png](https://upload-images.jianshu.io/upload_images/4164292-b43ac298722a0dd7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ## 多线程总结
 

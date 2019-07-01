@@ -171,19 +171,71 @@ GCD的队列可以分为两大类型，分别是
 
 ## iOS中的线程同步方案
 
-* (1)OSSpinLock(自旋锁)，等待锁的线程会处于忙等（busy-wait）状态，一直占用CPU资源。目前OSSpinLock已不再安全，可能会出现优先级反转问题。有可能产生优先级反转的原因：如果等待锁的线程优先级比较高，它会一直占用着CPU资源，优先级低的线程就无法释放锁。所以在项目中不推荐使用OSSpinLock。
+* (1)OSSpinLock(自旋锁)：等待锁的线程会处于忙等（busy-wait）状态，一直占用CPU资源。目前OSSpinLock已不再安全，可能会出现优先级反转问题。有可能产生优先级反转的原因：如果等待锁的线程优先级比较高，它会一直占用着CPU资源，优先级低的线程就无法释放锁。所以在项目中不推荐使用OSSpinLock。
 
-用法如下：
+需要先导入头文件 #import <libkern/OSAtomic.h>，用法如下：
 
 ```
+//初始化
 OSSpinLock lock = OS_SPINLOCK_INIT;
+//尝试加锁（如果需要等待就不加锁，直接返回false，如果不需要等待就加锁，返回true）
+bool result = OSSpinLockTry(&lock);
+//加锁
 OSSpinLockLock(&lock);
+//解锁
 OSSpinLockUnlock(&_moneyLock);
 
 ```
 
-* (2)os_unfair_lock
-* (3)pthread_mutex
+* (2)os_unfair_lock：os_unfair_lock用于取代不安全的OSSpinLock，从iOS10开始才支持。从底层调用来看，等待os_unfair_lock锁的线程会处于休眠状态，并非忙等。
+
+使用时需要导入头文件 #import <os/lock.h>,具体用法如下：
+
+```
+//初始化
+os_unfair_lock lock = OS_UNFAIR_LOCK_INIT;
+//尝试加锁
+os_unfair_lock_trylock(&lock);
+//加锁
+os_unfair_lock_lock(&lock);
+//解锁
+os_unfair_lock_unlock(&lock);
+
+```
+
+* (3)pthread_mutex：称为“互斥锁”，等待锁的线程会处于休眠状态。
+
+使用时需要导入头文件 #import <pthread.h>，具体用法如下：
+
+首先声明一个属性锁：
+
+```
+@property (nonatomic, assign) pthread_mutex_t mutexLock;
+```
+
+```
+//初始化属性
+pthread_mutexattr_t attr;
+pthread_mutexattr_init(&attr);
+//PTHREAD_MUTEX_DEFAULT:普通锁
+pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_NORMAL);
+//初始化锁
+pthread_mutex_init(&_mutexLock,&attr);
+//销毁锁的属性
+pthread_mutexattr_destroy(&attr);
+//加锁
+pthread_mutex_lock(&_mutexLock);
+//解锁
+pthread_mutex_unlock(&_mutexLock);
+
+
+- (void)dealloc
+{
+    //销毁锁
+    pthread_mutex_destroy(&_mutexLock);
+}
+```
+
 * (4)dispatch_semaphore(信号量)
 * (5)dispatch_queue(DISPATCH_QUEUE_SERIAL)
 * (6)NSLock

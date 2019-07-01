@@ -163,9 +163,11 @@ GCD的队列可以分为两大类型，分别是
 
 多线程安全隐患分析示意图：
 
-![多线程安全隐患分析.png](https://upload-images.jianshu.io/upload_images/4164292-229fd23a232eb21e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![多线程安全隐患分析示意图.png](https://upload-images.jianshu.io/upload_images/4164292-ac3041ff3bb735cd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-多线程安全问题的解决方案：使用**线程同步**技术（同步：协同步调，按预定的先后次序进行）。
+多线程安全问题的解决方案：使用**线程同步**技术（同步：协同步调，按预定的先后次序进行）。常用的线程同步技术是：**加锁**
+
+![多线程安全隐患加锁示意图.png](https://upload-images.jianshu.io/upload_images/4164292-aa39e64672a572fd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ## 多线程总结
 

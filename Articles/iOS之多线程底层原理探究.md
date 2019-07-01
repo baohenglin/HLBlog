@@ -171,7 +171,7 @@ GCD的队列可以分为两大类型，分别是
 
 ## iOS中的线程同步方案
 
-* (1)OSSpinLock(自旋锁)：等待锁的线程会处于忙等（busy-wait）状态，一直占用CPU资源。目前OSSpinLock已不再安全，可能会出现优先级反转问题。有可能产生优先级反转的原因：如果等待锁的线程优先级比较高，它会一直占用着CPU资源，优先级低的线程就无法释放锁。所以在项目中不推荐使用OSSpinLock。
+* (1)OSSpinLock：等待锁的线程会处于忙等（busy-wait）状态，一直占用CPU资源，所以OSSpinLock是自旋锁(是一种高级锁)。目前OSSpinLock已不再安全，可能会出现优先级反转问题。有可能产生优先级反转的原因：如果等待锁的线程优先级比较高，它会一直占用着CPU资源，优先级低的线程就无法释放锁。所以在项目中不推荐使用OSSpinLock。
 
 需要先导入头文件 #import <libkern/OSAtomic.h>，用法如下：
 
@@ -187,7 +187,7 @@ OSSpinLockUnlock(&_moneyLock);
 
 ```
 
-* (2)os_unfair_lock：os_unfair_lock用于取代不安全的OSSpinLock，从iOS10开始才支持。从底层调用来看，等待os_unfair_lock锁的线程会处于休眠状态，并非忙等。
+* (2)os_unfair_lock：os_unfair_lock用于取代不安全的OSSpinLock，从iOS10开始才支持。从底层调用来看，等待os_unfair_lock锁的线程会处于休眠状态，并非忙等，所以os_unfair_lock是互斥锁，是一种low-level lock(低级锁：低级锁的特点是等不到锁的时候就进入休眠)。
 
 使用时需要导入头文件 #import <os/lock.h>,具体用法如下：
 
@@ -203,7 +203,7 @@ os_unfair_lock_unlock(&lock);
 
 ```
 
-* (3)pthread_mutex：称为“互斥锁”，等待锁的线程会处于休眠状态。
+* (3)pthread_mutex：等待锁的线程会处于休眠状态，所以pthread_mutex是“互斥锁”，是一种low-level lock。
 
 使用时需要导入头文件 #import <pthread.h>，具体用法如下：
 

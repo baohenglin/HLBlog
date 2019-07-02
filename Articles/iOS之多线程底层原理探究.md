@@ -171,7 +171,11 @@ GCD的队列可以分为两大类型，分别是
 
 ## iOS中的线程同步方案
 
-* (1)OSSpinLock：等待锁的线程会处于忙等（busy-wait）状态，一直占用CPU资源，所以OSSpinLock是自旋锁(是一种高级锁)。目前OSSpinLock已不再安全，可能会出现优先级反转问题。有可能产生优先级反转的原因：如果等待锁的线程优先级比较高，它会一直占用着CPU资源，优先级低的线程就无法释放锁。所以在项目中不推荐使用OSSpinLock。
+* (1)OSSpinLock：等待锁的线程会处于忙等（busy-wait）状态，一直占用CPU资源，所以OSSpinLock是自旋锁(是一种高级锁)。目前OSSpinLock已不再安全，可能会出现优先级反转(Priority Inversion)的问题。有可能产生优先级反转的原因：如果等待锁的线程优先级比较高，它会一直占用着CPU资源，优先级低的线程就无法释放锁。所以在项目中不推荐使用OSSpinLock。
+
+那么OSSpinLock为什么会产生优先级反转呢？
+
+具体来说，如果一个低优先级的线程获得锁并访问共享资源，这时一个高优先级的线程也尝试获得这把锁，它会处于SpinLock的busy-wait（忙等）状态从而占用大量CPU资源，此时低优先级线程无法与高优先级线程争夺CPU时间，从而导致任务迟迟完成不了，进而无法释放lock，从而导致优先级反转。
 
 需要先导入头文件 #import <libkern/OSAtomic.h>，用法如下：
 
@@ -668,6 +672,8 @@ API如下：
 
 ## iOS线程同步方案性能比较
 
+iOS的各种线程同步方案的实际性能在不同系统，不同设备上可能会有些许差异。ibireme曾对各种锁进行了性能测试([性能测试代码链接](https://github.com/ibireme/tmp))，大家可以参考。
+
 性能从高到低排序：
 
 * os_unfair_lock(从iOS10开始支持)
@@ -824,12 +830,20 @@ dispatch_barrier_sync(_queue, ^{
 9.performSelector: withObject: afterDelay:方法的本质是往RunLoop中添加定时器，子线程默认没有启动RunLoop。
 
 
-
-
- 
- 
-
 ## GNUstep
 
 GNUstep是GNU计划的项目之一，它将Cocoa的OC库重新实现了一遍并将其开源。虽然GNUstep不是苹果官方源码，但还是具有一定的参考价值。[GNUstep源码地址](http://www.gnustep.org/resources/downloads.php)
+
+
+<br>
+<br>
+参考链接：
+
+[不再安全的 OSSpinLock](https://blog.ibireme.com/2016/01/16/spinlock_is_unsafe_in_ios/)
+[深入理解 iOS 开发中的锁](https://juejin.im/post/57f6e9f85bbb50005b126e5f)
+[关于 @synchronized，这儿比你想知道的还要多](http://yulingtianxia.com/blog/2015/11/01/More-than-you-want-to-know-about-synchronized/)
+[Threading Programming Guide](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Multithreading/Introduction/Introduction.html#//apple_ref/doc/uid/10000057)
+[pthread的各种同步机制](https://casatwy.com/pthreadde-ge-chong-tong-bu-ji-zhi.html)
+
+
 

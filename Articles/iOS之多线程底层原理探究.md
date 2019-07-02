@@ -744,7 +744,7 @@ iOS中的读写，指的是IO操作（文件操作），包括从文件中读取
 
 那么iOS中实现“多读单写”的方案有哪些呢？
 
-* 1. **pthread_rwlock:读写锁**
+* (1) **pthread_rwlock:读写锁**：等待锁的线程会进入休眠状态。
 
 ```
 pthread_rwlock_t lock;
@@ -764,7 +764,26 @@ pthread_rwlock_unlock(&_lock);
 pthread_rwlock_destroy(&_lock);
 ```
 
-* 2. **dispatch_barrier_async:异步栅栏调用**
+* (2) **dispatch_barrier_async:异步栅栏调用**：
+
+dispatch_barrier_async函数传入的**并发队列必须是自己通过dispatch_queue_create创建的**,读操作和写操作要使用同一个并发队列。如果dispatch_barrier_async函数传入的是一个串行队列或者一个全局的并发队列，那这个函数便等同于dispatch_async函数的效果。
+
+具体使用方法：
+
+```
+//初始化并发队列
+dispatch_queue_t queue = dispatch_queue_create("rw_queue", DISPATCH_QUEUE_CONCURRENT);
+//读操作
+dispatch_async(_queue, ^{
+
+});
+//写操作
+dispatch_barrier_sync(_queue, ^{
+
+});
+```
+
+综上所述，使用pthread_rwlock(读写锁)和dispatch_barrier_async(异步栅栏调用)这两种方案都可以解决读写安全问题，实现“多读单写”的功能。
 
 ## 多线程总结
 

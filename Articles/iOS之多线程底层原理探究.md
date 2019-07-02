@@ -245,6 +245,8 @@ pthread_mutex_unlock(&_mutexLock);
 
 **pthread_mutex-条件锁**
 
+具体用法参考下面的“多线程的线程间依赖”。
+
 * (4)dispatch_semaphore：semaphore叫做“信号量”，信号量的初始值，可以用来控制线程并发访问的最大数量。信号量的初始值为1，表示同时只允许1条线程访问资源，保证线程同步。
 
 ```
@@ -262,19 +264,75 @@ dispatch_semaphore_signal(semaphore);
 * (5)dispatch_queue(DISPATCH_QUEUE_SERIAL)
 * (6)NSLock：是对pthread_mutex普通锁的OC形式的封装。
 * (7)NSRecursiveLock：NSRecursiveLock也是对pthread_mutex递归锁OC形式的封装，API跟NSLock基本一致。
-* (8)NSCondition：是对锁mutex和条件cond的OC封装。
+* (8)NSCondition：NSCondition条件锁，是对锁mutex和条件cond的OC封装。
 
 ```
 @interface NSCondition : NSObject <NSLocking> {
 @private
     void *_priv;
 }
-
+//等待
 - (void)wait;
 - (BOOL)waitUntilDate:(NSDate *)limit;
+//唤醒一条正在等待的线程
 - (void)signal;
+//广播，唤起所有等待的线程
 - (void)broadcast;
 @end
+```
+
+NSCondition遵守了NSLocking协议，使用的时候同样是lock，unlock加解锁。
+
+具体用法，代码如下：
+
+```
+#import "NSConditionDemo.h"
+
+@interface NSConditionDemo ()
+@property (nonatomic, strong) NSCondition *condition;//条件
+@property (nonatomic, strong) NSMutableArray *dataArr;
+@end
+@implementation NSConditionDemo
+
+- (instancetype)init
+{
+    if (self = [super init]) {
+        self.condition = [[NSCondition alloc] init];
+        self.dataArr = [NSMutableArray array];
+    }
+    return self;
+}
+- (void)otherTest
+{
+    [[[NSThread alloc] initWithTarget:self selector:@selector(hl_remove) object:nil] start];
+    [[[NSThread alloc] initWithTarget:self selector:@selector(hl_add) object:nil] start];
+}
+//线程1
+- (void)hl_remove
+{
+    [self.condition lock];
+    NSLog(@"hl_remove - begin");
+    if (self.dataArr.count == 0) {
+        //等待
+        [self.condition wait];
+    }
+    [self.dataArr removeAllObjects];
+    NSLog(@"删除了元素");
+    [self.condition unlock];
+}
+//线程2
+- (void)hl_add
+{
+     [self.condition lock];
+    sleep(1);
+    [self.dataArr addObject:@"Test"];
+    NSLog(@"添加了元素");
+    //信号：唤醒一个等待该条件的线程
+    [self.condition signal];
+//    //广播
+//    [self.condition broadcast];
+    [self.condition unlock];
+}
 ```
 
 * (9)NSConditionLock
@@ -282,7 +340,7 @@ dispatch_semaphore_signal(semaphore);
 
 ## 多线程的线程间依赖
 
-多线程的线程间依赖指的是有时由于业务需要，只有等执行完线程B中的任务才能再执行线程A中的任务，也就是要求线程A和线程B的执行顺序有要求。那么如何实现线程间依赖呢？可以通过"条件锁"来实现。
+多线程的线程间依赖指的是有时由于业务需要，只有等执行完线程B中的任务才能再执行线程A中的任务，也就是要求线程A和线程B的执行顺序有要求。那么如何实现线程间依赖呢？可以通过"pthread_mutex-条件锁"来实现。
 
 代码如下：
 

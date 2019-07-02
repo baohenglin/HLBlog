@@ -252,8 +252,22 @@ dispatch_semaphore_signal(semaphore);
 
 * (5)dispatch_queue(DISPATCH_QUEUE_SERIAL)
 * (6)NSLock：是对pthread_mutex普通锁的OC封装。
-* (7)NSRecursiveLock：NSRecursiveLock也是对mutex递归锁的封装，API跟NSLock基本一致。
+* (7)NSRecursiveLock：NSRecursiveLock也是对pthread_mutex递归锁的封装，API跟NSLock基本一致。
 * (8)NSCondition：是对锁mutex和条件cond的OC封装。
+
+```
+@interface NSCondition : NSObject <NSLocking> {
+@private
+    void *_priv;
+}
+
+- (void)wait;
+- (BOOL)waitUntilDate:(NSDate *)limit;
+- (void)signal;
+- (void)broadcast;
+@end
+```
+
 * (9)NSConditionLock
 * (10)@synchronized
 

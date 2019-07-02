@@ -262,9 +262,89 @@ dispatch_semaphore_signal(semaphore);
 ```
 
 * (5)dispatch_queue(DISPATCH_QUEUE_SERIAL)：直接使用GCD的串行队列，也是可以实现线程同步的。
+
+```
+#import "Dispatch_Queue_SerialDemo.h"
+@interface Dispatch_Queue_SerialDemo ()
+@property (nonatomic, strong) dispatch_queue_t ticketQueue;
+@property (nonatomic, strong) dispatch_queue_t moneyQueue;
+@end
+
+@implementation Dispatch_Queue_SerialDemo
+- (instancetype)init
+{
+    if (self = [super init]) {
+        _ticketQueue = dispatch_queue_create("ticketQueue", DISPATCH_QUEUE_SERIAL);
+        _moneyQueue = dispatch_queue_create("moneyQueue", DISPATCH_QUEUE_SERIAL);
+    }
+    return self;
+}
+- (void)hl_saveMoney
+{
+    dispatch_sync(_moneyQueue, ^{
+        [super hl_saveMoney];
+    });
+    
+}
+- (void)hl_drawMoney
+{
+    dispatch_sync(_moneyQueue, ^{
+        
+        [super hl_drawMoney];
+    });
+}
+- (void)hl_saleTicket
+{
+    dispatch_sync(_ticketQueue, ^{
+        [super hl_saleTicket];
+    });
+    
+}
+@end
+```
+
 * (6)NSLock：是对pthread_mutex普通锁的OC形式的封装。
+
+```
+#import "NSLockDemo.h"
+@interface NSLockDemo ()
+@property(nonatomic, strong)NSLock *ticketLock;
+@property(nonatomic, strong)NSLock *moneyLock;
+@end
+
+@implementation NSLockDemo
+- (instancetype)init
+{
+    if (self = [super init]) {
+        self.ticketLock = [[NSLock alloc] init];
+        self.moneyLock = [[NSLock alloc] init];
+    }
+    return self;
+}
+- (void)hl_saveMoney
+{
+    [self.moneyLock lock];
+    [super hl_saveMoney];
+    [self.moneyLock unlock];
+}
+- (void)hl_drawMoney
+{
+    [self.moneyLock lock];
+    [super hl_drawMoney];
+    [self.moneyLock unlock];
+}
+- (void)hl_saleTicket
+{
+    [self.moneyLock lock];
+    [super hl_saleTicket];
+    [self.moneyLock unlock];
+}
+@end
+```
 * (7)NSRecursiveLock：NSRecursiveLock也是对pthread_mutex递归锁OC形式的封装，API跟NSLock基本一致。
 * (8)NSCondition：NSCondition条件锁，是对锁mutex和条件cond的OC封装。
+
+NSCondition的应用场景是某条线程，比如线程A执行到某处时发现条件不满足，此时就会在此处等待，并打开这把锁，允许其他线程去执行任务（加锁解锁）。当其他线程执行完任务后，会解锁，并发送一个符合条件的信号，此时条件满足了，线程A就会给这把锁重新加锁，并往下继续执行代码。NSConditionLock主要用在按照一定顺序执行任务的场合。这也使二者的区别。
 
 ```
 @interface NSCondition : NSObject <NSLocking> {

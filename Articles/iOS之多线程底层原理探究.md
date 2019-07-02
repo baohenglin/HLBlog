@@ -699,6 +699,73 @@ API如下：
 * 临界区代码复杂或者循环量大
 * 临界区竞争非常激烈
 
+## atomic
+
+nonatomic:非原子性
+
+atomic:原子性。给属性加上atomic修饰，可以保证属性的setter和getter方法都是原子性操作，相当于在getter和setter内部加上了线程同步的锁。但是**atomic并不能保证使用属性的过程是线程安全的**。iOS实际开发中之所以不适用atomic修饰属性是因为atomic非常消耗CPU资源。
+
+atomic源码实现可以查看objc4的**objc-accessors.mm**
+
+
+## iOS中的读写安全最佳方案
+
+iOS中的读写，指的是IO操作（文件操作），包括从文件中读取内容和往文件中写入内容。
+
+```
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    for (int i = 0; i < 5; i++) {
+        [[[NSThread alloc] initWithTarget:self selector:@selector(read) object:nil] start];
+        [[[NSThread alloc] initWithTarget:self selector:@selector(write) object:nil] start];
+    }
+}
+- (void)read
+{
+    //缺点：读操作也是串行，效率低。
+    //优化：允许多条线程同时读取数据。实现“多读单写”
+    //多读单写：同一时间，只能有1条线程进行写的操作；同一时间，允许有多个线程进行读的操作；同一时间，不允许既有写的操作，又有读的操作。
+    dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
+    NSLog(@"%s",__func__);
+    dispatch_semaphore_signal(self.semaphore);
+}
+- (void)write
+{
+    dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
+    NSLog(@"write ------%s",__func__);
+    dispatch_semaphore_signal(self.semaphore);
+}
+```
+以上读写操作加锁后虽然是安全的，但是同一时间只能一条线程读取或写入，并不能达到“多读单写”的目标，因此并不是最优解。最优解必须满足“多读单写”的要求：
+
+* (1)同一时间，只能有1条线程进行写的操作；
+* (2)同一时间，允许有多个线程进行读的操作；
+* (3)同一时间，不允许既有写的操作，又有读的操作。
+
+那么iOS中实现“多读单写”的方案有哪些呢？
+
+* 1. **pthread_rwlock:读写锁**
+
+```
+pthread_rwlock_t lock;
+//初始化锁
+pthread_rwlock_init(&_lock, NULL);
+//读操作-加锁
+pthread_rwlock_rdlock(&_lock);
+//多操作-尝试加锁
+pthread_rwlock_tryrdlock(&_lock);
+//写操作-加锁
+pthread_rwlock_wrlock(&_lock);
+//写操作-尝试加锁
+pthread_rwlock_trywrlock(&_lock);
+//解锁
+pthread_rwlock_unlock(&_lock);
+//销毁
+pthread_rwlock_destroy(&_lock);
+```
+
+* 2. **dispatch_barrier_async:异步栅栏调用**
+
 ## 多线程总结
 
  1.简述你对多线程的理解
@@ -737,6 +804,11 @@ API如下：
 
 9.performSelector: withObject: afterDelay:方法的本质是往RunLoop中添加定时器，子线程默认没有启动RunLoop。
 
+
+
+
+ 
+ 
 
 ## GNUstep
 

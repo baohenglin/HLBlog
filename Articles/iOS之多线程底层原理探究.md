@@ -394,7 +394,41 @@ API如下：
 }
 ```
 
-* (10)@synchronized
+* (10)@synchronized：是对pthread_mutex递归锁的封装，支持递归加锁。其实现源码可以在objc4的objc-sync.mm文件查看。
+
+@synchronized的实现原理是：利用HashMap（哈希表/散列表），根据传入的对象作为key获取一把与之对应的锁(Value)，传入的对象相同，获取的锁也是相同的；传入的对象不同，得到的是不同的锁。
+
+```
+#import "SynchronizedDemo.h"
+@implementation SynchronizedDemo
+//@synchronized在实现线程同步的各种方案中用法最简单，但是@synchronized的性能消耗大。
+//存钱取钱共用一把锁，卖票使用另一把锁，这样做是为了可以让存钱取钱操作和卖票操作异步执行。
+- (void)hl_saveMoney
+{
+    @synchronized([self class]) {
+        [super hl_saveMoney];
+    }
+}
+- (void)hl_drawMoney
+{
+    @synchronized ([self class]) {
+        
+        [super hl_drawMoney];
+    }
+}
+- (void)hl_saleTicket
+{
+    static NSObject *lock;
+    static dispatch_once_t onceTocken;
+    dispatch_once(&onceTocken, ^{
+        lock = [[NSObject alloc]init];
+    });
+    @synchronized (lock) {
+        [super hl_saleTicket];
+    }
+}
+@end
+```
 
 ## 多线程的线程间依赖
 

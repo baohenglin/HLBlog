@@ -466,6 +466,45 @@ API如下：
 @end
 ```
 
+## GCD的dispatch_semaphore(信号量)控制最大并发量
+
+代码如下：
+
+```
+#import "SemaphoreDemo.h"
+
+@interface SemaphoreDemo ()
+@property (nonatomic, strong) dispatch_semaphore_t semaphore;
+@end
+
+@implementation SemaphoreDemo
+- (instancetype)init
+{
+    if (self = [super init]) {
+        //初始化信号量
+        self.semaphore = dispatch_semaphore_create(5);
+    }
+    return self;
+}
+- (void)otherTest
+{
+    for (int i = 0; i < 20; i++) {
+        [[[NSThread alloc]initWithTarget:self selector:@selector(test) object:nil] start];
+    }
+}
+- (void)test
+{
+    //如果信号量的值 > 0，就让信号量的值减1，然后继续往下执行代码
+    //如果信号量的值 <=0，就会休眠等待。直到信号量的值变成 > 0，然后继续往下执行代码
+    dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);//DISPATCH_TIME_FOREVER永远等待
+    sleep(2);
+    NSLog(@"test- %@",[NSThread currentThread]);
+    dispatch_semaphore_signal(self.semaphore);
+
+}
+@end
+```
+
 ## 多线程总结
 
 * 1.简述你对多线程的理解

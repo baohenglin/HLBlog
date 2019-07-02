@@ -247,7 +247,7 @@ pthread_mutex_unlock(&_mutexLock);
 
 具体用法参考下面的“多线程的线程间依赖”。
 
-* (4)dispatch_semaphore：semaphore叫做“信号量”，信号量的初始值，可以用来控制线程并发访问的最大数量。信号量的初始值为1，表示同时只允许1条线程访问资源，保证线程同步。
+* (4)dispatch_semaphore：semaphore叫做“信号量”，信号量的初始值，可以用来控制线程并发访问的最大数量。**信号量的初始值为1，表示同时只允许1条线程访问资源，保证线程同步(实现线程同步的一种方法)**。
 
 ```
 //信号量的初始值
@@ -466,7 +466,7 @@ API如下：
 @end
 ```
 
-## GCD的dispatch_semaphore(信号量)控制最大并发量
+## GCD的dispatch_semaphore(信号量)实现“控制最大并发量”
 
 代码如下：
 
@@ -499,9 +499,56 @@ API如下：
     dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);//DISPATCH_TIME_FOREVER永远等待
     sleep(2);
     NSLog(@"test- %@",[NSThread currentThread]);
+    //dispatch_semaphore_signal作用：使信号量的值加1
     dispatch_semaphore_signal(self.semaphore);
 
 }
+@end
+```
+
+## GCD的dispatch_semaphore(信号量)实现“线程同步”
+
+信号量的初始值为1(也就是dispatch_semaphore_create(1))，表示同时只允许1条线程访问资源，可以实现线程同步(实现线程同步的一种方法)
+
+代码如下：
+
+```
+#import "SemaphoreDemo2.h"
+@interface SemaphoreDemo2 ()
+@property(nonatomic, strong) dispatch_semaphore_t ticketSemaphore;
+@property(nonatomic, strong) dispatch_semaphore_t moneySemaphore;
+@end
+
+@implementation SemaphoreDemo2
+- (instancetype)init
+{
+    if (self = [super init]) {
+        //初始化信号量
+        self.ticketSemaphore = dispatch_semaphore_create(1);
+        self.moneySemaphore = dispatch_semaphore_create(1);
+    }
+    return self;
+}
+- (void)hl_saveMoney
+{
+    dispatch_semaphore_wait(self.moneySemaphore, DISPATCH_TIME_FOREVER);
+    [super hl_saveMoney];
+    dispatch_semaphore_signal(self.moneySemaphore);
+}
+- (void)hl_drawMoney
+{
+    dispatch_semaphore_wait(self.moneySemaphore, DISPATCH_TIME_FOREVER);
+    [super hl_drawMoney];
+    dispatch_semaphore_signal(self.moneySemaphore);
+}
+- (void)hl_saleTicket
+{
+    dispatch_semaphore_wait(self.ticketSemaphore, DISPATCH_TIME_FOREVER);
+    [super hl_saleTicket];
+    dispatch_semaphore_signal(self.ticketSemaphore);
+    
+}
+
 @end
 ```
 

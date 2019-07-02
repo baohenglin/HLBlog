@@ -335,7 +335,65 @@ NSCondition遵守了NSLocking协议，使用的时候同样是lock，unlock加�
 }
 ```
 
-* (9)NSConditionLock
+* (9)NSConditionLock：是对NSCondition的进一步封装，可以设置具体的条件值。
+API如下：
+
+```
+@interface NSConditionLock : NSObject <NSLocking> {
+@private
+    void *_priv;
+}
+
+- (instancetype)initWithCondition:(NSInteger)condition NS_DESIGNATED_INITIALIZER;
+
+@property (readonly) NSInteger condition;
+- (void)lockWhenCondition:(NSInteger)condition;
+- (BOOL)tryLock;
+- (BOOL)tryLockWhenCondition:(NSInteger)condition;
+- (void)unlockWithCondition:(NSInteger)condition;
+- (BOOL)lockBeforeDate:(NSDate *)limit;
+- (BOOL)lockWhenCondition:(NSInteger)condition beforeDate:(NSDate *)limit;
+@end
+```
+
+具体用法如下：
+
+```
+@interface NSConditionLockDemo ()
+@property (nonatomic, strong) NSConditionLock *conditionLock;//条件
+@end
+@implementation NSConditionLockDemo
+
+- (instancetype)init
+{
+    if (self = [super init]) {
+        //将条件锁内部的条件设置为1.
+        self.conditionLock = [[NSConditionLock alloc] initWithCondition:1];
+    }
+    return self;
+}
+- (void)otherTest
+{
+    [[[NSThread alloc] initWithTarget:self selector:@selector(hl_threadA) object:nil] start];
+    [[[NSThread alloc] initWithTarget:self selector:@selector(hl_threadB) object:nil] start];
+}
+//线程B
+- (void)hl_threadB
+{
+    //当这把锁内存所存储的条件值为1时，才能加锁，否则，就等待
+    [self.conditionLock lockWhenCondition:1];
+    NSLog(@"hl_threadB");
+    [self.conditionLock unlockWithCondition:2];
+}
+//线程A
+- (void)hl_threadA
+{
+    [self.conditionLock lockWhenCondition:2];
+    NSLog(@"hl_threadA");
+    [self.conditionLock unlockWithCondition:2];
+}
+```
+
 * (10)@synchronized
 
 ## 多线程的线程间依赖

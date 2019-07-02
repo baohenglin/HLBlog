@@ -261,7 +261,7 @@ dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
 dispatch_semaphore_signal(semaphore);
 ```
 
-* (5)dispatch_queue(DISPATCH_QUEUE_SERIAL)
+* (5)dispatch_queue(DISPATCH_QUEUE_SERIAL)：直接使用GCD的串行队列，也是可以实现线程同步的。
 * (6)NSLock：是对pthread_mutex普通锁的OC形式的封装。
 * (7)NSRecursiveLock：NSRecursiveLock也是对pthread_mutex递归锁OC形式的封装，API跟NSLock基本一致。
 * (8)NSCondition：NSCondition条件锁，是对锁mutex和条件cond的OC封装。

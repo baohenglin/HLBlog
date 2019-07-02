@@ -666,9 +666,44 @@ API如下：
 @end
 ```
 
+## iOS线程同步方案性能比较
+
+性能从高到低排序：
+
+* os_unfair_lock(从iOS10开始支持)
+* OSSpinLock(不建议使用)
+* dispatch_semaphore(推荐使用)
+* pthread_mutex(推荐使用)
+* dispatch_queue(DISPATCH_QUEUE_SERIAL)
+* NSLock
+* NSCondition
+* pthread_mutex(recursive)
+* NSRecursiveLock
+* NSConditionLock
+* @synchronized
+
+## 自旋锁、互斥锁比较
+
+1.什么情况下使用自旋锁比较划算？
+
+* 预计线程等待锁的时间很短。
+* 加锁的代码（临界区）经常被调用，但竞争情况很少发生。
+* CPU资源不紧张
+* 多核处理器
+
+2.什么情况下使用互斥锁比较划算？
+
+* 预计线程等待锁的时间较长
+* 单核处理器
+* 临界区有IO操作（因为IO操作都占用CPU资源比较大）
+* 临界区代码复杂或者循环量大
+* 临界区竞争非常激烈
+
 ## 多线程总结
 
 * 1.简述你对多线程的理解
+
+多线程的概念，作用及优势。
 
 * 2.iOS的多线程方案有哪几种？你更倾向于哪一种？
 

@@ -396,7 +396,7 @@ API如下：
 
 * (10)@synchronized：是对pthread_mutex递归锁的封装，支持递归加锁。其实现源码可以在objc4的objc-sync.mm文件查看。
 
-@synchronized的实现原理是：利用HashMap（哈希表/散列表），根据传入的对象作为key获取一把与之对应的锁(Value)，传入的对象相同，获取的锁也是相同的；传入的对象不同，得到的是不同的锁。
+@synchronized的实现原理是：利用HashMap（哈希表/散列表），将传入的对象作为key，并通过key获取一把与之对应的锁(Value)；如果传入的对象相同，那么获取的锁也是相同的；如果传入的对象不同，那么得到的是不同的锁。
 
 ```
 #import "SynchronizedDemo.h"

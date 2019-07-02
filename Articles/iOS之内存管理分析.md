@@ -30,7 +30,11 @@ iOS之内存管理分析
 @end
 ```
 
-解决方法1：
+以上代码产生循环引用的原因：self->(强引用)timer->(强引用)target:self.
+
+解决方法1：使用scheduledTimerWithTimeInterval: repeats: block:方法
+
+//打破循环引用的原因：self->(强引用)timer->(强引用)block->(弱引用)self
 
 ```
 //解决方法1：使用scheduledTimerWithTimeInterval: repeats: block:替代scheduledTimerWithTimeInterval: target: selector: userInfo: repeats:

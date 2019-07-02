@@ -236,11 +236,24 @@ pthread_mutex_unlock(&_mutexLock);
 }
 ```
 
-* (4)dispatch_semaphore(信号量)
+* (4)dispatch_semaphore：semaphore叫做“信号量”，信号量的初始值，可以用来控制线程并发访问的最大数量。信号量的初始值为1，表示同时只允许1条线程访问资源，保证线程同步。
+
+```
+//信号量的初始值
+int value = 1;
+//初始化信号量
+dispatch_semaphore_t semaphore = dispatch_semaphore_create(value);
+//如果信号量的值 > 0，就让信号量的值减1，然后继续往下执行后面的代码
+//如果信号量的值 <=0，当前线程就会休眠等待，直到信号量的值变成 > 0，然后继续往下执行代码
+dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+//让信号量的值加1
+dispatch_semaphore_signal(semaphore);
+```
+
 * (5)dispatch_queue(DISPATCH_QUEUE_SERIAL)
 * (6)NSLock：是对pthread_mutex普通锁的OC封装。
 * (7)NSRecursiveLock：NSRecursiveLock也是对mutex递归锁的封装，API跟NSLock基本一致。
-* (8)NSCondition：是对mutex和cond条件的OC封装。
+* (8)NSCondition：是对锁mutex和条件cond的OC封装。
 * (9)NSConditionLock
 * (10)@synchronized
 

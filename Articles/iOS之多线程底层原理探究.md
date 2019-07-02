@@ -187,7 +187,7 @@ OSSpinLockUnlock(&_moneyLock);
 
 ```
 
-* (2)os_unfair_lock：os_unfair_lock用于取代不安全的OSSpinLock，从iOS10开始才支持。从底层调用来看，等待os_unfair_lock锁的线程会处于休眠状态，并非忙等，所以os_unfair_lock是互斥锁，是一种low-level lock(低级锁：低级锁的特点是等不到锁的时候就进入休眠)。
+* (2)os_unfair_lock：os_unfair_lock用于取代不安全的OSSpinLock，从iOS10开始才支持。从底层调用来看，等待os_unfair_lock锁的线程会处于休眠状态，而不是像自旋锁那样忙等，所以os_unfair_lock是互斥锁，是一种low-level lock(低级锁：低级锁的特点是等不到锁的时候就进入休眠)。
 
 使用时需要导入头文件 #import <os/lock.h>,具体用法如下：
 
@@ -236,6 +236,15 @@ pthread_mutex_unlock(&_mutexLock);
 }
 ```
 
+**pthread_mutex-递归锁**
+
+将pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);的第二个参数设置为PTHREAD_MUTEX_RECURSIVE，表示该锁是递归锁。除此属性值不同之外，其他用法与pthread_mutex默认的普通锁(PTHREAD_MUTEX_NORMAL)完全一致。
+
+递归锁的特点：允许同一条线程对同一把锁进行重复加锁而不会引发死锁。因为只是允许同一条线程重复加锁，所以递归锁依然能够保证线程安全。
+
+
+**pthread_mutex-条件锁**
+
 * (4)dispatch_semaphore：semaphore叫做“信号量”，信号量的初始值，可以用来控制线程并发访问的最大数量。信号量的初始值为1，表示同时只允许1条线程访问资源，保证线程同步。
 
 ```
@@ -251,8 +260,8 @@ dispatch_semaphore_signal(semaphore);
 ```
 
 * (5)dispatch_queue(DISPATCH_QUEUE_SERIAL)
-* (6)NSLock：是对pthread_mutex普通锁的OC封装。
-* (7)NSRecursiveLock：NSRecursiveLock也是对pthread_mutex递归锁的封装，API跟NSLock基本一致。
+* (6)NSLock：是对pthread_mutex普通锁的OC形式的封装。
+* (7)NSRecursiveLock：NSRecursiveLock也是对pthread_mutex递归锁OC形式的封装，API跟NSLock基本一致。
 * (8)NSCondition：是对锁mutex和条件cond的OC封装。
 
 ```
@@ -271,7 +280,75 @@ dispatch_semaphore_signal(semaphore);
 * (9)NSConditionLock
 * (10)@synchronized
 
+## 多线程的线程间依赖
 
+多线程的线程间依赖指的是有时由于业务需要，只有等执行完线程B中的任务才能再执行线程A中的任务，也就是要求线程A和线程B的执行顺序有要求。那么如何实现线程间依赖呢？可以通过"条件锁"来实现。
+
+代码如下：
+
+```
+#import "Pthread_mutexDemo3.h"
+#import <pthread.h>
+@interface Pthread_mutexDemo3 ()
+@property (nonatomic, assign) pthread_mutex_t mutex;
+@property (nonatomic, assign) pthread_cond_t cond;//条件
+@property (nonatomic, strong) NSMutableArray *dataArr;
+@end
+
+@implementation Pthread_mutexDemo3
+- (instancetype)init
+{
+    if (self = [super init]) {
+        //初始化属性
+        pthread_mutexattr_t attr;
+        pthread_mutexattr_init(&attr);
+        pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
+        //初始化锁
+        pthread_mutex_init(&_mutex, &attr);
+        //销毁属性
+        pthread_mutexattr_destroy(&attr);
+        //初始化条件
+        pthread_cond_init(&_cond, NULL);
+        self.dataArr = [NSMutableArray array];
+    }
+    return self;
+}
+- (void)otherTest
+{
+    [[[NSThread alloc] initWithTarget:self selector:@selector(hl_remove) object:nil] start];
+    [[[NSThread alloc] initWithTarget:self selector:@selector(hl_add) object:nil] start];
+}
+//线程1
+
+- (void)hl_remove
+{
+    pthread_mutex_lock(&_mutex);
+    if (self.dataArr.count == 0) {
+        //等待(休眠)条件_cond，将锁_mutex放开，被唤醒之后，重新加锁_mutex
+        //_cond:将来用来唤醒自己的条件。注意等待的条件必须和唤醒的条件完全一样。
+        pthread_cond_wait(&_cond, &_mutex);
+    }
+    [self.dataArr removeAllObjects];
+    pthread_mutex_unlock(&_mutex);
+}
+//线程2
+- (void)hl_add
+{
+    pthread_mutex_lock(&_mutex);
+    [self.dataArr addObject:@"Test"];
+    //信号：唤醒一个等待该条件的线程
+    pthread_cond_signal(&_cond);
+//    //广播:唤醒所有等待该条件的线程
+//    pthread_cond_broadcast(&_cond);
+    pthread_mutex_unlock(&_mutex);
+}
+- (void)dealloc
+{
+    pthread_mutex_destroy(&_mutex);
+    pthread_cond_destroy(&_cond);
+}
+@end
+```
 
 ## 多线程总结
 

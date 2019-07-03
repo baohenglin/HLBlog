@@ -221,6 +221,7 @@ NSLog(@"%d %d",[proxy1 isKindOfClass:[ViewController class]],[proxy2 isKindOfCla
 }
 ```
 
+由于项目中可能有多出需要使用该GCD定时器，所以我们可以将GCD定时器封装成专门的定时器类。[GCD定时器完整封装]()
 
 ## 内存管理总结：
 

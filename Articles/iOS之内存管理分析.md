@@ -227,7 +227,7 @@ NSLog(@"%d %d",[proxy1 isKindOfClass:[ViewController class]],[proxy2 isKindOfCla
 
 1. 使用CADisplayLink、NSTimer有什么注意点？
 
-CADispalyLink、NSTimer会对target产生强引用，如果target又对它们产生强引用，那么就会导致循环引用。
+CADispalyLink、NSTimer会对target产生强引用，如果target又对它们产生强引用，那么就会导致循环引用。另一个问题就是可能存在定时器不准时的问题。
 
 
 

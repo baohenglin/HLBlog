@@ -221,7 +221,22 @@ NSLog(@"%d %d",[proxy1 isKindOfClass:[ViewController class]],[proxy2 isKindOfCla
 }
 ```
 
-由于项目中可能有多出需要使用该GCD定时器，所以我们可以将GCD定时器封装成专门的定时器类。[GCD定时器完整封装]()
+由于项目中可能有多出需要使用该GCD定时器，所以我们可以将GCD定时器封装成专门的定时器类。[GCD定时器完整封装](https://github.com/baohenglin/GCD-Timer)
+
+
+## iOS程序的内存布局
+
+iOS程序内存布局从低地址到高地址依次是保留段(保留着供系统使用)、代码段(_TEXT)、数据段(_DATA)、堆(heap)、栈(stack)和内核区。
+
+iOS程序的内存布局如下图所示：
+
+![iOS程序的内存布局示意图.png](https://upload-images.jianshu.io/upload_images/4164292-fc62e98035ff4f0f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+* 代码段：编译之后的代码
+* 数据段：主要存放字符串常量(比如NSString *str = @"123")、已初始化数据(已初始化的全局变量、静态变量等)、未初始化数据(未初始化的全局变量、静态变量等)
+* 栈：函数调用开销，比如局部变量。分配的内存空间地址越来越小。
+* 堆：通过alloc、malloc、calloc等动态分配的空间，分配的内存空间地址越来越大。
+
 
 ## 内存管理总结：
 

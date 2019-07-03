@@ -155,7 +155,41 @@ HLBestProxy.m代码如下：
 @end
 ```
 
-方法2和方法3乍看起来好像差不多，其实，方法3与方法2相比，执行效率更高。因为NSProxy与NSObject类是同级别的类，都是基类。NSProxy是专门用来做消息转发处理的类，在调用方法过程中，如果当前类中没有查找到要调用的方法，那么它不会一层一层去父类当中去查找是否存在该方法，也不会进入消息动态解析阶段，而是直接进入到消息转发阶段，其执行效率更高，所以推荐使用方法3这种通过NSProxy类创建代理对象的解决方法。
+方法2和方法3乍看起来好像差不多，其实，方法3与方法2相比，执行效率更高。因为NSProxy与NSObject类是同级别的类，都是基类。NSProxy是专门用来做消息转发处理的类，在调用方法过程中，如果当前类HLBestProxy中没有查找到要调用的方法，那么它不会去其父类NSProxy当中去查找是否存在该方法，也不会进入消息动态解析阶段，而是直接进入到消息转发阶段，其执行效率更高，所以推荐使用方法3这种通过NSProxy类创建代理对象的解决方法。
+
+## NSProxy
+
+下面代码输出结果是什么？
+
+```
+ViewController *vc = [[ViewController alloc]init];
+HLproxy *proxy1 = [HLproxy proxyWithTarget:vc];
+HLBestProxy *proxy2 = [HLBestProxy proxyWithTarget:vc];
+NSLog(@"%d %d",[proxy1 isKindOfClass:[ViewController class]],[proxy2 isKindOfClass:[ViewController class]]);
+```
+
+结果是：
+
+```
+2019-07-03 11:59:31.515103+0800 内存管理_NSTimer[47838:2484092] 0 1
+```
+
+我们看到[proxy2 isKindOfClass:[ViewController class]]的结果是1，为什么会这样呢？因为proxy2的类对象HLBestProxy继承自NSProxy，HLBestProxy内部自动实现了消息转发操作。
+
+```
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)sel
+{
+    //返回 方法签名
+    return [self.target methodSignatureForSelector:sel];
+}
+- (void)forwardInvocation:(NSInvocation *)invocation
+{
+    //调用方法
+    [invocation invokeWithTarget:self.target];
+}
+```
+最终代码[proxy2 isKindOfClass:[ViewController class]]转化为[vc isKindOfClass:[ViewController class]]，所以结果是1。
+
 
 ## 内存管理总结：
 

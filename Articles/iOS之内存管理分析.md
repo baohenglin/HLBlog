@@ -193,6 +193,35 @@ NSLog(@"%d %d",[proxy1 isKindOfClass:[ViewController class]],[proxy2 isKindOfCla
 最终代码[proxy2 isKindOfClass:[ViewController class]]转化为[vc isKindOfClass:[ViewController class]]，所以结果是1。
 
 
+## GCD定时器
+
+由于NSTimer定时器依赖于RunLoop，如果RunLoop的任务过于繁重，那么可能将导致NSTimer定时器不准时。那么怎么做才能保证定时器准时呢？
+
+可以使用**GCD定时器**,GCD定时器是跟系统内核直接挂钩，不依赖于RunLoop，所以GCD定时器非常准时。
+
+```
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    NSLog(@"----begin");
+    //串行队列
+    dispatch_queue_t queue = dispatch_queue_create("timer", DISPATCH_QUEUE_SERIAL);
+    //创建GCD定时器
+    dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+    //设置时间
+    NSTimeInterval start = 2.0;//2秒后开始执行
+    NSTimeInterval interval = 1.0;//每隔一秒执行
+    dispatch_source_set_timer(timer, dispatch_time(DISPATCH_TIME_NOW, start * NSEC_PER_SEC), interval * NSEC_PER_SEC, 0);
+    //设置回调
+    dispatch_source_set_event_handler(timer, ^{
+        NSLog(@"每隔1秒打印---1111");
+    });
+    //启动定时器
+    dispatch_resume(timer);
+    self.timer = timer;
+}
+```
+
+
 ## 内存管理总结：
 
 1. 使用CADisplayLink、NSTimer有什么注意点？

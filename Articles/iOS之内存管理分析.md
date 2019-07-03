@@ -159,6 +159,8 @@ HLBestProxy.m代码如下：
 
 ## NSProxy
 
+NSProxy的底层实现源码可以查看[GNUstep Base](http://www.gnustep.org/resources/downloads.php)Foundation中的NSProxy.m中的源码。
+
 下面代码输出结果是什么？
 
 ```

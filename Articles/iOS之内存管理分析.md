@@ -47,16 +47,15 @@ iOS之内存管理分析
 * self->(强引用)link ->(强引用)target:self。
 * self->(强引用)timer->(强引用)target:self。
 
-解决方法1：使用scheduledTimerWithTimeInterval: repeats: block:方法
+解决方法1：使用scheduledTimerWithTimeInterval: repeats: block:方法替代scheduledTimerWithTimeInterval: target: selector: userInfo: repeats:方法
 
 //打破循环引用的原因：self->(强引用)timer->(强引用)block->(弱引用)self
 
 ```
-//解决方法1：使用scheduledTimerWithTimeInterval: repeats: block:替代scheduledTimerWithTimeInterval: target: selector: userInfo: repeats:
-    __weak typeof(self) weakSelf = self;
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 repeats:YES block:^(NSTimer * _Nonnull timer) {
-        [weakSelf timerTest];
-    }];
+__weak typeof(self) weakSelf = self;
+self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 repeats:YES block:^(NSTimer * _Nonnull timer) {
+    [weakSelf timerTest];
+}];
 ```
 
 解决方法2：自定义中间代理类+消息转发机制
@@ -106,7 +105,6 @@ HLproxy.m代码如下：
 ViewController.m中代码做如下修改：
 
 ```
-//解决方法2：
 self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:[HLproxy proxyWithTarget:self] selector:@selector(timerTest) userInfo:nil repeats:YES];
 ```
 
@@ -157,7 +155,7 @@ HLBestProxy.m代码如下：
 @end
 ```
 
-方法2和方法3乍看起来好像差不多，其实，方法3与方法2相比，执行效率更高。因为NSProxy与NSObject类是同级别的类，都是基类。NSProxy就是专门用来做消息转发的，在调用方法过程中，如果当前类中没有查找到要调用的方法，那么不会一层一层去父类当中去查找是否存在该方法，也不会进入消息动态解析阶段，而是直接进入到消息转发阶段，其执行效率更高，所以推荐使用方法3这种通过NSProxy类创建代理对象的解决方法。
+方法2和方法3乍看起来好像差不多，其实，方法3与方法2相比，执行效率更高。因为NSProxy与NSObject类是同级别的类，都是基类。NSProxy是专门用来做消息转发处理的类，在调用方法过程中，如果当前类中没有查找到要调用的方法，那么它不会一层一层去父类当中去查找是否存在该方法，也不会进入消息动态解析阶段，而是直接进入到消息转发阶段，其执行效率更高，所以推荐使用方法3这种通过NSProxy类创建代理对象的解决方法。
 
 ## 内存管理总结：
 

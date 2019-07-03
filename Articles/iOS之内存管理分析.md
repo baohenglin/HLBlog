@@ -244,8 +244,11 @@ iOS程序的内存布局如下图所示：
 
 如何判断一个指针是否为Tagged Pointer？
 
-当对象指针的最低有效位是1，则该指针为Tagged Pointer。
+在mac平台上，如果指针的最低有效位是1，那么该指针为Tagged Pointer，否则就是对象。在iOS平台上，如果指针的最高有效位是1（第64bit），那么该指针为Tagged Pointer。
 
+苹果源码中判断指针是否为Tagged Pointer的逻辑如下图所示：
+
+![判断指针是否为TaggedPointer的逻辑示意图.png](https://upload-images.jianshu.io/upload_images/4164292-0c1bf71d233b6f48.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ## 内存管理总结：
 

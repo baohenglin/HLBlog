@@ -250,6 +250,38 @@ iOS程序的内存布局如下图所示：
 
 ![判断指针是否为TaggedPointer的逻辑示意图.png](https://upload-images.jianshu.io/upload_images/4164292-0c1bf71d233b6f48.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
+### Tagged Pointer的相关题目
+
+思考以下2段代码会发生什么事？有什么区别？
+
+代码A:
+
+```
+dispatch_queue_t queue = dispatch_get_global_queue(0, 0);
+    for (int i = 0; i < 1000; i++) {
+        dispatch_async(queue, ^{
+            //加锁
+            self.name = [NSString stringWithFormat:@"abcdefghijk"];
+            //解锁
+        });
+    }
+```
+
+代码B：
+
+```
+dispatch_queue_t queue = dispatch_get_global_queue(0, 0);
+    for (int i = 0; i < 1000; i++) {
+        dispatch_async(queue, ^{
+            //加锁
+            self.name = [NSString stringWithFormat:@"abc"];
+            //解锁
+        });
+    }
+```
+
+代码A会崩溃，代码B不会崩溃。代码A崩溃是因为在Setter方法中，由于多条线程对 _name成员变量进行了不止一次Release操作。代码B中的self.name是Tagged Pointer，不是OC对象，不会像普通的OC对象那样调用setter方法执行retain、release操作，而是直接将地址值赋值给了self.name,所以不会崩溃。
+，
 ## 内存管理总结：
 
 1. 使用CADisplayLink、NSTimer有什么注意点？

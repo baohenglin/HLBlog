@@ -288,7 +288,7 @@ dispatch_queue_t queue = dispatch_get_global_queue(0, 0);
 
 当调用alloc、new、copy、mutableCopy方法返回了一个对象，在不需要这个对象时，要调用release或者autorelease来释放它。
 
-## copy
+## copy VS MutableCopy、浅拷贝 VS 深拷贝
 
 copy的目的是为了产生一个副本对象，和源对象互补影响。也就是改变了源对象，不会影响副本对象；修改了副本对象，不会影响源对象。
 
@@ -303,8 +303,51 @@ iOS提供了2个拷贝方法copy和mutableCopy，其中copy是不可变拷贝，
 【总结】如果源对象是不可变对象，那么该对象调用copy是浅拷贝，调用mutableCopy是深拷贝。**如果源对象是可变对象，那么不管调用copy还是mutableCopy，都是深拷贝**。
        
        
+## 属性修饰词assign/retain/strong/copy
 
+assign：修饰基本数据类型，在生成的setter内直接赋值
 
+retain：在生成的setter内将新值retain保留，将旧值release释放掉。
+
+strong：数组和字典类型的属性一般用strong修饰。
+
+copy：在生成的setter内新值调用copy，将旧值release释放掉。copy修饰的属性一定要是不可变的对象，否则可能会出错。一般来说字符串类型的属性都是用copy来修饰。
+
+## 引用计数的存储
+
+在64bit中，引用计数可以直接存储在优化过的isa指针中，但是如果isa指针中的19bit存储空间存储不下时，就存储在SideTable类中 RefcountMap refcnts散列表中。
+
+```
+struct SideTable {
+    spinlock_t slock;
+    RefcountMap refcnts;//存放着对象引用计数的散列表
+    weak_table_t weak_table;
+}
+```
+
+## weak指针的实现原理
+
+修饰指针的修饰词包括__strong、__weak、__unsafe_unretained这三个修饰词。
+
+* __strong：强引用
+* __weak：弱引用，当指针指向的对象销毁之后，会将该指针置为nil，防止产生野指针
+* __unsafe_unretained：弱引用，当指针指向的对象销毁之后，不会将该指针置为nil，会产生野指针，不安全。
+
+那么__weak的实现原理是怎样的呢？
+
+我们可以通过查看objc源码来研究__weak的实现原理。(objc->Source->NSObject.mm->dealloc)
+
+__weak的实现原理:程序运行过程中Runtime将对象的弱引用存储到弱引用哈希表weak_table_t weak_table中，当弱引用指针指向的对象销毁时，通过相应计算获取当前对象所对应的弱引用表，并将弱引用表中存储的所有弱引用都清除掉，也就是置为nil。
+
+## autorelease
+
+```
+@autoreleasepool {
+        
+    }
+```
+
+autoreleasepool的本质是在花括号的开头调用了 atautoreleasepoolobj = objc_autoreleasePoolPush();函数，在花括号的结尾处调用了objc_autoreleasePoolPop(atautoreleasepoolobj);函数。
 
 ## 内存管理总结：
 
@@ -324,4 +367,9 @@ CADispalyLink、NSTimer会对target产生强引用，如果target又对它们产
 
 6.ARC都帮我们做了什么？
 
+ARC是LLVM和Runtime系统相互协作的一个结果。开启ARC后，LLVM编译器自动添加了retain、release等有关内存管理的代码。此外，程序运行过程中Runtime将使用__weak修饰的对象的弱引用存储到弱引用哈希表weak_table_t weak_table中，当弱引用指针指向的对象销毁时，通过相应计算获取当前对象所对应的弱引用表，并将弱引用表中存储的所有弱引用都清除掉，也就是置为nil。
+
+
 7.weak指针的实现原理？
+
+程序运行过程中Runtime将对象的弱引用存储到弱引用哈希表weak_table_t weak_table中，当弱引用指针指向的对象销毁时，通过相应计算获取当前对象所对应的弱引用表，并将弱引用表中存储的所有弱引用都清除掉，也就是置为nil。

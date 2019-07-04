@@ -339,15 +339,23 @@ struct SideTable {
 
 __weak的实现原理:程序运行过程中Runtime将对象的弱引用存储到弱引用哈希表weak_table_t weak_table中，当弱引用指针指向的对象销毁时，通过相应计算获取当前对象所对应的弱引用表，并将弱引用表中存储的所有弱引用都清除掉，也就是置为nil。
 
-## autorelease
+## autoreleasepool的实现原理
 
 ```
 @autoreleasepool {
         
-    }
+}
 ```
 
 autoreleasepool的本质是在花括号的开头调用了 atautoreleasepoolobj = objc_autoreleasePoolPush();函数，在花括号的结尾处调用了objc_autoreleasePoolPop(atautoreleasepoolobj);函数。
+
+自动释放池的主要底层数据结构是：__AtAutoreleasePool、AutoreleasePoolPage。调用了autorelease的对象最终都是通过AutoreleasePoolPage对象来管理的。
+
+AutoreleasePoolPage的底层数据结构示意图如下：
+
+![AutoreleasePoolPage底层结构.png](https://upload-images.jianshu.io/upload_images/4164292-c029ba2ea0b8082d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+
 
 ## 内存管理总结：
 

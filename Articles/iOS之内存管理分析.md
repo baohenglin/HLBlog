@@ -153,6 +153,20 @@ autoreleasepool的本质是在花括号的开头调用了 atautoreleasepoolobj =
 
 ## RunLoop和Autorelease
 
+打印主线程的RunLoop
+
+```
+NSLog(@"%@",[NSRunLoop mainRunLoop]);
+```
+
+从打印的结果，我们可以发现以下两个与自动释放池相关的observer：
+
+```
+"<CFRunLoopObserver 0x6000012705a0 [0x1042deae8]>{valid = Yes, activities = 0x1, repeats = Yes, order = -2147483647, callout = _wrapRunLoopWithAutoreleasePoolHandler (0x106dd987d), context = <CFArray 0x600002d64cc0 [0x1042deae8]>{type = mutable-small, count = 1, values = (\n\t0 : <0x7ffc62802058>\n)}}",
+ 
+ "<CFRunLoopObserver 0x600001270460 [0x1042deae8]>{valid = Yes, activities = 0xa0, repeats = Yes, order = 2147483647, callout = _wrapRunLoopWithAutoreleasePoolHandler (0x106dd987d), context = <CFArray 0x600002d64cc0 [0x1042deae8]>{type = mutable-small, count = 1, values = (\n\t0 : <0x7ffc62802058>\n)}}"
+```
+
 iOS在主线程的Runloop中注册了2个Observer，第1个Observer监听了kCFRunLoopEntry事件，会调用objc_autoreleasePoolPush()。第2个Observer一方面监听了kCFRunLoopBeforeWaiting事件，会调用objc_autoreleasePoolPop()、objc_autoreleasePoolPush()；另一方面监听了kCFRunLoopBeforeExit事件，会调用objc_autoreleasePoolPop()。其实autoreleasepool对象就是在当前的RunLoop进入休眠（kCFRunLoopBeforeWaiting）之前调用objc_autoreleasePoolPop()的时候被release的。
 
 ## 内存管理总结：

@@ -281,7 +281,31 @@ dispatch_queue_t queue = dispatch_get_global_queue(0, 0);
 ```
 
 代码A会崩溃，代码B不会崩溃。代码A崩溃是因为在Setter方法中，由于多条线程对 _name成员变量进行了不止一次Release操作。代码B中的self.name是Tagged Pointer，不是OC对象，不会像普通的OC对象那样调用setter方法执行retain、release操作，而是直接将地址值赋值给了self.name,所以不会崩溃。
-，
+
+## OC对象的内存管理
+
+在iOS中，使用引用计数来管理OC对象的内存。一个新创建的OC对象引用计数默认是1，当引用计数减为0，OC对象就会销毁，释放其占用的内存空间。调用retain会让OC对象的引用计数+1，调用release会让OC对象的引用计数-1。
+
+当调用alloc、new、copy、mutableCopy方法返回了一个对象，在不需要这个对象时，要调用release或者autorelease来释放它。
+
+## copy
+
+copy的目的是为了产生一个副本对象，和源对象互补影响。也就是改变了源对象，不会影响副本对象；修改了副本对象，不会影响源对象。
+
+iOS提供了2个拷贝方法copy和mutableCopy，其中copy是不可变拷贝，产生的是不可变副本；mutableCopy是可变拷贝，产生的是可变副本。
+
+* 浅拷贝：指针拷贝，不拷贝内容，没有产生新对象，只是使当前对象引用计数加1。
+
+* 深拷贝：内容拷贝，产生了新对象。比如mutableCopy
+
+![copy和mutableCopy.png](https://upload-images.jianshu.io/upload_images/4164292-38d2c5d8f24c6269.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+【总结】如果源对象是不可变对象，那么该对象调用copy是浅拷贝，调用mutableCopy是深拷贝。**如果源对象是可变对象，那么不管调用copy还是mutableCopy，都是深拷贝**。
+       
+       
+
+
+
 ## 内存管理总结：
 
 1. 使用CADisplayLink、NSTimer有什么注意点？

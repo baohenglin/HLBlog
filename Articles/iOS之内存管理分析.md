@@ -63,6 +63,43 @@ dispatch_queue_t queue = dispatch_get_global_queue(0, 0);
 
 当调用alloc、new、copy、mutableCopy方法返回了一个对象，在不需要这个对象时，要调用release或者autorelease来释放它。
 
+
+### 什么是自动引用计数？
+
+&emsp;&emsp;顾明思义，自动引用计数（ARC，Automatic Reference Counting）是指内存管理中对引用采取自动计数的技术。以下摘自苹果的官方说明：
+
+&emsp;&emsp;在Objective-C中采用Automatic Reference Counting（ARC）机制，让编译器来进行内存管理。在新一代Apple LLVM编译器中设置ARC为有效状态，就无需再次键入retain或者release代码，这在降低程序崩溃、内存泄漏等风险的同时，很大程度上减少了开发程序的工作量。编译器完全清楚目标对象，并能立刻释放那些不再被使用的对象。如此一来，应用程序将具有可预测性，且能流畅运行，速度也将大幅提升。
+
+&emsp;&emsp;换言之，若满足以下条件，就无需手动输入retain和release代码了。
+
+* 使用Xcode4.2或以上版本
++ 使用LLVM编译器3.0或以上版本
+- 编译器选项中设置ARC有效
+
+&emsp;&emsp;在以上条件下编译源代码时，编译器将自动进行内存管理。
+
+### 引用计数的工作原理（思考方式）
+
+&emsp;&emsp;内存管理的思考方式如下：
+
+* （1）自己生成的对象，自己所持有；
+* （2）非自己生成的对象，自己也能持有；
+* （3）不再需要自己持有的对象时，释放；
+* （4）非自己持有的对象，无法释放。
+
+&emsp;&emsp;对象操作与Objective-C方法的对应如下：
+
+对象操作 | Objective-C 方法 |
+:--|:--
+生成并持有对象 | alloc/new/copy/mutableCopy等方法
+持有对象 | retain 方法 
+释放对象 | release 方法
+废弃对象 | dealloc 方法
+
+【注意】Objective-C内存管理中的alloc/retain/release/dealloc方法分别指代NSSObject类的alloc类方法、retain实例方法、release实例方法和dealloc实例方法。
+
+
+
 ## copy VS MutableCopy、浅拷贝 VS 深拷贝
 
 copy的目的是为了产生一个副本对象，和源对象互补影响。也就是改变了源对象，不会影响副本对象；修改了副本对象，不会影响源对象。

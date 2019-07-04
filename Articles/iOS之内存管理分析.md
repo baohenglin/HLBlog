@@ -347,15 +347,38 @@ __weak的实现原理:程序运行过程中Runtime将对象的弱引用存储到
 }
 ```
 
-autoreleasepool的本质是在花括号的开头调用了 atautoreleasepoolobj = objc_autoreleasePoolPush();函数，在花括号的结尾处调用了objc_autoreleasePoolPop(atautoreleasepoolobj);函数。
-
 自动释放池的主要底层数据结构是：__AtAutoreleasePool、AutoreleasePoolPage。调用了autorelease的对象最终都是通过AutoreleasePoolPage对象来管理的。
 
-AutoreleasePoolPage的底层数据结构示意图如下：
+AutoreleasePoolPage的底层结构的成员变量示意图如下：
 
 ![AutoreleasePoolPage底层结构.png](https://upload-images.jianshu.io/upload_images/4164292-c029ba2ea0b8082d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
+各个成员变量的含义如下：
 
+* magic:用来检验AutoreleasePoolPage的结构是否完整
+* next:指向最新添加的autorelease对象的下一个位置
+* thread:指向当前线程
+* parent：指向父节点，第一个节点的parent值为nil
+* child:指向子节点，最后一个节点的child值为nil
+* depth:代表深度，从0开始，往后递增1
+* hiwat:表示high water mark
+
+AutoreleasePoolPage的底层详细结构示意图如下：
+
+![AutoreleasePoolPage的详细结构示意图.png](https://upload-images.jianshu.io/upload_images/4164292-010118bb15bff331.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+
+每个AutoreleasePoolPage对象占用4096字节内存，除了用来存放它内部的成员变量，剩下的空间用来存放autorelease对象的地址。其中的child变量存储着下一个AutoreleasePoolPage的地址值，parent变量存储着上一个AutoreleasePoolPage的地址值。所有的AutoreleasePoolPage对象通过双向链表的形式连接在一起。
+
+autoreleasepool的本质是在花括号的开头调用了 atautoreleasepoolobj = objc_autoreleasePoolPush();函数，在花括号的结尾处调用了objc_autoreleasePoolPop(atautoreleasepoolobj);函数。
+
+调用objc_autoreleasePoolPush方法时会将一个POOL_BOUNDARY压入栈中作为边界标识，并返回其存放的内存地址。此外会将所有的autorelease对象(对象调用了autorelease方法)的地址值依次存放在接下来的地址空间中，当一个AutoreleasePoolPage的空间被占满时，就会创建下一个AutoreleasePoolPage对象，通过parent和child指针连接成双向链表。
+
+当调用objc_autoreleasePoolPop函数时，将当初入栈时存放的POOL_BOUNDARY传入Pop函数，并从最后一个入栈（栈顶）的autorelease对象开始依次对它们调用release方法，直到POOL_BOUNDARY这个边界为止。
+
+## RunLoop和Autorelease
+
+iOS在主线程的Runloop中注册了2个Observer，第1个Observer监听了kCFRunLoopEntry事件，会调用objc_autoreleasePoolPush()。第2个Observer一方面监听了kCFRunLoopBeforeWaiting事件，会调用objc_autoreleasePoolPop()、objc_autoreleasePoolPush()；另一方面监听了kCFRunLoopBeforeExit事件，会调用objc_autoreleasePoolPop()。其实autoreleasepool对象就是在当前的RunLoop进入休眠（kCFRunLoopBeforeWaiting）之前调用objc_autoreleasePoolPop()的时候被release的。
 
 ## 内存管理总结：
 
@@ -369,7 +392,9 @@ CADispalyLink、NSTimer会对target产生强引用，如果target又对它们产
 
 3.谈谈对iOS内存管理的理解
 
-4.autorelease在什么时候会被释放？
+4.autorelease对象在什么时候会被release的？
+
+iOS在主线程的Runloop中注册了2个Observer，第1个Observer监听了kCFRunLoopEntry事件，会调用objc_autoreleasePoolPush()。第2个Observer一方面监听了kCFRunLoopBeforeWaiting事件，会调用objc_autoreleasePoolPop()、objc_autoreleasePoolPush()；另一方面监听了kCFRunLoopBeforeExit事件，会调用objc_autoreleasePoolPop()。其实autoreleasepool对象就是在当前的RunLoop进入休眠（kCFRunLoopBeforeWaiting）之前调用objc_autoreleasePoolPop()的时候被release的。
 
 5.方法里有局部对象，出了方法后会立即释放吗？
 

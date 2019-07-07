@@ -22,6 +22,12 @@
 
 [Java基础视频](https://pan.baidu.com/s/1hrPatfu?srx#list/path=%2F)
 
+[黑马_毕向东_Java基础视频教程](https://pan.baidu.com/s/1W3MvvoxkjqskEoNKZ-rdvQ#list/path=%2F)
+
+[冯佳_Java基础](https://pan.baidu.com/s/1I31fkNvMQEN5M8iuRzzcFw#list/path=%2F)
+
+[Java基础教程](https://pan.baidu.com/s/1XDf1viERuahVgTvG9YtmJw#list/path=%2F)
+
 [黑马JDBC视频教程](https://pan.baidu.com/s/1cGFtHO?srx#list/path=%2F)
 
 [张孝祥_Java邮件开发教程](https://pan.baidu.com/s/1o8U3YYY#list/path=%2Fsharelink3159865149-725032662002263%2F传智播客_张孝祥_Java邮件开发教程&parentPath=%2Fsharelink3159865149-725032662002263)
@@ -40,6 +46,16 @@
 3. JavaWeb核心内容：XML、HTTP及Tomcat、Servlet、request与response、cookie与session、JSP、JDBC高级、Ajax开发、Filter/Listener高级开发技术、Redis、Linux
 
 4. 阶段案例：系统封装（BaseServlet抽取、缓存技术Redis应用、在线支付接口开发、文件上传、JavaMail、Linux项目部署）
+
+[传智_超全面的JavaWeb教程](https://pan.baidu.com/s/16e8uViSLi7rqqAcg1mYwoA#list/path=%2F)
+
+[JavaWeb](https://pan.baidu.com/s/1mIphR3JfbRWjetWHlxRw0g#list/path=%2F)
+
+[崔希凡_JavaWeb](https://pan.baidu.com/s/1JgyKSxG_BrBtt2Av_KHQ8w#list/path=%2F)
+
+[JavaWeb基础教程](https://pan.baidu.com/s/10QUOllMdrjCDgGxeL47S9g#list/path=%2Fsharelink1965084651-547471333874615%2F【阶段01】JavaWeb阶段&parentPath=%2Fsharelink1965084651-547471333874615)
+
+[JavaWeb教程](https://blog.csdn.net/s1547823103/article/details/79768938)
 
 [JavaWeb网上图书商城完整项目](https://pan.baidu.com/s/1jIAtzZS#list/path=%2F)
 
@@ -79,6 +95,13 @@
 2. 新巴巴运动网项目:[巴巴运动网项目视频教程](https://pan.baidu.com/s/1nvLI7ZN#list/path=%2F)
 
 [OA+工作流实战项目教程](https://pan.baidu.com/s/1o7V9Cmu#list/path=%2F)
+
+[管家婆项目](https://pan.baidu.com/s/15N3mrnoc1CEOSOs1Y1ESAg#list/path=%2F)
+
+[点餐系统](https://pan.baidu.com/s/1V08pwQrl8OuWrPbdhf0RyQ#list/path=%2F)
+
+[俄罗斯方块](https://pan.baidu.com/s/1qJRoLgcGS_qU5xPeNsKbig#list/path=%2F)
+
 
 
 

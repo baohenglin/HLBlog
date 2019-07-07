@@ -91,7 +91,7 @@
 1. oracle：简单查询、oracle的常用函数、多表查询、集合操作、DDL操作管理表、DML管理数据、其它数据库对象、PL/SQL编程
 、存储过程与存储函数、触发器。 [oracle视频教程](https://pan.baidu.com/s/1pLk0HLL#list/path=%2F)
 
-2. maven：maven介绍、maven安装、maven的入门程序、maven仓库、项目构建、依赖管理、maven综合案例、maven的私服
+2. maven：maven介绍、maven安装、maven的入门程序、maven仓库、项目构建、依赖管理、maven综合案例、maven的私服 [maven教程](https://pan.baidu.com/s/1Aw6IXcz4MO7a91SMUnW4Sg#list/path=%2F)
 
 3. 商务综合管理平台：项目背景及项目需求、使用Maven进行项目构建、部门模块开发、用户管理及角色管理、使用shiro完成认证及授权功能开发、JavaMail、购销合同模块开发、购销合同报表及出货报表、海关数据导出功能开发、出口报运单功能开发、Quartz定时任务调度实现、FreeMarker+CodeMachine完成代码自动生成、委托单、催款单、财务报运单、生产厂家及产品信息
 
@@ -106,6 +106,16 @@
 2. Springmvc:springmvc框架原理、springmvc入门案例、springmvc整合mybatis参数绑定、json数据交互、拦截器
 
 3. Lucene、sol:什么是全文检索、Lucene实现全文检索、Analyzer分析器、索引维护、solr安装配置、solr索引、solr搜索、SolrJ
+
+[Mybatis教程](https://pan.baidu.com/s/10KwGF5tXjgx0SYwV-1EFEQ#list/path=%2F)
+
+[Springmvc教程](https://pan.baidu.com/s/1BcHNvBVxZp89sW9b9qQymA#list/path=%2F)
+
+[springmvc+mybatis](https://pan.baidu.com/s/1vhZI1NBXkHzpvEghIxxw9w#list/path=%2F)
+
+[Lucene+solr教程](https://pan.baidu.com/s/1u1ZLrjENXM3uF2UuE4wvSw#list/path=%2F)
+
+
 
 ## 第6阶段 项目实战二
 

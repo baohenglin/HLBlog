@@ -43,7 +43,11 @@
 
 2. MySQL及JDBC：MySQL数据库、JDBC开发、连接池和DBUtil
 
-3. JavaWeb核心内容：XML、HTTP及Tomcat、Servlet、request与response、cookie与session、JSP、JDBC高级、Ajax开发、Filter/Listener高级开发技术、Redis、Linux
+3. JavaWeb核心内容：XML、HTTP及Tomcat、Servlet、request与response、cookie与session、JSP、JDBC高级、Ajax开发、Filter/Listener高级开发技术、Redis、Linux  [Redis教程](https://pan.baidu.com/s/150-CUK5Q55Wl9nuEh1aWqQ#list/path=%2F) [Redis+Linux教程](https://pan.baidu.com/s/1AWX5K90StCbwfH4O5oKIlw#list/path=%2F)
+
+[webLogic](https://pan.baidu.com/s/1UbvWa8vCqJ9Qh4hiYOXo4A)
+
+[webService](https://pan.baidu.com/s/13kNGCelJoAE0UnwQn-A3cw#list/path=%2F)
 
 4. 阶段案例：系统封装（BaseServlet抽取、缓存技术Redis应用、在线支付接口开发、文件上传、JavaMail、Linux项目部署）
 
@@ -59,6 +63,8 @@
 
 [JavaWeb网上图书商城完整项目](https://pan.baidu.com/s/1jIAtzZS#list/path=%2F)
 
+[easyUI](https://pan.baidu.com/s/183i7QnOE-ST3SIZtfd9LZg#list/path=%2F)
+
 ## 第3阶段 SSH(Struts2/Spring/Hibernate5)框架
 
 1. Hibernate5框架：Hibernate.cfg.xml配置、hbm.xml映射文件详解、PO对象状态及状态的转换分析、Hibernate高级映射技术、Hibernate数据检索技术、Hibernate性能优化技术
@@ -68,6 +74,17 @@
 3. Spring框架：applicationContext.xml配置文件编写、IoC思想、DI依赖注入、使用AspectJ进行切面编程、JdbcTemplate模板使用、声明式事务管理、SSH整合。[黑马_Spring2.5视频教程](https://pan.baidu.com/s/1pL2HBSJ#list/path=%2F) 
 
 4. CRM项目实战：使用struts2+spring4+hibernate5 +svn来开发项目、使用Jquery EasyUI进行布局、使用svn进行代码管理
+
+[Struts2教程](https://pan.baidu.com/s/1BETmE86CgUvJbDDokJkdnQ#list/path=%2F)
+
+[Spring教程](https://pan.baidu.com/s/1skeIcWu0Fyg7hPXepveBfw#list/path=%2F)
+
+[Hibernate框架教程](https://pan.baidu.com/s/1pf_pEBqjYvfvlZKICE5uAg#list/path=%2F)
+
+[SSH框架整合与项目](https://pan.baidu.com/s/1ICv2u9Tp-XYFyQRtiGWp9g#list/path=%2F)
+
+[SSH学习项目](https://pan.baidu.com/s/1HDhtxO17OsWw9qQGkawRKQ)
+
 
 ## 第4阶段 项目实战一
 
@@ -79,6 +96,8 @@
 3. 商务综合管理平台：项目背景及项目需求、使用Maven进行项目构建、部门模块开发、用户管理及角色管理、使用shiro完成认证及授权功能开发、JavaMail、购销合同模块开发、购销合同报表及出货报表、海关数据导出功能开发、出口报运单功能开发、Quartz定时任务调度实现、FreeMarker+CodeMachine完成代码自动生成、委托单、催款单、财务报运单、生产厂家及产品信息
 
 4. BOS项目：项目概述、环境搭建、zTree树及Jquery EasyUI、用户登陆与退出、密码修改、基础配置功能开发、取派员模块开发、区域导入导出、定区功能开发、webService及CXF框架、定区关联客户功能开发、业务通知单功能开发、权限管理模块开发、shiro认证框架、角色管理、系统部署。
+
+[网上商城_JaveWeb综合项目实战](https://pan.baidu.com/s/1qQ7mU6nQoHLkj7IeYfTgvQ#list/path=%2F)
 
 ## 第5阶段 SSM框架
 
@@ -101,6 +120,28 @@
 [点餐系统](https://pan.baidu.com/s/1V08pwQrl8OuWrPbdhf0RyQ#list/path=%2F)
 
 [俄罗斯方块](https://pan.baidu.com/s/1qJRoLgcGS_qU5xPeNsKbig#list/path=%2F)
+
+[传智_Java邮件项目](https://pan.baidu.com/s/1lNHqF6TgLj-42rqI9FLczA#list/path=%2F)
+
+[传智_在线支付系统](https://pan.baidu.com/s/1vtM0a1TwWczhBPsle1klnw#list/path=%2F)
+
+[博客系统](https://pan.baidu.com/s/1kAmsNgm6edu05NrmILdJZw#list/path=%2Fsharelink1965084651-844529456364678%2F第13项目：博客项目(更多视频教程关注【Java帮帮】微信公众号)&parentPath=%2Fsharelink1965084651-844529456364678)
+
+[JavaWeb聊天室](https://pan.baidu.com/s/1a31xeC1PY3FXqedJaoPLmg#list/path=%2Fsharelink1965084651-234981289484568%2F第17项目：javaWeb聊天室(更多视频教程关注【Java帮帮】微信公众号)&parentPath=%2Fsharelink1965084651-234981289484568)
+
+[网上书店](https://pan.baidu.com/s/1oMmb6z-ELUtGmzGnm1K4Gg#list/path=%2Fsharelink1965084651-944253767919001%2F第19项目：网上书店(更多视频教程关注【Java帮帮】微信公众号)&parentPath=%2Fsharelink1965084651-944253767919001)
+
+[VIP商城](https://pan.baidu.com/s/1eCPhXWLcKSDfLtss5D1odg#list/path=%2Fsharelink1965084651-82671460367654%2F第25项目：VIP商城%2FVIP商场&parentPath=%2Fsharelink1965084651-82671460367654)
+
+[其他商城](https://pan.baidu.com/s/1LqR-8sFo7z7TduCjz0Vyxg#list/path=%2F)
+
+[ATM](https://pan.baidu.com/s/1U7eby8v9Dj_RsRvIYM_GwQ#list/path=%2F)
+
+
+
+
+
+
 
 
 

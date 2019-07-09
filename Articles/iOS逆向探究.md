@@ -53,13 +53,13 @@ Cydia其实相当于越狱后的“App Store”，可以在Cydia中安装各种�
 
 ## 安装相关插件
 
-（1）Apple File Conduit “2”插件(软件源：http://apt.saurik.com或者http://apt.25pp.com)：其作用是可以访问整个iOS设备的文件系统。类似的补丁还有afc2、afc2add。
+（1）Apple File Conduit “2”插件([Apple File Conduit “2”软件源1](http://apt.saurik.com)、[Apple File Conduit “2”软件源2](http://apt.25pp.com))：其作用是可以访问整个iOS设备的文件系统。类似的补丁还有afc2、afc2add。
 
-（2）AppSync Unified插件(软件源：http://apt.25pp.com)：其作用是可以绕过系统验证，随意安装、运行破解的ipa安装包。
+（2）AppSync Unified插件([AppSync Unified软件源](http://apt.25pp.com))：其作用是可以绕过系统验证，随意安装、运行破解的ipa安装包。
 
-（3）iFile：其作用是可以在iPhone上自由访问iOS文件系统。其软件源是http://apt.thebigboss.org/repofiles/cydia
+（3）iFile：其作用是可以在iPhone上自由访问iOS文件系统。[iFile软件源](http://apt.thebigboss.org/repofiles/cydia)
 
-（4）PP助手：可以利用PP助手自由安装海量APP。软件源：http://apt.25pp.com
+（4）PP助手：可以利用PP助手自由安装海量APP。[PP助手软件源](http://apt.25pp.com)
 
 
 

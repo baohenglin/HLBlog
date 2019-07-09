@@ -33,6 +33,10 @@ MVC变种的缺点：View和Model之间耦合度变高
 
 ## MVP
 
+![MVP示意图.png](https://upload-images.jianshu.io/upload_images/4164292-ac79f48aace5dafa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+MVP的本质上是MVC架构中Controller层的逻辑处理代码移到了Presenter中，这样就解决了传统MVC架构中Controller代码过于臃肿的问题。
+
 
 ## 总结
 

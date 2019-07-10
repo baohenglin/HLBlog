@@ -62,4 +62,65 @@ Cydia其实相当于越狱后的“App Store”，可以在Cydia中安装各种�
 （4）PP助手：可以利用PP助手自由安装海量APP。[PP助手软件源](http://apt.25pp.com)
 
 
+## 加固
+
+什么是加固呢？加固是为了增加应用的安全性，防止应用被破解、盗版、二次打包、注入、反编译等
+
+常见的加固方式有：
+
+* (1)数据加密(字符串、网络数据、敏感数据等)
+
+* (2)应用加壳（二进制加密）
+
+* (3)代码混淆（类名、方法名、代码逻辑等）
+
+### 代码混淆
+
+iOS程序可以通过class-dump、Hopper、IDA等工具获取类名、方法名以及分析程序的执行逻辑。如果进行代码混淆，可以加大别人的分析难度。
+
+iOS的代码混淆方案：
+
+* (1)源码的混淆
+
+✅ 类名
+
+✅ 方法名
+
+✅ 协议名
+
+* (2)LLVM中间代码IR的混淆（容易产生Bug）
+
+✅ 自己编写Pass
+
+✅ ollvm：https://github.com/obfuscator-llvm/obfuscator
+
+
+## Mac远程登录到iPhone
+
+iOS和Mac OS X都是基于Darwin（苹果的一个基于Unix的开源系统内核），所以iOS中同样支持终端的命令行操作。在逆向工程中，我们经常会通过命令行来操纵iPhone。为了能够让Mac终端中的命令行能作用在iPhone上，我们得让Mac和iPhone建立连接。我们可以通过Mac远程登录到iPhone的方式建立连接。
+
+### SSH、OpenSSH
+
+SSH是Secure Shell的缩写，意为“安全外壳协议”，是一种可以为远程登录提供安全保障的协议。使用SSH，可以把所有传输的数据进行加密，“中间人”攻击方式就不可能实现，能防止DNS欺骗和IP欺骗。
+
+OpenSSH是SSH协议的免费开源实现。可以通过OpenSSH的方式让Mac远程登录到iPhone。因为SSH是通过TCP协议通信，所以要确保Mac和iPhone在同一局域网下，比如连接着同一个WiFi。
+
+在iPhone上通过Cydia安装OpenSSH工具（软件源http://apt.saurik.com）。
+
+**使用OpenSSH远程登录，步骤如下**：
+
+(1)在Mac的终端输入ssh 账户名@服务器主机地址。比如ssh root@10.1.1.168（这里的服务器是手机）。初始密码alpine。
+
+(2)登录成功后就可以使用终端命令行操作iPhone。
+
+(3)退出登录命令是exit。
+
+
+
+
+
+
+
+
+
 

@@ -99,11 +99,13 @@ iOS的代码混淆方案：
 
 iOS和Mac OS X都是基于Darwin（苹果的一个基于Unix的开源系统内核），所以iOS中同样支持终端的命令行操作。在逆向工程中，我们经常会通过命令行来操纵iPhone。为了能够让Mac终端中的命令行能作用在iPhone上，我们得让Mac和iPhone建立连接。我们可以通过Mac远程登录到iPhone的方式建立连接。
 
-### SSH、OpenSSH
+### SSH、OpenSSH、SSL、OpenSSL
 
 SSH是Secure Shell的缩写，意为“安全外壳协议”，是一种可以为远程登录提供安全保障的协议。使用SSH，可以把所有传输的数据进行加密，“中间人”攻击方式就不可能实现，能防止DNS欺骗和IP欺骗。
 
 OpenSSH是SSH协议的免费开源实现。可以通过OpenSSH的方式让Mac远程登录到iPhone。因为SSH是通过TCP协议通信，所以要确保Mac和iPhone在同一局域网下，比如连接着同一个WiFi。
+
+SSL是Secure Sockets Layer的缩写，是为网络通信提供安全及数据完整性的一种安全协议，在传输层对网络连接进行加密。OpenSSL是SSL的开源实现。绝大部分HTTPS请求等价于：HTTP + OpenSSL。OpenSSH的加密就是通过OpenSSL完成的。
 
 在iPhone上通过Cydia安装OpenSSH工具（软件源http://apt.saurik.com）。
 
@@ -115,9 +117,34 @@ OpenSSH是SSH协议的免费开源实现。可以通过OpenSSH的方式让Mac远
 
 (3)退出登录命令是exit。
 
+## root、mobile
+
+iOS中有2个常用账户：root和mobile。其中root账户是最高权限账户，$HOME是/var/root。mobile：普通权限账户，只能操作一些普通文件，不能操作系统级别的文件，$HOME是/var/mobile。
+
+登录mobile用户：root mobile@服务器主机地址。root和mobile用户的初始登录密码都是alpine。最好修改一下root和mobile用户的登录密码（登录root账户后，分别通过passwd、passwd mobile完成）。
 
 
+## SSH的通信过程
 
+SSH协议一共2个版本，分别是SSH-1和SSH-2。现在用的比较多的是SSH-2，客户端和服务端要保持一致才能通信。那么如何查看SSH版本(查看配置文件的Protocol字段)呢？如果是客户端的话，查看路径/etc/ssh/ssh_config，如果是服务端，查看路径/etc/ssh/sshd_config。
+
+**SSH的通信过程可以分为3大主要阶段**:
+
+* (1)建立安全连接阶段。
+
+![SSH通信建立安全连接示意图.png](https://upload-images.jianshu.io/upload_images/4164292-1ff46957e32a5a3e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+在建立安全连接过程中，服务器会生成一对公钥私钥，并将私钥保留，将公钥下发给客户端。如果是第一次登录该服务器，那么客户端就会根据公钥等身份信息进行安全验证并询问是否连接此服务器，如果连接的话，会将公钥信息保存到~/.ssh/known_hosts中；如果曾经登录过该服务器，即客户端已保存了服务器端的公钥信息，那么客户端将直接连接该服务器。
+
+* (2)客户端认证
+
+SSH-2提供了2种常用的客户端认证方式：
+
+·基于密码的客户端认证:使用账号和密码即可认证
+
+·基于密钥的客户端认证:免密码认证，最安全的一种认证方式。SSH-2默认会优先尝试“密钥认证”，如果认证失败，才会尝试“密码认证”
+
+* (3)数据传输 
 
 
 

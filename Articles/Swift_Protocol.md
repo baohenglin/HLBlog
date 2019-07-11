@@ -29,3 +29,21 @@ struct SomeStructure: FirstProtocol, AnotherProtocol {
     // structure definition goes here
 }
 ```
+
+if a class has a superclass, list the superclass name before any protocols it adopts, followed by a comma:
+
+若一个拥有父类的类在遵循协议时，应该将父类名放在协议名之前，并以逗号分隔：
+
+```
+class SomeClass: SomeSuperclass, FirstProtocol, AnotherProtocol {
+    // class definition goes here
+}
+```
+
+## Property Requirements（协议要求）
+
+A protocol can require any conforming type to provide an instance property or type property with a particular name and type. The protocol doesn't specify whether the property should be a stored property or a computed property——it only specifies the required property name and type. The protocol specifies whether each property must be gettable or gettable and settable.
+
+协议要求遵守了协议的类提供一个指定名称和类型的实例属性或者类型属性。协议不指定属性是存储属性还是计算属性——它只指定属性的名称和类型。协议还将指定每条属性到底是可读的还是可读可写的。
+
+

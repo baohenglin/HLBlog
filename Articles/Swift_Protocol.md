@@ -121,6 +121,8 @@ class Starship: FullyNamed {
 var ncc1701 = Starship(name: "Enterprise", prefix: "USS")
 ```
 
+This class implements the fullName property requirement as a computed read-only property for a starship. Each Starship class instance stores a mandatory name and an optional prefix. The fullName property uses the prefix value if it exists, and prepends it to the beginning of name to create a full name for the starship.
+
 Starship 类把 fullName 作为只读的计算属性来实现。每一个 Starship 类的实例都有一个名为 name 的非可选属性和一个名为 prefix 的可选属性。 当 prefix 存在时，计算属性 fullName 会将 prefix 前置到 name 之前，从而得到一个带有 prefix 的 fullName。
 
 

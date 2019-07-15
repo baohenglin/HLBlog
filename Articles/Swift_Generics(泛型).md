@@ -1,3 +1,101 @@
+
+
+
+## 10. 关联类型：
+
+ 定义一个协议时，声明一个或多个关联类型作为协议定义的一部分将会非常有用。关联类型为协议中的某个类型提供了一个占位符名称，其代表的实际类型在协议被遵循时才会被指定。关联类型通过 associatedtype 关键字来指定。
+ 
+定义了一个 Container 协议，该协议定义了一个关联类型 Item：
+
+```
+protocol Container {
+    associatedtype Item
+    mutating func append(_ item: Item)
+    var count: Int { get }
+    subscript(i: Int) -> Item { get }
+}
+```
+
+ Container 协议定义了三个任何遵循该协议的类型（即容器）必须提供的功能：
+ 
+ (1)必须可以通过 append(_:) 方法添加一个新元素到容器里。
+ 
+ (2)必须可以通过 count 属性获取容器中元素的数量，并返回一个 Int 值。
+ 
+ (3)必须可以通过索引值类型为 Int 的下标检索到容器中的每一个元素。
+ 
+ 该协议没有指定容器中元素该如何存储以及元素类型。该协议只指定了任何遵从 Container 协议的类型必须提供的三个功能。遵从协议的类型在满足这三个条件的情况下，也可以提供其他额外的功能。
+ 
+ 任何遵从 Container 协议的类型必须能够指定其存储的元素的类型。具体来说，它必须确保添加到容器内的元素以及下标返回的元素类型是正确的。
+ 
+ 为了定义这些条件，Container 协议需要在不知道容器中元素的具体类型的情况下引用这种类型。Container 协议需要指定任何通过 append(_:) 方法添加到容器中的元素和容器内的元素是相同类型，并且通过容器下标返回的元素的类型也是这种类型。
+ 
+ 为此，Container 协议声明了一个关联类型 Item，写作 associatedtype Item。协议没有定义 Item 是什么，这个信息留给遵从协议的类型来提供。尽管如此，Item 别名提供了一种方式来引用 Container 中元素的类型，并将之用于 append(_:) 方法和下标，从而保证任何 Container 的行为都能如预期。
+
+```
+struct IntStack: Container {
+    // IntStack 的原始实现部分
+    var items = [Int]()
+    mutating func push(_ item: Int) {
+        items.append(item)
+    }
+    mutating func pop() -> Int {
+        return items.removeLast()
+    }
+    
+    // Container 协议的实现部分
+    //IntStack 在实现 Container 的要求时，指定 Item 为 Int 类型，即 typealias Item = Int，从而将 Container 协议中抽象的 Item 类型转换为具体的 Int 类型。
+    typealias Item = Int
+    mutating func append(_ item: Int) {
+        self.push(item)
+    }
+    var count: Int {
+        return items.count
+    }
+    subscript(i: Int) -> Int {
+        return items[i]
+    }
+}
+```
+
+由于 Swift 的类型推断，实际上在 IntStack 的定义中不需要声明 Item 为 Int。因为 IntStack 符合 Container 协议的所有要求，Swift 只需通过 append(_:) 方法的 item 参数类型和下标返回值的类型，就可以推断出 Item 的具体类型。事实上，如果你在上面的代码中删除了 typealias Item = Int 这一行，一切也可正常工作，因为 Swift 清楚地知道 Item 应该是哪种类型。
+
+```
+struct Stack<Element>: Container {
+    // Stack<Element> 的原始实现部分
+    var items = [Element]()
+    mutating func push(_ item: Element) {
+        items.append(item)
+    }
+    mutating func pop() -> Element {
+        return items.removeLast()
+    }
+    // Container 协议的实现部分
+    mutating func append(_ item: Element) {
+        self.push(item)
+    }
+    var count: Int {
+        return items.count
+    }
+    subscript(i: Int) -> Element {
+        return items[i]
+    }
+}
+```
+
+此时，占位类型参数 Element 被用作 append(_:) 方法的 item 参数和下标的返回类型。Swift 可以据此推断出 Element 的类型即是 Item 的类型。
+
+## 11. 扩展现有类型来指定关联类型
+
+ Swift 的 Array 类型已经提供 append(_:) 方法，count 属性，以及带有 Int 索引的下标来检索其元素。这三个功能都符合 Container 协议的要求，也就意味着你只需声明 Array 遵循Container 协议，就可以扩展 Array，使其遵从 Container 协议。你可以通过一个空扩展来实现这点，正如通过扩展采纳协议中的描述：
+ 
+ ```
+ extension Array: Container {}
+ ```
+ 
+ Array 的 append(_:) 方法和下标确保了 Swift 可以推断出 Item 具体类型。定义了这个扩展后，你可以将任意 Array 当作 Container 来使用。
+
+
 ## 12.给关联类型添加约束
 
 你可以在协议里给关联类型添加约束来要求遵循协议的类型满足约束。例如，下面的代码定义了 Container 协议， 要求关联类型 Item 必须遵循 Equatable 协议：

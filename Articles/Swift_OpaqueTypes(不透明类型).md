@@ -140,10 +140,13 @@ struct FlippedShape<T: Shape>: Shape {
 返回类型始终唯一的要求，并不会影响在返回的不透明类型中使用泛型。比如下面的函数，就是在返回的底层类型中使用了泛型参数：
 
 ```
-func `repeat`<T: Shape>(shape: T, count: Int) -> some Collection {
+
+func repeat<T: Shape>(shape: T, count: Int) -> some Collection {
     return Array<T>(repeating: shape, count: count)
 }
+ 
 ```
+
 
 这种情况下，返回的底层类型会根据 T 的不同而发生变化：但无论什么形状被传入，repeat(shape:count:) 都会创建并返回一个元素为相应形状的数组。尽管如此，返回值始终还是同样的底层类型 [T]， 所以这符合不透明返回类型始终唯一的要求。
 

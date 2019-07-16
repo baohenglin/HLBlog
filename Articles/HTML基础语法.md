@@ -25,7 +25,7 @@ HTML 标记标签通常被称为 HTML 标签 (HTML tag)。HTML 标签是由尖�
 
 ### HTML标题
 
-HTML 标题（Heading）是通过<h1>、<h2>、<h3>、<h4>、<h5>、<h6> 标签来定义的。<h1> 表示主标题（the main heading），<h2> 表示二级子标题（subheadings），<h3>表示三级子标题（sub-subheadings），<h4>、<h5>、<h6>依次递减字体的大小。
+HTML 标题（Heading）是通过“<h1>、<h2>、<h3>、<h4>、<h5>、<h6>” 标签来定义的。<h1> 表示主标题（the main heading），“<h2> ”表示二级子标题（subheadings），“<h3>”表示三级子标题（sub-subheadings），“<h4>、<h5>、<h6>”依次递减字体的大小。
   
   
 ```

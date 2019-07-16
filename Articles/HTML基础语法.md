@@ -27,13 +27,14 @@ HTML 标记标签通常被称为 HTML 标签 (HTML tag)。HTML 标签是由尖�
 
 HTML 标题（Heading）是通过<h1> - <h6> 标签来定义的。<h1> 表示主标题（the main heading），<h2> 表示二级子标题（subheadings），<h3>表示三级子标题（sub-subheadings），<h4>、<h5>、<h6>依次递减字体的大小。
   
+  
 ```
 <h1>我的第一个标题一级标题</h1>
 <h2 style="background-color: green">二级标题</h2>
 <h3 style="background-color: gray">三级标题</h3>
-<!--使用font-family（字体），color（颜色），和font-size（字体大小）属性来定义字体的样式，而不是使用<font>标签。-->
+//使用font-family（字体），color（颜色），和font-size（字体大小）属性来定义字体的样式，而不是使用<font>标签。
 <h4 style="font-family: verdana;color: greenyellow;font-size: 20px">四级标题</h4>
-<!--使用 text-align（文字对齐）属性指定文本的水平与垂直对齐方式。文本对齐属性 text-align取代了旧标签 <center> -->
+//使用 text-align（文字对齐）属性指定文本的水平与垂直对齐方式。文本对齐属性 text-align取代了旧标签 <center>
 <h5 style="text-align: center">五级标题</h5>
 <h6>六级标题</h6>
 ```

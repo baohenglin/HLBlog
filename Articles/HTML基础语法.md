@@ -25,7 +25,7 @@ HTML 标记标签通常被称为 HTML 标签 (HTML tag)。HTML 标签是由尖�
 
 ### HTML标题
 
-HTML 标题（Heading）是通过h1-h6 标签来定义的。"h1" 表示主标题（the main heading），“h2 ”表示二级子标题（subheadings），“h3”表示三级子标题（sub-subheadings），“h4"、"h5"、"h6"依次递减字体的大小。
+HTML 标题（Heading）是通过h1-h6 元素来定义的。"h1" 表示主标题（the main heading），“h2 ”表示二级子标题（subheadings），“h3”表示三级子标题（sub-subheadings），“h4"、"h5"、"h6"依次递减字体的大小。
   
   
 ```
@@ -63,8 +63,32 @@ HTML 链接是通过标签<a>来定义的。a标签，也叫anchor（锚点）�
 <br/>
 ```
 
-hr 标签在 HTML 页面中创建水平线。
+hr 元素在 HTML 页面中创建水平线。
 
 ```
 <hr>
 ```
+### 图像标签 <img>
+
+HTML 图像是通过标签<img>来定义的。使用img元素来为你的网站添加图片，使用src 属性指向一个图片的具体地址。img元素是自关闭元素，不需要结束标记。
+
+```
+<img border="1"
+     src="imagesFile/RedPacketListImg.jpg"
+     alt="Pulpit rock"
+     width="100"
+     height="60"
+     align="middle">
+```
+### 强调标签
+
+HTML 使用标签 <b>("bold") 与 <i>("italic") 对输出的文本进行格式，如：粗体 or 斜体。这些 HTML 标签被称为格式化标签。
+  
+通常标签 <strong> 替换加粗标签 <b> 来使用，<em> 替换 <i>标签使用。 然而，这些标签的含义是不同的：
+  
+<b> 用来定义加粗 
+  
+<i> 定义斜体文本。
+  
+<strong> 或者 <em> 是为了强调而加粗显示。
+

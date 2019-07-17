@@ -203,4 +203,95 @@ strong 元素或者 em 元素是为了强调而加粗显示。
 
 <!--<cite></cite>标签用于定义作品（比如书籍、歌曲、电影、电视节目、绘画、雕塑等）的标题，<city>标签内的文本将会以斜体显示。注意：人名不属于作品的标题-->
 <p><cite>The Scream</cite> by Edward Munch. Painted in 1893.</p>
+<dfn>定义项目</dfn>
 ```
+
+### HTML 链接
+
+HTML使用标签 <a>来设置超文本链接，是可以从一个页面指向另一个目的端的链接。超链接可以是一个字，一个词，或者一组词，也可以是一幅图像，您可以点击这些内容来跳转到新的文档或者当前文档中的某个部分。
+  
+当您把鼠标指针移动到网页中的某个链接上时，箭头会变为一只小手。在标签<a> 中使用了href属性来描述链接的地址。
+  
+默认情况下，链接将以以下形式出现在浏览器中：
+
+* 一个未访问过的链接显示为蓝色字体并带有下划线;
+* 访问过的链接显示为紫色并带上下划线;
+* 点击链接时，链接显示为红色并带上下划线。
+
+如果为这些超链接设置了CSS样式，展示样式会根据CSS的设定来显示。
+
+**HTML 空链接**：HTML 空链接：指指向链接后，鼠标变成手形，但单击后仍停留在当前页面。
+
+**HTML 链接 - target 属性**：
+  使用 Target 属性，你可以定义被链接的文档在何处显示（在新的窗口打开，还是在原有的窗口中打开）。
+如果为这些超链接设置了CSS样式，展示样式会根据CSS的设定来显示。
+
+默认的被链接文档会在原有的窗口中打开的。如果将 target 属性设置为 "_blank" 则文档就会在新窗口打开。
+
+**HTML 链接 - id 属性**：
+  id 属性可用于在一个 HTML 文档中创建书签标记。书签是不以任何特殊的方式显示，在HTML文档中是不显示的，所以对于读者来说是隐藏的。
+  
+```
+<!--空链接，#表示空链接-->
+<a href="#">链接文字</a>
+<br />
+<a href="//www.baidu.com">Visit 百度</a>
+<br />
+<!--使用 Target 属性，你可以定义被链接的文档在何处显示（在新的窗口打开，还是在原有的窗口中打开）
+默认的被链接文档会在原有的窗口中打开的。如果将 target 属性设置为 "_blank" 则文档就会在新窗口打开。-->
+<a href="//www.w3cschool.cn" target="_blank">访问W3CSchool教程</a>
+<br/>
+<!--id 属性可用于在一个 HTML 文档中创建书签标记。书签是不以任何特殊的方式显示，在HTML文档中是不显示的，所以对于读者来说是隐藏的。-->
+<a id="tips">Useful Tips Section</a>
+<br/>
+<a href="#tips">Visit the Useful Tips Section</a>
+<br/>
+<a href="//www.w3cschool.cn/html_links.html#tips"> Visit the Useful Tips Section</a>
+
+<p>创建图片链接:
+    <a href="http://www.w3cschool.cn/html/html-tutorial.html">
+        <img src="/statics/images/course/smiley.gif" alt="HTML 教程" width="32" height="32">
+    </a>
+</p>
+<p>无边框的图片链接:
+    <a href="http://www.w3cschool.cn/html/html-tutorial.html">
+        <img border="0" src="/statics/images/course/smiley.gif" alt="HTML 教程" width="132" height="132"></a></p>
+
+<p>
+    <a href="#C4">查看章节 4</a>
+</p>
+
+<h2>章节 1</h2>
+<p>这边显示该章节的内容……</p>
+
+<h2>章节 2</h2>
+<p>这边显示该章节的内容……</p>
+
+<h2>章节 3</h2>
+<p>这边显示该章节的内容……</p>
+
+<h2><a id="C4">章节 4</a></h2>
+<p>这边显示该章节的内容……</p>
+
+<h2>章节 5</h2>
+<p>这边显示该章节的内容……</p>
+
+<h2>章节 6</h2>
+<p>这边显示该章节的内容……</p>
+
+<h2>章节 7</h2>
+<p>这边显示该章节的内容……</p>
+
+<h2>章节 8</h2>
+<p>这边显示该章节的内容……</p>
+
+<h2>章节 9</h2>
+<p>这边显示该章节的内容……</p>
+
+<p>
+    这是一个电子邮箱链接
+    <a href="mailto:1693288015@qq.com?Subject=Hello%20again" target="_top">发送邮件</a>
+</p>
+<b>注意:</b> 单词之间空格使用 %20 代替，以确保浏览器可以正常显示文本。
+```
+

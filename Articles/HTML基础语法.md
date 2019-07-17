@@ -109,6 +109,48 @@ strong 元素或者 em 元素是为了强调而加粗显示。
 |ins元素|定义插入字|
 |del元素|定义删除字|
 
+```
+<!--上标标签<sup></sup>-->
+<p>10<sup>5</sup></p>
+<!--<sub>标签用来定义下标字-->
+<p>H<sub>2</sub>0</p>
+<!--<small>标签用来定义小号字-->
+<p>small标签<small>用来定义</small>小号字</p>
+<!--<p>big标签用来定义<big>大号字</big></p>-->
+<!--ins标签用来定义插入文本-->
+<p>ins标签用来定义<ins>插入字</ins></p>
+<!--del标签用来定义删除文本-->
+<p>del标签用来定义<del>删除字</del></p>
+<!--em标签用来定义斜体-->
+<p>em标签用来定义<em>斜体</em></p>
+```
+## HTML“计算机输出”标签
+
+|元素|作用|
+|:---|:--|
+|code元素|定义计算机代码|
+|kbd元素|定义键盘码|
+|samp元素|定义计算机代码样本|
+|var元素|定义变量|
+|pre元素|定义预格式文本|
+
+```
+<!--<code>标签定义计算机代码-->
+<code>This is a code</code>
+<!--<kbd>标签定义键盘码-->
+<p>Type the following in the Run dialog: <kbd>cmd</kbd><br />Then click the OK button.</p>
+<p>Save the document by pressing <kbd>Ctrl</kbd> + <kbd>S</kbd></p>
+<!--<samp>标签用来定义计算机代码样本-->
+<p>Regular text. <samp>This is sample text.</samp> Regular text.</p>
+<!--<var>标签用来定义变量-->
+<p>A simple equation: <var>x</var> = <var>y</var> + 2 </p>
+<!--<pre>标签定义预格式文本-->
+<pre>
+此例演示如何使用 pre 标签
+对空行和    空格
+进行控制
+</pre>
+```
 
 
 

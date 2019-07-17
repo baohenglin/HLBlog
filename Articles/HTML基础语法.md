@@ -300,6 +300,74 @@ HTML 头部元素包含关于文档的概要信息，也被称为元信息（met
 
 |元素|作用|
 |:---|:--|
-|head元素|<head> 元素包含了所有的头部标签元素。在 <head>元素中你可以插入脚本（scripts）, 样式文件（CSS），及各种 meta 信息。可以添加在头部区域的元素标签为: <title>, <style>, <meta>, <link>, <script>, <noscript> 和 <base>。<head> 元素描述了文档的各种属性和信息，其中包括文档的标题、在 Web 中的位置以及和其他文档的关系等|
+|head元素|<head> 元素包含了所有的头部标签元素。在 <head>元素中你可以插入脚本（scripts）, 样式文件（CSS），及各种 meta 信息。其中包括文档的标题、在 Web 中的位置以及和其他文档的关系等|
 |title元素|title标签定义了浏览器工具栏的标题。当网页添加到收藏夹时，显示在收藏夹中的标题。显示在搜索引擎结果页面的标题。|
+  
+```
+<head lang="en">
+    <!--HTML<head>头部包含关于文档的概要信息，也被称为元信息(meta-information)。<head>元素包含了所有
+的头部标签元素。在<head>元素中你可以插入脚本(script)，样式文件(CSS)以及各种meta信息。可以在头部
+区域添加的元素标签为:<title>,<style>,<meta>,<link>,<script>,<noscript>和<base>。-->
+    <!--<meta>标签：
+    提供了元数据，也就是向下面例子中那样定义网页编码格式为utf-8。
+    元数据也不显示在页面上，但会被浏览器解析。
+    meta元素通常用于指定网页的描述，关键词，文件的最后修改时间，作者，和其他元数据。
+    元数据可以使用于浏览器（如何显示内容或重新加载页面），搜索引擎（关键词），或其他Web服务。
+
+    <meta> 标签- 使用实例:
+    (1)为搜索引擎定义关键词:<meta name="keywords" content="HTML, CSS, XML, XHTML, JavaScript">
+    (2)为网页定义描述内容:<meta name="description" content="Free Web tutorials on HTML and CSS">
+    (3)定义网页作者:<meta name="author" content="Hege Refsnes">
+    (4)每30秒钟刷新当前页面:<meta http-equiv="refresh" content="30">
+    -->
+    <meta charset="UTF-8">
+    <!--<title>标签：
+    定义了不同文档的标题。其在HTML/XHTML文档中是必须的。
+    (1)定义了浏览器工具栏的标题
+    (2)当网页添加到收藏夹时，显示在收藏夹中的标题
+    (3)显示在搜索引擎结果页面的标题
+    -->
+    <title>MyFirstHTMLTitle™</title>
+    <!--<base>标签：
+    <base>标签描述了基本的链接地址/链接目标，该标签作为HTML文档中所有的链接标签的默认链接。
+    在 HTML 中，<base> 标签没有结束标签；在 XHTML 中，<base> 标签必须被正确地关闭。
+    -->
+    <!--<base href="https://github.com/baohenglin" target="_blank">-->
+    <!--<link标签：
+        <link> 标签定义了文档与外部资源之间的关系。
+        <link> 标签通常用于链接到样式表:
+   -->
+    <link rel="stylesheet" type="text/css" href="mystyle.css">
+    <!--<style>标签：
+    <style> 标签定义了HTML文档的样式文件引用地址.在<style> 元素中你需要指定样式文件来渲染HTML文档:
+    -->
+    <!--CSS内部样式表-->
+    <style type="text/css">
+        body {background-color: white}
+        h1 {color: red}
+        /*设置<p>标签定义的段落正文的字体颜色*/
+        /*p {color: purple}*/
+    </style>
+    <!--<script>标签：
+        <script>标签用于链接外部JavaScript文件的外部资源。<script> 元素既可包含脚本语句，也可以通过 "src" 属性
+        指向外部脚本文件。
+        假如 <script> 元素内部的代码没有位于某个函数中，那么这些代码会在页面被加载时被立即执行。
+        <frameset> 标签之后的脚本会被忽略。
+
+        有多种执行外部脚本的方法：
+            (1)如果 async="async"：脚本相对于页面的其余部分异步地执行（当页面继续进行解析时，脚本将被执行）
+            (2)如果不使用 async 且 defer="defer"：脚本将在页面完成解析时执行
+            (3)如果既不使用 async 也不使用 defer：在浏览器继续解析页面之前，立即读取并执行脚本
+    -->
+    <script type="text/javascript" src="jquery.js"></script>
+    <!--<script type = "text/javascript">-->
+        <!--alert("php中文网\n网址为：www.php.cn");-->
+    <!--</script>-->
+
+    <!--noscript 元素:
+    用来定义在脚本未被执行时的替代内容（文本）。
+    此标签可被用于可识别 <noscript> 标签但无法支持其中的脚本的浏览器。
+    -->
+</head>
+```
 

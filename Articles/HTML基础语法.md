@@ -124,7 +124,7 @@ strong 元素或者 em 元素是为了强调而加粗显示。
 <!--em标签用来定义斜体-->
 <p>em标签用来定义<em>斜体</em></p>
 ```
-## HTML“计算机输出”标签
+### HTML“计算机输出”标签
 
 |元素|作用|
 |:---|:--|
@@ -151,6 +151,56 @@ strong 元素或者 em 元素是为了强调而加粗显示。
 进行控制
 </pre>
 ```
+### HTML“引文引用”标签
 
+|元素|作用|
+|:---|:--|
+|abbr元素|定义缩写|
+|address元素|定义地址|
+|bdo元素|定义文字方向|
+|blockquote元素|定义长的引用|
+|q元素|定义短的引用语|
+|cite元素|定义引用、引证|
+|dfn元素|定义一个定义项目|
 
+```
+<!--<abbr>标签用于展示缩写-->
+<p>You can use <abbr title="Cascading Style Sheets">CSS</abbr> to style your <abbr title="HyperText Markup Language">HTML</abbr>.</p>
+<p>Using <abbr>HTML</abbr> is fun and easy!</p>
+<!--<address>标签用于定义地址、URL、电子邮箱、电话号码、社交媒体账号、地理坐标等-->
+<address>
+    You can contact author at <a href="http://www.somedomain.com/contact">
+    www.somedomain.com</a>.<br>
+    If you see any bugs, please <a href="mailto:webmaster@somedomain.com">
+    contact webmaster</a>.<br>
+    You may also want to visit us:<br>
+    Mozilla Foundation<br>
+    331 E Evelyn Ave<br>
+    Mountain View, CA 94041<br>
+    USA
+</address>
 
+<p>Contact the author of this page:</p>
+<address>
+    <a href="mailto:jim@rock.com">jim@rock.com</a><br>
+    <a href="tel:+13115552368">(311) 555-2368</a>
+</address>
+
+<!--<bdo>标签用于覆盖当前文本的朝向，它使得字符按给定的方向排列-->
+<p>This text will go left to right.</p>
+<p><bdo dir="rtl">This text will go right to left.</bdo></p>
+
+<!--<blockquote>标签同样是对文本进行引用，不同的是该标签引用的是长文本，<blockquote>标签内的内容会自动缩进-->
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+    For 50 years, WWF has been protecting the future of nature. The world's leading conservation organization, WWF works in 100 countries and is supported by 1.2 million members in the United States and close to 5 million globally.
+</blockquote>
+
+<!--如果标记是不需要段落分隔的短引用，请使用<q>标签-->
+<p>WWF's goal is to:
+<q>Build a future where people live in harmony with nature.</q>
+    We hope they succeed.
+</p>
+
+<!--<cite></cite>标签用于定义作品（比如书籍、歌曲、电影、电视节目、绘画、雕塑等）的标题，<city>标签内的文本将会以斜体显示。注意：人名不属于作品的标题-->
+<p><cite>The Scream</cite> by Edward Munch. Painted in 1893.</p>
+```

@@ -673,4 +673,127 @@ caption
     caption-side: bottom;
 }
 ```
+
+## CSS盒子模型（Box Model）：
+
+所有HTML元素可以看作盒子，在CSS中，"box model"这一术语是用来设计和布局时使用。CSS盒模型本质上是一个盒子，封装周围的HTML元素，它包括：边距，边框，填充，和实际内容。盒模型允许我们在其它元素和周围元素边框之间的空间放置元素。
+
+在页面设计中有4个常见属性：content（内容）、padding（内边距）、border（边框）和margin（外边距），我们把这4部分转化成日常生活的盒子来理解，所以称为盒子模型。
+
+盒子模型结构：
+
+* Margin（外边距） - 清除边框区域。Margin没有背景颜色，它是完全透明。
+* Border（边框） - 边框周围的填充和内容。边框是受到盒子的背景颜色影响。
+* Padding（内边距） - 清除内容周围的区域。会受到框中填充的背景颜色影响。
+* Content（内容） - 盒子的内容，显示文本和图像。
+
+为了在所有浏览器中的元素的宽度和高度设置正确的话，你需要知道的盒模型是如何工作的。在盒模型中，外边距可以是负值，而且在很多情况下都要使用负值的外边距。
+
+一个盒子实际所占有的宽度（或高度）是由“内容+内边距+边框+外边距”组成的。
+
+在网页设计中，content常指文字、图片等元素，但是也可以是小盒子（DIV嵌套），padding只有宽度属性，可以理解为真实盒子中抗震辅料的厚度，而border有大小和颜色之分，又可以理解为真实盒子的厚度以及这个盒子的颜色或材料，margin就是该盒子与其他东西要保留多大距离。
+
+在CSS中可以通过设置width和height的值来控制内容所占矩形的大小，并且对于任何一个盒子，都可以分别设定4条边各自的border、padding和margin。因此只要利用好这些属性，就能够实现各种各样的排版效果。
+
+[CSS盒子模型科普](https://www.w3cschool.cn/css_series/css_series-6tza24q1.html)
+
+## CSS Border（边框）：
+    
+CSS 边框 (border) 可以是围绕元素内容和内边距的一条或多条线，对于这些线条，您可以自定义它们的样式、宽度以及颜色。使用CSS边框属性，我们可以创建出比HTML中更加优秀的效果。
+
+1.边框样式：
+
+边框样式属性指定要显示什么样的边界。border-style属性用来定义边框的样式。border-style 值包括以下几种:
+
+* (1)none: 默认无边框
+* (2)dotted: 定义一个点线框
+* (3)dashed: 定义一个虚线框
+* (4)solid: 定义实线边界
+* (5)double: 定义两个边界。 两个边界的宽度和border-width的值相同
+* (6)groove: 定义3D沟槽边界。效果取决于边界的颜色值
+* (7)ridge: 定义3D脊边界。效果取决于边界的颜色值
+* (8)inset:定义一个3D的嵌入边框。效果取决于边界的颜色值
+* (9)outset: 定义一个3D突出边框。 效果取决于边界的颜色值
+
+2.边框宽度:
+
+可以通过 border-width 属性为边框指定宽度。为边框指定宽度有两种方法：可以指定长度值，比如 2px 或 0.1em；或者使用 3 个关键字之一，它们分别是 thin 、medium（默认值） 和 thick。
+
+【注意】CSS 没有定义 3 个关键字的具体宽度，所以一个用户代理可能把 thin(细) 、medium(默认) 和 thick(粗) 分别设置为等于 5px、3px 和 2px，而另一个用户代理则分别设置为 3px、2px 和 1px。
+
+3.边框颜色：
+
+border-color属性用于设置边框的颜色，它一次可以接受最多 4 个颜色值。可以设置的颜色。【注意】border-color单独使用是不起作用的，必须得先使用border-style来设置边框样式。
+
+4.边框-单独设置各边：
+
+在CSS中，可以指定不同的侧面不同的边框。border-style属性可以有1-4个值：
+
+* (1)border-style:dotted solid double dashed;表示上边框是 dotted,右边框是 solid,底边框是 double,左边框是 dashed
+* (2)border-style:dotted solid double;表示上边框是 dotted,左、右边框是 solid,底边框是 double
+* (3)border-style:dotted solid;表示上、底边框是 dotted,左、右边框是 solid
+* (4)border-style:dotted;表示四面边框是 dotted。
+
+5.透明边框
+
+CSS2 引入了边框颜色值 transparent，这个值用于创建有宽度的不可见边框。利用 transparent，使用边框就像是额外的内边距一样；此外还有一个好处，就是能在你需要的时候使其可见。这种透明边框相当于内边距，因为元素的背景会延伸到边框区域（如果有可见背景的话）。
+
+6.CSS边框属性总结：
+
+* border              简写属性，用于把针对四个边的属性设置在一个声明。
+* border-style        用于设置元素所有边框的样式，或者单独地为各边设置边框样式。
+* border-width        简写属性，用于为元素的所有边框设置宽度，或者单独地为各边边框设置宽度。
+* border-color        简写属性，设置元素的所有边框中可见部分的颜色，或为 4 个边分别设置颜色。
+* border-bottom       简写属性，用于把下边框的所有属性设置到一个声明中。
+* border-bottom-color 设置元素的下边框的颜色。
+* border-bottom-style 设置元素的下边框的样式。
+* border-bottom-width 设置元素的下边框的宽度。
+* border-left         简写属性，用于把左边框的所有属性设置到一个声明中。
+* border-left-color   设置元素的左边框的颜色。
+* border-left-style   设置元素的左边框的样式。
+* border-left-width   设置元素的左边框的宽度。
+* border-right        简写属性，用于把右边框的所有属性设置到一个声明中。
+* border-right-color  设置元素的右边框的颜色。
+* border-right-style  设置元素的右边框的样式
+* border-right-width  设置元素的右边框的宽度
+* border-top          简写属性，用于把上边框的所有属性设置到一个声明中。
+* border-top-color    设置元素的上边框的颜色。
+* border-top-style    设置元素的上边框的样式。
+* border-top-width    设置元素的上边框的宽度。
+
+```
+<p class="none">No border.</p>
+<p class="dotted">A dotted border.</p>
+<p class="dashed">A dashed border.</p>
+<p class="solid">A solid border.</p>
+<p class="double">A double border.</p>
+<p class="groove">A groove border.</p>
+<p class="ridge">A ridge border.</p>
+<p class="inset">An inset border.</p>
+<p class="outset">An outset border.</p>
+<p class="hidden">A hidden border.</p>
+
+//CSS文件
+p.none {border-style:none;}
+p.dotted {border-style:dotted;}
+p.dashed {border-style:dashed; border-color: green; border-width: 5px}
+p.solid {border-style:solid; border-width: thick}
+p.double {border-style:double;}
+p.groove {border-style:groove;}
+p.ridge {border-style:ridge;}
+p.inset {border-style:inset;}
+p.outset {border-style:outset;}
+p.hidden {border-style:hidden;}
+/*边框-简写属性*/
+p.solid {border: 10px solid #ff0000}
+/*指定不同的侧面不同的边框*/
+p.solid
+{
+    border-top-style: dotted;
+    border-right-style: solid;
+    border-bottom-style: dotted;
+    border-left-style: solid;
+}
+```
+
   

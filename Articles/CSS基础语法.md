@@ -39,3 +39,24 @@ CSS 规则由两个主要的部分构成：选择器(Selector)，以及一条或
 其中，选择器Selector通常是您需要改变样式的 HTML 元素。h1是Selector。每条声明由一个属性和一个值组成。
 
 属性（property）是您希望设置的样式属性（style attribute）。每个属性有一个值。属性和值被冒号分开。color和font-size是属性，它们所对应的值分别为冒号后面的purple和28px。
+
+
+## id 选择器:
+        
+id 选择器可以为标有特定 id 的 HTML 元素指定特定的样式。HTML元素以id属性来设置id选择器,CSS 中 id选择器以 "#" 来定义。ID属性不要以数字开头，数字开头的ID在 Mozilla/Firefox 浏览器中不起作用。ID属性只能在每个 HTML 文档中出现一次。
+
+```
+<h1 id="titleOne">CSS语法2</h1>
+#titleOne {color: green}
+```
+
+## class选择器：
+        
+ class 选择器用于描述一组元素的样式，class 选择器有别于id选择器，class可以在多个元素中使用。class 选择器在HTML中以class属性表示, 在 CSS 中，类选择器以一个点"."号显示。类名的第一个字符不能使用数字！它无法在 Mozilla 或 Firefox 中起作用。
+ 
+ ```
+ /*所有拥有 center 类的 HTML 元素均为居中。*/
+.center {text-align:center;}
+```
+ 
+

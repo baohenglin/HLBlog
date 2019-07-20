@@ -102,84 +102,84 @@ body {background-image:url(/images/back40.gif);}
 
 样式表允许以多种方式规定样式信息。样式可以规定在单个的 HTML 元素中，在 HTML 页的头元素中，或在一个外部的 CSS 文件中。甚至可以在同一个 HTML 文档内部引用多个外部样式表。
 
-    (1)层叠次序：
+(1)层叠次序：
     
-        一般而言，所有的样式会根据下面的规则层叠于一个新的虚拟样式表中，优先级从高到低依次为：
+一般而言，所有的样式会根据下面的规则层叠于一个新的虚拟样式表中，优先级从高到低依次为：
         
-       * (1)内联样式（在 HTML 元素内部）
-       * (2)内部样式表（位于 <head> 标签内部）
-       * (3)外部样式表
-       * (4)浏览器缺省设置
+  * (1)内联样式（在 HTML 元素内部）
+  * (2)内部样式表（位于 <head> 标签内部）
+  * (3)外部样式表
+  * (4)浏览器缺省设置
        
-    因此，内联样式（在 HTML 元素内部）拥有最高的优先权，这意味着它将优先于以下的样式声明：<head> 标签中的样式声明，外部样式表中的样式声明，或者浏览器中的样式声明（缺省值）。如果你使用了外部文件的样式在内部样式中也定义了该样式，则内部样式表会取代外部文件的样式。
+  因此，内联样式（在 HTML 元素内部）拥有最高的优先权，这意味着它将优先于以下的样式声明：<head> 标签中的样式声明，外部样式表中的样式声明，或者浏览器中的样式声明（缺省值）。如果你使用了外部文件的样式在内部样式中也定义了该样式，则内部样式表会取代外部文件的样式。
 
-    (2)多重样式优先级深入理解：
+ (2)多重样式优先级深入理解：
     
-        多重样式优先级顺序：下列是一份优先级逐级增加的选择器列表，其中数字 7 拥有最高的优先权：
+  多重样式优先级顺序：下列是一份优先级逐级增加的选择器列表，其中数字 7 拥有最高的优先权：
         
-        * 1.通用选择器（*）
-        * 2.元素(类型)选择器
-        * 3.类选择器
-        * 4.属性选择器
-        * 5.伪类
-        * 6.ID 选择器
-        * 7.内联样式
+  * 1.通用选择器（*）
+  * 2.元素(类型)选择器
+  * 3.类选择器
+  * 4.属性选择器
+  * 5.伪类
+  * 6.ID 选择器
+  * 7.内联样式
 
     【注意】!important 规则例外。当 !important 规则被应用在一个样式声明中时，该样式声明会覆盖CSS中任何其他的声明，无论它处在声明列表中的哪里。尽管如此，!important规则还是与优先级毫无关系。使用 !important 不是一个好习惯，因为它改变了你样式表本来的级联规则，从而使其难以调试。
     
 【总结】要优化考虑使用样式规则的优先级来解决问题而不是 !important；只在需要覆盖全站或外部 css（例如引用的 ExtJs 或者 YUI ）的特定页面中使用 !important；永远不要在全站范围的 css 上使用 !important；永远不要在你的插件中使用 !important。
 
-    (3)权重计算：内联样式表的权值最高 1000；ID 选择器的权值为 100；Class 类选择器的权值为 10；HTML 标签选择器的权值为 1。
+(3)权重计算：内联样式表的权值最高 1000；ID 选择器的权值为 100；Class 类选择器的权值为 10；HTML 标签选择器的权值为 1。
 
-    (4)CSS 优先级法则：
+(4)CSS 优先级法则：
     
-       * A 选择器都有一个权值，权值越大越优先；
-       * B 当权值相等时，后出现的样式表设置要优于先出现的样式表设置；
-       * C 创作者的规则高于浏览者：即网页编写者设置的CSS 样式的优先权高于浏览器所设置的样式；
-       * D 继承的CSS 样式不如后来指定的CSS 样式；
-       * E 在同一组属性设置中标有"!important"规则的优先级最大；
+ * A 选择器都有一个权值，权值越大越优先；
+ * B 当权值相等时，后出现的样式表设置要优于先出现的样式表设置；
+ * C 创作者的规则高于浏览者：即网页编写者设置的CSS 样式的优先权高于浏览器所设置的样式；
+ * D 继承的CSS 样式不如后来指定的CSS 样式；
+ * E 在同一组属性设置中标有"!important"规则的优先级最大；
        
 ## CSS Backgrounds(背景):
 
-    CSS 背景属性用于定义HTML元素的背景。CSS 属性定义背景效果：
-    
-       * background               简写属性，作用是将背景属性设置在一个声明中。
-       * background-color         设置元素的背景颜色。
-       * background-image         把图像设置为背景。
-       * background-repeat        设置背景图像是否及如何重复。
-       * background-attachment    背景图像是否固定或者随着页面的其余部分滚动。
-       * background-position      设置背景图像的起始位置。
+CSS 背景属性用于定义HTML元素的背景。CSS 属性定义背景效果：
 
-    (1)背景颜色background-color:
-    
-        background-color 属性定义了元素的背景颜色。页面的背景颜色使用在body的选择器中。background-color 不能继承，其默认值是 transparent。如果一个元素没有指定背景色，那么背景就是透明的，这样其父元素的背景才可见。
-        
-    (2)背景图像background-image:
-        
-        background-image 属性描述了元素的背景图像.默认情况下，背景图像进行平铺重复显示，以覆盖整个元素实体.
-        
-        ```
-        body {background-image:url('paper.gif');}
-        ```
-        
-    (3)背景图像 - 水平或垂直平铺background-repeat
-    
-        如果需要在HTML页面上对背景图像进行平铺，可以使用 background-repeat 属性。默认情况下background-image 属性会在页面的水平或者垂直方向平铺。为了让页面排版更加合理，不影响文本的阅读，我们可以改变图像的位置。可以利用 background-position 属性改变图像在背景中的位置。
-        
-        为 background-position 属性提供值的方法有很多。首先，可以使用一些关键字：top、bottom、left、right和 center；其次，可以使用长度值，如 100px 或 5cm；最后也可以使用百分数值。不同类型的值对于背景图像的放置稍有差异。
-       
-       如果设置值为 50px 100px，图像的左上角将在元素内边距区左上角向右 50 像素、向下 100 像素的位置上。
-       
-       ```
-    {
-      background-color: black;
-      background-image: url("imagesFile/RedPacketListImg.jpg");
-      background-repeat: no-repeat;
-      background-position: 20px -200px;
+* background               简写属性，作用是将背景属性设置在一个声明中。
+* background-color         设置元素的背景颜色。
+* background-image         把图像设置为背景。
+* background-repeat        设置背景图像是否及如何重复。
+* background-attachment    背景图像是否固定或者随着页面的其余部分滚动。
+* background-position      设置背景图像的起始位置。
 
-      background: black url("imagesFile/RedPacketListImg.jpg") no-repeat top right;
-    }
-       ```
+(1)背景颜色background-color:
+
+background-color 属性定义了元素的背景颜色。页面的背景颜色使用在body的选择器中。background-color 不能继承，其默认值是 transparent。如果一个元素没有指定背景色，那么背景就是透明的，这样其父元素的背景才可见。
+
+(2)背景图像background-image:
+
+background-image 属性描述了元素的背景图像.默认情况下，背景图像进行平铺重复显示，以覆盖整个元素实体.
+
+```
+body {background-image:url('paper.gif');}
+```
+
+(3)背景图像 - 水平或垂直平铺background-repeat
+
+如果需要在HTML页面上对背景图像进行平铺，可以使用 background-repeat 属性。默认情况下background-image 属性会在页面的水平或者垂直方向平铺。为了让页面排版更加合理，不影响文本的阅读，我们可以改变图像的位置。可以利用 background-position 属性改变图像在背景中的位置。
+
+为 background-position 属性提供值的方法有很多。首先，可以使用一些关键字：top、bottom、left、right和 center；其次，可以使用长度值，如 100px 或 5cm；最后也可以使用百分数值。不同类型的值对于背景图像的放置稍有差异。
+
+如果设置值为 50px 100px，图像的左上角将在元素内边距区左上角向右 50 像素、向下 100 像素的位置上。
+       
+```
+{
+  background-color: black;
+  background-image: url("imagesFile/RedPacketListImg.jpg");
+  background-repeat: no-repeat;
+  background-position: 20px -200px;
+
+  background: black url("imagesFile/RedPacketListImg.jpg") no-repeat top right;
+}
+```
  ## CSS 文本属性
  
  (1)CSS Text文本格式：

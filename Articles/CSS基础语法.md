@@ -796,4 +796,189 @@ p.solid
 }
 ```
 
+## CSS轮廓(outline)属性
+
+轮廓（outline）是绘制于元素周围的一条线，位于边框边缘的外围，可起到突出元素的作用。轮廓（outline）属性指定了样式，颜色和外边框的宽度。轮廓（outline）属性的位置让它不像边框那样参与到文档流中，因此轮廓出现或消失时不会影响文档流，即不会导致文档的重新显示。
+
+outline用于一个声明中设置所有轮廓属性。包括outline-color、outline-style、outline-width、inherit。
+
+outline-style用于设置轮廓的样式。包括none、dotted、dashed、solid、double、groove、ridge、inset、outset、inherit。
+
+outline-width用于设置轮廓的宽度。包括thin、medium、thick、length、inherit。
+
+outline-color用于设置轮廓的颜色。
+
+```
+p {
+    border: 1px solid #ff0000;
+    outline: green dotted thick;
+}
+```
+
+## CSS Margin(外边距)
+
+CSS Margin(外边距)属性定义元素周围的空间。CSS Margin属性接受任何长度单位、百分数值甚至负值。margin没有背景颜色，是完全透明的。margin可以单独改变元素的上，下，左，右边距。也可以一次改变所有的属性。
+
+Margin可能的值包括：
+
+* (1)auto：设置浏览器边距。这样做的结果会依赖于浏览器
+* (2)length：定义一个固定的margin（使用像素，pt，em等）
+* (3)百分比：定义一个使用百分比的边距。
+
+Margin可以使用负值，即重叠的内容。
+
+## CSS Padding（填充）：
+
+CSS Padding（填充）属性定义元素边框与元素内容之间的空间。当元素的 Padding（填充）（内边距）被清除时，所"释放"的区域将会受到元素背景颜色的填充。单独使用填充属性可以改变上下左右的填充。缩写填充属性也可以使用，一旦改变一切都改变。
+
+Padding可能的值包括length和百分比。其中length定义一个固定的填充(像素, pt, em,等)。CSS padding属性的百分比数值是相对于其父元素的 width 计算的，如果改变了父元素的 width，则它们也会改变。
+
+【注意】CSS padding 属性可以使用长度值或百分比值，但与 margin 属性不同，它不允许使用负值。
+
+比如：
+
+```
+<div style="width: 200px;">
+<p>This paragragh is contained within a DIV that has a width of 200 pixels.</p>
+</div>
+```
+
+【注意】：上下内边距与左右内边距一致，即上下内边距的百分数会相对于父元素宽度设置，而不是相对于高度。
+
+
+
+填充- 单边内边距属性：
+
+在CSS中，它可以指定不同的侧面不同的填充。比如padding-top、padding-bottom、padding-right、padding-left。也可以采用简写属性，比如
+
+```
+padding:25px 50px 75px 100px;表示上填充为25px，右填充为50px，下填充为75px，左填充为100px。
+padding:25px 50px 75px;表示上填充为25px，左右填充为50px，下填充为75px。
+```
+
+## CSS分组
+
+CSS 分组可以将具有相同样式的选择器进行分组，减少代码量。
+
+Grouping Selectors:
+
+在样式表中有很多具有相同样式的元素。为了尽量减少代码，你可以使用分组选择器。每个选择器用逗号分隔。可以对任意多个选择器进行分组，CSS 对此没有任何限制。
+
+```
+h1
+{
+    color:green;
+}
+h2
+{
+    color:green;
+}
+p
+{
+    color:green;
+}
+/*以上代码可以通过分组选择器可简化为如下*/
+h1, h2, p
+{
+    color: green;
+}
+```
+
+## 嵌套选择器
+
+嵌套选择器适用于选择器内部的选择器的样式。下面的例子，为所有p元素指定一个样式，为所有元素指定一个class="marked"的样式，并仅用于class="标记"，类内的p元素指定第三个样式:
+
+```
+p
+{
+    color:blue;
+    text-align:center;
+}
+.marked
+{
+    background-color:red;
+}
+.marked p
+{
+    color:white;
+}
+p {border-style:none;}
+```
+
+## CSS 尺寸 (Dimension)
+
+CSS 尺寸 (Dimension) 属性允许你控制元素的高度和宽度。同样，它允许你增加行间距。
+
+所有CSS Dimension属性包括：
+
+* height          设置元素的高度
+* line-height     设置行高
+* max-height      设置元素的最大高度
+* max-width       设置元素的最大宽度
+* min-height      设置元素的最小高度
+* min-width       设置元素的最小宽度
+* width           设置元素的宽度
+
+
+## CSS Display(显示) 与 Visibility（可见性）
+
+CSS display 属性和 visibility属性都可以用来隐藏某个元素，但是这两个属性有不同的定义。display属性设置一个元素应如何显示，visibility属性指定一个元素应可见还是隐藏。
+
+1.隐藏元素 - display:none或visibility:hidden：
+
+隐藏一个元素可以通过把display属性设置为"none"，或把visibility属性设置为"hidden"。但是请注意，这两种方法会产生不同的结果。
+
+visibility:hidden可以隐藏某个元素，但隐藏的元素仍需占用与未隐藏之前一样的空间。也就是说，该元素虽然被隐藏了，但仍然会影响布局。display:none可以隐藏某个元素，且隐藏的元素不会占用任何空间。也就是说，该元素不但被隐藏了，而且该元素原本占用的空间也会从页面布局中消失。
+
+```
+<h1>This is a visible heading</h1>
+<h1 class="hidden">This is a hidden heading</h1>
+<p>注意,隐藏标题仍然占用空间.</p>
+
+//CSS
+h1.hidden {visibility:hidden;}
+```
+
+2.CSS Display - 块和内联元素
+
+块元素是一个元素，占用了全部宽度，在前后都是换行符。块元素的例子：<h1>、<p>、<div>。内联元素只需要必要的宽度，不强制换行。内联元素的例子：<span>、<a>
+
+可以更改内联元素为块元素，反之亦然，可以使页面看起来是以一种特定的方式组合，并仍然遵循web标准。
+
+```
+//例1 按照内联元素显示
+<ul>
+    <li><a href="/html/" target="_blank">HTML</a></li>
+    <li><a href="/css/" target="_blank">CSS</a></li>
+    <li><a href="/js/" target="_blank">JavaScript</a></li>
+    <li><a href="/xml/" target="_blank">XML</a></li>
+</ul>
+
+//CSS
+li{display:inline}
+```
+
+```
+//例2 将p元素按照内联元素显示
+<p>A display property with a value of "inline" results in</p>
+<p>no distance between two elements.</p>
+//CSS
+p {display:inline;}
+```
+
+```
+//例3 按照块元素显示
+<h2>Nirvana</h2>
+<span>Record: MTV Unplugged in New York</span>
+<span>Year: 1993</span>
+<h2>Radiohead</h2>
+<span>Record: OK Computer</span>
+<span>Year: 1997</span>
+
+//CSS
+/*把span元素作为块元素*/
+span {display:block;}
+```
+
+
   

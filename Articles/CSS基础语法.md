@@ -980,5 +980,76 @@ p {display:inline;}
 span {display:block;}
 ```
 
+## CSS Positioning(定位)
+
+CSS position 属性，允许您将布局的一部分与另一部分重叠，还可以完成多年来通常需要使用多个表格才能完成的任务。CSS定位属性允许你为一个元素定位。它也可以将一个元素放在另一个元素后面，并指定一个元素的内容太大时，应该发生什么。
+
+有四种不同的定位方法：
+
+(1)Static定位，也就是HTML元素的默认值，即没有定位，元素出现在正常的流中。
+
+(2）Fixed定位，元素的位置相对于浏览器窗口是固定位置。即使窗口是滚动的它也不会移动。【注意】Fixed 定位在 IE7 和 IE8 下需要描述 !DOCTYPE 才能支持。Fixed定位使元素的位置与文档流无关，因此不占据空间。Fixed定位的元素和其他元素重叠。
+
+(3)Relative 定位。相对定位元素的定位是相对其正常位置。相对定位元素经常被用来作为绝对定位元素的容器块。
+
+(4)Absolute 定位。绝对定位的元素的位置相对于最近的已定位父元素，如果元素没有已定位的父元素，那么它的位置相对于<html>
+
+
+**重叠的元素**:
+
+元素的定位与文档流无关，所以它们可以覆盖页面上的其它元素。z-index属性指定了一个元素的堆叠顺序（哪个元素应该放在前面，或后面）。一个元素可以有正数或负数的堆叠顺序。
+
+【注意】具有更高堆叠顺序的元素总是在较低的堆叠顺序元素的前面。如果两个定位元素重叠，没有指定z - index，最后定位在HTML代码中的元素将被显示在最前面。
 
   
+## CSS Float（浮动）：
+
+CSS float 属性定义元素在哪个方向浮动，浮动元素会生成一个块级框，直到该块级框的外边缘碰到包含框或者其他的浮动框为止。CSS 的 Float（浮动），会使元素向左或向右移动，其周围的元素也会重新排列。Float（浮动），往往是用于图像，但它在布局时一样非常有用。
+
+
+**元素怎样浮动？**
+
+元素的水平方向浮动，意味着元素只能左右移动而不能上下移动。一个浮动元素会尽量向左或向右移动，直到它的外边缘碰到包含框或另一个浮动框的边框为止。浮动元素之后的元素将围绕它，浮动元素之前的元素将不会受到影响。
+
+
+**彼此相邻的浮动元素：**
+
+如果你把几个浮动的元素放到一起，如果有空间的话，它们将彼此相邻。
+
+**清除浮动：**
+
+元素浮动之后，周围的元素会重新排列，为了避免这种情况，使用 clear 属性。clear 属性指定元素两侧不能出现浮动元素。
+
+
+```
+<h3>图片库</h3>
+<p>试着调整窗口,看看当图片没有足够的空间会发生什么。</p>
+<br/>
+<img class="thumbnail" src="imagesFile/RedPacketListImg.jpg" width="300" height="90">
+<img class="thumbnail" src="imagesFile/RedPacketListImg.jpg" width="300" height="80">
+<img class="thumbnail" src="imagesFile/RedPacketListImg.jpg" width="300" height="90">
+<img class="thumbnail" src="imagesFile/RedPacketListImg.jpg" width="300" height="90">
+<h3 class="text_line">第二行</h3>
+<img class="thumbnail" src="imagesFile/RedPacketListImg.jpg" width="300" height="90">
+<img class="thumbnail" src="imagesFile/RedPacketListImg.jpg" width="300" height="80">
+<img class="thumbnail" src="imagesFile/RedPacketListImg.jpg" width="300" height="90">
+<img class="thumbnail" src="imagesFile/RedPacketListImg.jpg" width="300" height="90">
+//CSS
+img
+{
+    float:right;
+}
+/*彼此相邻的浮动元素：*/
+.thumbnail
+{
+    float:left;
+    width:110px;
+    height:90px;
+    margin:5px;
+}
+.text_line
+{
+    clear:both;
+    margin-bottom:2px;
+}
+```

@@ -1414,5 +1414,9 @@ a:hover,a:active {
     display: block;
 }
 ```
+上面实例解析：
 
+HTML 部分：我们可以使用任何的 HTML元素来打开下拉菜单，如：<span>, 或 a <button> 元素。使用容器元素 (如： <div>) 来创建下拉菜单的内容，并放在任何你想放的位置上。使用 <div> 元素来包裹这些元素，并使用 CSS 来设置下拉内容的样式。
+
+CSS 部分：.dropdown 类使用 position:relative, 这将设置下拉菜单的内容放置在下拉按钮 (使用 position:absolute) 的右下角位置。.dropdown-content 类中是实际的下拉菜单。默认是隐藏的，在鼠标移动到指定元素后会显示。 注意 min-width 的值设置为 160px。你可以随意修改它。 注意: 如果你想设置下拉内容与下拉按钮的宽度一致，可设置 width 为 100% ( overflow:auto 设置可以在小尺寸屏幕上滚动)。我们使用 box-shadow 属性让下拉菜单看起来像一个"卡片"。:hover 选择器用于在用户将鼠标移动到下拉按钮上时显示下拉菜单。
 

@@ -1053,3 +1053,67 @@ img
     margin-bottom:2px;
 }
 ```
+
+## CSS 水平对齐(Horizontal Align)
+
+关于 CSS 中元素的水平对齐(Horizontal Align)，你可以使用多种属性来进行设置。
+
+(1)块元素对齐。块元素是一个元素，占用了全宽，前后都是换行符。块元素有h1元素、p元素、div元素。
+
+(2)中心对齐,使用margin属性。块元素可以把左，右页边距设置为"自动"对齐。需要注意的是，在IE8中使用margin:auto属性无法正常工作，除非声明 !DOCTYPE。
+IE5中块元素有一个margin处理BUG。为了使上述例子能工作，在IE5中，需要添加一些额外的代码。
+
+```
+<div class="center">
+    <p>In my younger and more vulnerable years my father gave me some advice that I've been turning over in my mind ever since.</p>
+    <p>'Whenever you feel like criticizing anyone,' he told me, 'just remember that all the people in this world haven't had the advantages that you've had.'</p>
+</div>
+<p><b>注意: </b>使用 margin:auto无法兼容 IE8, 除非!DOCTYPE已经声明.</p>
+
+//CSS
+.center
+{
+    margin:auto;
+    /*如果宽度是100％，对齐是没有效果的。*/
+    width:70%;
+    background-color:#b0e0e6;
+}
+```
+
+(3)使用position属性设置左，右对齐。元素对齐的方法之一是使用绝对定位。需要注意的是绝对定位与文档流无关，所以它们可以覆盖页面上的其它元素。
+
+```
+<div class="right">
+    <p>In my younger and more vulnerable years my father gave me some advice that I've been turning over in my mind ever since.</p>
+    <p>'Whenever you feel like criticizing anyone,' he told me, 'just remember that all the people in this world haven't had the advantages that you've had.'</p>
+</div>
+//CSS
+{
+    position:absolute;
+    right:0px;
+    width:300px;
+    background-color:#b0e0e6;
+}
+```
+
+(4)使用float属性设置左，右对齐。
+
+```
+.right {
+    float: right;
+    width: 300px;
+    background-color: darkseagreen;
+}
+```
+
+(5)使用Padding设置垂直居中对齐。
+
+```
+.center {
+    /*简单的设置垂直居中对齐的方式就是头部顶部使用 padding*/
+    padding: 70px 0;
+    border: 3px solid purple;
+    /*如果要水平和垂直都居中，可以使用 padding 和 text-align: center*/
+    text-align: center;
+}
+```

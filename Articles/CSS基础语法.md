@@ -1117,3 +1117,116 @@ IE5中块元素有一个margin处理BUG。为了使上述例子能工作，在IE
     text-align: center;
 }
 ```
+
+## CSS组合选择符
+
+CSS 组合选择符可以让你直观的明白选择器与选择器之间的关系。组合选择符说明了两个选择器直接的关系。CSS组合选择符包括各种简单选择符的组合方式。在 CSS3 中包含了四种组合方式:
+
+* (1)后代选取器(以空格分隔)：后代选取器匹配所有指定元素的后代元素。
+* (2)子元素选择器(以大于号分隔）：与后代选择器相比，子元素选择器（Child selectors）只能选择作为某元素子元素的元素。
+* (3)相邻兄弟选择器（以加号分隔）：相邻兄弟选择器（Adjacent sibling selector）可选择紧接在另一元素后的元素，且二者有相同父元素。如果需要选择紧接在另一个元素后的元素，而且二者有相同的父元素，可以使用相邻兄弟选择器（Adjacent sibling selector）。
+* (4)普通兄弟选择器（以波浪号分隔）:普通兄弟选择器选取所有指定元素的相邻兄弟元素。
+
+```
+<div>
+    <p>段落 <i>i</i>。 在 <i>div</i>  中。</p>
+    <p>段落 2。 在 <i>div元素</i>  中。</p>
+</div>
+
+<p>段落 3。不在 div 中。</p>
+<p>段落 4。不在 div 中。</p>
+//CSS
+/*方式一：后代选取器(以空格分隔)*/
+div p {
+    background-color: yellow;
+}
+/*方式二：子元素选择器(以大于号分隔）*/
+div>p {
+    background-color: #ff0000;
+}
+/*方式三：相邻兄弟选择器（以加号分隔）*/
+div+p {
+    background-color:purple;
+}
+/*方式四：普通兄弟选择器（以波浪号分隔）*/
+div~p {
+    background-color: cadetblue;
+}
+```
+
+## CSS伪类：
+
+CSS伪选择器包含伪类(pseudo-classes)和伪元素(pseudo-elements)。伪类是用来添加一些选择器的特殊效果。由于状态的变化是非静态的，所以元素达到一个特定状态时，它可能得到一个伪类的样式；当状态改变时，它又会失去这个样式。由此可以看出，它的功能和class有些类似，但它是基于文档之外的抽象，所以叫伪类。
+
+伪类的语法：
+
+```
+selector:pseudo-class {property:value;}
+```
+
+anchor伪类：
+
+在CSS定义中，a:hover 必须被置于 a:link 和 a:visited 之后，才是有效的。在 CSS 定义中，a:active 必须被置于 a:hover 之后，才是有效的。伪类的名称不区分大小写。
+
+```
+<p><b><a href="https://github.com/baohenglin/HLBlog/blob/master/Articles/CSS%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95.md" target="_blank">这是一个链接</a></b></p>
+<p><b>注意：</b> a:hover <i>必须</i> 在 a:link 和 a:visited 之后，需要严格按顺序才能看到效果。</p>
+<p><b>注意：</b> a:active 必须在 a:hover 之后。</p>
+//CSS
+a:link {color:#FF0000;}    /* unvisited link */
+a:visited {color:#00FF00;} /* visited link */
+a:hover {color:#FF00FF;}   /* mouse over link */
+a:active {color:#0000FF;}  /* selected link */
+```
+
+## CSS - :first - child伪类
+
+可以使用 :first-child 伪类来选择元素的第一个子元素。在IE8的之前版本必须声明<!DOCTYPE> ，这样 :first-child 才能生效。
+
+```
+/*选择器匹配作为任何元素的第一个子元素的 <p> 元素*/
+p:first-child {
+    color: cornflowerblue;
+}
+/*匹配所有<p> 元素中的第一个 <i> 元素*/
+p>i:first-child {
+    color:  chartreuse;
+}
+*匹配所有作为第一个子元素的<p> 元素中的所有 <i> 元素*/
+p:first-child i {
+    color:  chartreuse;
+}
+```
+
+## CSS - :lang 伪类:
+
+:lang 伪类使你有能力为不同的语言定义特殊的规则。IE8必须声明<!DOCTYPE>才能支持;lang伪类。
+
+```
+<p>Some text <q lang="no">A quote in a paragraph</q> Some text.</p>
+/*:lang 类为属性值为 no 的q元素定义引号的类型*/
+q:lang(no) {
+    quotes: "~" "~";
+}
+```
+
+## CSS伪类/元素汇总：
+
+    选择器                 示例                      示例说明
+
+   * :link                 a:link                    选择所有未访问链接
+   * :visited              a:visited                 选择所有访问过的链接
+   * :active               a:active                  选择正在活动链接
+   * :hover                a:hover                   把鼠标放在链接上的状态
+   * :focus                input:focus               选择元素输入后具有焦点
+   * :first-letter         p:first-letter            选择每个<p> 元素的第一个字母
+   * :first-line           p:first-line              选择每个<p> 元素的第一行
+   * :first-child          p:first-child             选择器匹配属于任意元素的第一个子元素的 <p> 元素
+   * :before               p:before                  在每个<p>元素之前插入内容
+   * :after                p:after                   在每个<p>元素之后插入内容
+   * :lang(language)       p:lang(it)                为<p>元素的lang属性选择一个开始值
+
+
+
+
+

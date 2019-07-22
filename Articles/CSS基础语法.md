@@ -1226,6 +1226,158 @@ q:lang(no) {
    * :after                p:after                   在每个<p>元素之后插入内容
    * :lang(language)       p:lang(it)                为<p>元素的lang属性选择一个开始值
 
+## CSS伪元素
+CSS伪元素是用来添加一些选择器的特殊效果。CSS伪元素控制的内容和元素是没有差别的，但是它本身只是基于元素的抽象，并不存在于文档中，所以称为伪元素。
+
+伪元素的语法：selector:pseudo-element {property:value;}
+
+CSS类也可以使用伪元素：selector.class:pseudo-element {property:value;}
+
+## :first-line 伪元素：
+
+"first-line" 伪元素用于向文本的首行设置特殊样式。需要注意的是，"first-line" 伪元素只能用于块级元素。可应用于 "first-line" 伪元素的属性包括：font properties、color properties 、background properties、word-spacing、letter-spacing、text-decoration、vertical-align、text-transform、line-height、clear。
+
+在下面的例子中，浏览器会根据 "first-line" 伪元素中的样式对 p 元素的第一行文本进行格式化:
+
+```
+p:first-line
+{
+    color:#000000;
+    font-variant:small-caps;
+}
+```
+
+## :first-letter 伪元素：
+
+"first-letter" 伪元素用于向文本的首字母设置特殊样式。 "first-letter" 伪元素只能用于块级元素。可应用于 "first-letter" 伪元素的属性包括：font properties、color properties 、background properties、margin properties、padding properties、border properties、text-decoration、vertical-align (only if "float" is "none")、text-transform、line-height、float、clear。
+
+```
+p:first-letter
+{
+    color:#ff0000;
+    font-size:xx-large;
+}
+```
+
+## 伪元素和CSS类
+
+伪元素可以结合CSS类来一块使用。
+
+下面的例子会使所有 class 为 article 的段落的首字母变为红色：
+
+```
+ <p class="article">A paragraph in an article</p>
+ //CSS
+ p.article:first-letter {color:#ff0000;}
+```
+
+## CSS - :before 伪元素
+
+":before" 伪元素可以在元素的内容前面插入新内容。
+
+```
+h1:before
+{
+    content:url(imagesFile/share_wechat.png);
+}
+```
+
+## CSS - :after 伪元素：
+
+":after" 伪元素可以在元素的内容之后插入新内容。
+
+## CSS 导航栏
+
+作为标准的HTML基础一个导航栏是必须的。导航条基本上是一个链接列表，所以使用 <ul> 和 <li> 元素非常有意义。导航栏分为垂直导航栏和水平导航栏。
+  
+* 垂直导航
+
+```
+<ul>
+    <li><a href="#home">Home</a></li>
+    <li><a href="#news">News</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#about">About</a></li>
+</ul>
+
+/*从列表中删除边距和填充*/
+ul {
+    移除列表前小标志。一个导航栏并不需要列表标记
+    list-style-type: none;
+    移除浏览器的默认设置将边距和填充设置为0
+    margin: 0;
+    padding: 0;
+}
+a {
+    显示块元素的链接，让整体变为可点击链接区域（不只是文本），它允许我们指定宽度
+    display: block;
+    元素在垂直导航栏的的宽度。如果省略宽度，IE6可能产生意想不到的效果
+    width: 60px;
+    background-color: #dddddd;
+}
+```
+
+* 水平导航：有两种方法创建横向导航栏，即内联方式和浮动方式。使用内联或浮动的列表项。这两种方法都很好，但如果你想链接都具有相同的大小，你必须使用浮动的方法。
+
+(1)内嵌列表项：
+
+```
+/*display:inline - 默认情况下，<li>元素是块元素。在这里，我们删除换行符之前和之后每个列表项，以显示一行。*/
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    padding-top:6px;
+    padding-bottom:6px;
+}
+li {
+    display: inline;
+}
+a:link,a:visited
+{
+    font-weight:bold;
+    color:#FFFFFF;
+    background-color:#98bf21;
+    text-align:center;
+    padding:6px;
+    text-decoration:none;
+    text-transform:uppercase;
+}
+a:hover,a:active
+{
+    background-color:#7A991A;
+}
+```
+
+(2)浮动列表项
+
+```
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+li {
+    /*float:left - 使用浮动块元素的幻灯片彼此相邻*/
+    float: left;
+}
+a:link,a:visited {
+    /*display:block - 显示块元素的链接，让整体变为可点击链接区域（不只是文本），它允许我们指定宽度*/
+    display: block;
+    /*width:60px - 块元素默认情况下是最大宽度。我们要指定一个60像素的宽度*/
+    width: 120px;
+    color:#FFFFFF;
+    background-color:#98bf21;
+    text-align:center;
+    padding:4px;
+    text-decoration:none;
+    text-transform:uppercase;
+}
+a:hover,a:active {
+    background-color: #7A991A;
+}
+```
 
 
 

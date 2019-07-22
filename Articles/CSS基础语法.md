@@ -1379,6 +1379,40 @@ a:hover,a:active {
 }
 ```
 
+## CSS 下拉菜单
 
+使用 CSS 创建一个鼠标移动上去后显示下拉菜单的效果。当鼠标移动到指定元素上时，会出现下拉菜单。
+
+```
+<h2>鼠标移动后出现下拉菜单</h2>
+<p>将鼠标移动到指定元素上就能看到下拉菜单。</p>
+
+<div class="dropdown">
+    <span>鼠标移动到我这！</span>
+    <div class="dropdown-content">
+        <p>W3Cschool教程</p>
+        <p>www.w3cschool.cn</p>
+    </div>
+</div>
+//CSS
+/*下拉菜单*/
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+```
 
 

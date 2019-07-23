@@ -1529,7 +1529,67 @@ div.desc
 }
 ```
 
+## CSS 图像透明/不透明
 
+CSS3中属性的透明度是 opacity。IE9，Firefox，Chrome，Opera，和Safari浏览器使用透明度属性可以将图像变的不透明。 Opacity属性值从0.0 - 1.0。值越小，使得元素更加透明。IE8和早期版本使用滤镜：alpha（opacity= x）。 x可以采取的值是从0 - 100。较低的值，使得元素更加透明。
 
+示例1效果：当用户将鼠标悬停在图像上时，我们希望图片是清晰的；当鼠标指针远离图像时，图像将重新具有透明度。
+
+```
+<h1>Image Transparency</h1>
+<img src="ImagesFile/RedPacketListImg.jpg" width="150" height="113" alt="klematis">
+<img src="ImagesFile/RedPacketListImg.jpg" width="150" height="113" alt="klematis">
+//CSS
+/*CSS图像透明/不透明*/
+img {
+    opacity: 0.4;
+    /* For IE8 and earlier */
+    filter:alpha(opacity=40);
+}
+img:hover {
+    opacity: 1.0;
+    /* For IE8 and earlier */
+    filter:alpha(opacity=100);
+}
+```
+
+示例2：创建一个具有文本且拥有背景图像的透明框
+
+```
+<div class="background">
+    <div class="transbox">
+        <p>This is some text that is placed in the transparent box.
+            This is some text that is placed in the transparent box.
+            This is some text that is placed in the transparent box.
+            This is some text that is placed in the transparent box.
+
+        </p>
+    </div>
+</div>
+//CSS
+div.background
+{
+    width: 500px;
+    height: 250px;
+    background: url(ImagesFile/RedPacketListImg.jpg) repeat;
+    border: 2px solid black;
+}
+div.transbox
+{
+    width: 400px;
+    height: 180px;
+    margin: 30px 50px;
+    background-color: #ffffff;
+    border: 1px solid black;
+    opacity:0.6;
+    filter:alpha(opacity=60); /* For IE8 and earlier */
+}
+div.transbox p
+{
+    margin: 30px 40px;
+    font-weight: bold;
+    color: #000000;
+}
+```
 
 

@@ -1687,5 +1687,76 @@ resolution                      定义设备的分辨率。如：96dpi, 300dpi, 
 scan                            定义电视类设备的扫描工序
 width                           定义输出设备中的页面可见区域宽度
 ```
+## CSS 属性选择器
+
+CSS 属性选择器就是指可以根据元素的属性以及属性值来选择元素。具有特定属性的HTML元素样式不仅仅是class和id。IE7和IE8需声明!DOCTYPE才支持属性选择器！IE6和更低的版本不支持属性选择器。
+
+```
+<h1 title="Hello world">Hello world</h1>
+<a title="w3cschool" href="http://w3cschool.cn">w3cschool</a>
+//CSS
+[title]
+{
+    color:blue;
+}
+```
+
+**属性和值选择器**：
+
+```
+[title=w3cschool]
+{
+border:5px solid green;
+}
+```
+
+**属性和值的选择器 - 多值**:
+
+```
+<h2>Will apply to:</h2>
+<h1 title="hello world">Hello world</h1>
+<p title="student hello">Hello CSS students!</p>
+<hr>
+<h2>Will not apply to:</h2>
+//CSS
+[title~=hello]
+{
+color:blue;
+} 
+```
+
+**表单样式**:
+
+属性选择器样式无需使用class或id的形式，如下所示：
+
+```
+<form name="input" action="demo-form" method="get">
+Firstname:<input type="text" name="fname" value="Peter" size="20">
+Lastname:<input type="text" name="lname" value="Griffin" size="20">
+<input type="button" value="Example Button">
+</form>
+//CSS
+input[type="text"]
+{
+width:150px;
+display:block;
+margin-bottom:10px;
+background-color:yellow;
+}
+input[type="button"]
+{
+width:120px;
+margin-left:35px;
+display:block;
+}
+```
+
+
+
+
+
+
+
+
 
 

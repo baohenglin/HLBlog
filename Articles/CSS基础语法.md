@@ -1592,4 +1592,34 @@ div.transbox p
 }
 ```
 
+## CSS 图像拼合技术：
+图像拼合就是单个图像的集合。有许多图像的网页可能需要很长的时间来加载和生成多个服务器的请求。使用图像拼合会降低服务器的请求数量，并节省带宽。
+
+创建一个带悬停效果的导航列表
+
+```
+<ul id="navlist">
+    <li id="home"><a href="default.asp"></a></li>
+    <li id="prev"><a href="css_intro.asp"></a></li>
+    <li id="next"><a href="css_syntax.asp"></a></li>
+</ul>
+//CSS
+<style>
+        #navlist{position:relative;}
+        #navlist li{margin:0;padding:0;list-style:none;position:absolute;top:0;}
+        #navlist li, #navlist a{height:44px;display:block;}
+
+        #home{left:0px;width:46px;}
+        #home{background:url('ImagesFile/RedPacketListImg.jpg') 0 0;}
+        #home a:hover{background: url('ImagesFile/RedPacketListImg.jpg') 0 -45px;}
+
+        #prev{left:63px;width:43px;}
+        #prev{background:url('ImagesFile/RedPacketListImg.jpg') -47px 0;}
+        #prev a:hover{background: url('ImagesFile/RedPacketListImg.jpg') -47px -45px;}
+
+        #next{left:129px;width:43px;}
+        #next{background:url('ImagesFile/RedPacketListImg.jpg') -91px 0;}
+        #next a:hover{background: url('ImagesFile/RedPacketListImg.jpg') -91px -45px;}
+    </style>
+```
 

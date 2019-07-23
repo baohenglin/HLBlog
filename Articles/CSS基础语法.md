@@ -1482,3 +1482,54 @@ li a:hover, .dropdown:hover .dropbtn {
 }
 ```
 
+## 图片廊
+
+示例代码如下：
+
+```
+<div class="img">
+    <a target="_blank" href="javascript;:"><img src="/statics/images/course/klematis_small.jpg" alt="Klematis" width="110" height="90"></a>
+    <div class="desc">Add a description of the image here</div>
+</div>
+<div class="img">
+    <a target="_blank" href="javascript;:"><img src="/statics/images/course/klematis2_small.jpg" alt="Klematis" width="110" height="90"></a>
+    <div class="desc">Add a description of the image here</div>
+</div>
+<div class="img">
+    <a target="_blank" href="javascript;:"><img src="/statics/images/course/klematis3_small.jpg" alt="Klematis" width="110" height="90"></a>
+    <div class="desc">Add a description of the image here</div>
+</div>
+<div class="img">
+    <a target="_blank" href="javascript;:"><img src="/statics/images/course/klematis4_small.jpg" alt="Klematis" width="110" height="90"></a>
+    <div class="desc">Add a description of the image here</div>
+</div>
+//CSS
+div.img
+{
+    margin: 2px;
+    border: 1px solid #000000;
+    height: auto;
+    width: auto;
+    float: left;
+    text-align: center;
+}
+div.img img
+{
+    display: inline;
+    margin: 3px;
+    border: 1px solid #ffffff;
+}
+div.img a:hover img {border: 1px solid #0000ff;}
+div.desc
+{
+    text-align: center;
+    font-weight: normal;
+    width: 120px;
+    margin: 2px;
+}
+```
+
+
+
+
+

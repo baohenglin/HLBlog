@@ -23,20 +23,34 @@ JavaScript由三部分组成，分别是ECMAScript、DOM(文档对象模型)、B
 * 服务端方面：有些有大前端团队的公司开始使用nodejs做web服务端开发。
 * 其他方面：  JavaScript还可以运用在APP、微信小程序、桌面应用、浏览器插件开发、游戏开发、VR、AR、硬件、操作系统等领域。
 
-## JavaScript输出：
-
-JavaScript 没有任何打印或者输出的函数。不过 JavaScript 可以通过不同的方式来输出数据：
-
-* (1)使用 document.write() 方法将内容写到 HTML 文档中。
-* (2)使用 window.alert() 弹出警告框。
-* (3)使用 innerHTML 写入到 HTML 元素。
-* (4)使用 console.log() 写入到浏览器的控制台。
-
 ## JavaScript的使用
 
 HTML 中的脚本必须位于 <script> 与 </script> 标签之间。脚本可被放置在 HTML 页面的 <body> 和 <head> 部分中，或者同时存在于两个部分中。通常的做法是把函数放入 <head> 部分中，或者放在页面底部。这样就可以把它们安置到同一处位置，不会干扰页面的内容。
   
 如需在 HTML 页面中插入 JavaScript，请使用 <script> 标签。<script> 和 </script> 会告诉 JavaScript 在何处开始和结束。浏览器会解释并执行位于 <script> 和 </script>之间的 JavaScript 代码。那些老旧的实例可能会在 <script> 标签中使用 type="text/javascript"。现在已经不必这样做了。JavaScript 是所有现代浏览器以及 HTML5 中的默认脚本语言。
+  
+## JavaScript输出：
+
+JavaScript 没有任何打印或者输出的函数。不过 JavaScript 可以通过不同的方式来输出数据：
+
+* (1)使用 document.write() 方法将内容写到 HTML 文档中。
+
+请使用 document.write() 仅仅向文档输出写内容。如果在文档已完成加载后执行 document.write，整个 HTML 页面将被覆盖。所谓的HTML文档加载，其实HTML文档是自上而下的加载HTML表示的內容，当整個页面內容都加载完毕之后，再调用document.write()这方法(function)会将显示的页面内容都清除掉，相当于重新加载。
+
+* (2)使用 window.alert() 弹出警告框。
+* (3)使用 innerHTML 写入到 HTML 元素。
+* (4)使用 console.log() 写入到浏览器的控制台。
+
+```
+<script>
+    a = 3;
+    b = 4;
+    c = a + b;
+    console.log(c);
+</script>
+```
+
+
   
 
 

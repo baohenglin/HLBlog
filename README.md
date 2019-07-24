@@ -55,6 +55,7 @@
 |前端|[《前端学习路线图》](https://github.com/baohenglin/HLBlog/blob/master/Articles/前端学习路线图.md)<br>|
 |HTML|[《HTML基础语法》](https://github.com/baohenglin/HLBlog/blob/master/Articles/HTML%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95.md)<br>|
 |CSS|[《CSS基础语法》](https://github.com/baohenglin/HLBlog/blob/master/Articles/CSS%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95.md)<br>|
+|JavaScript|[《JavaScript基础语法》]()<br>|
 |Flutter|[《Flutter基础语法》]()<br>|
 
 <!--## *🌐前端*

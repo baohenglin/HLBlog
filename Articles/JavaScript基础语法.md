@@ -31,3 +31,12 @@ JavaScript 没有任何打印或者输出的函数。不过 JavaScript 可以通
 * (2)使用 window.alert() 弹出警告框。
 * (3)使用 innerHTML 写入到 HTML 元素。
 * (4)使用 console.log() 写入到浏览器的控制台。
+
+## JavaScript的使用
+
+HTML 中的脚本必须位于 <script> 与 </script> 标签之间。脚本可被放置在 HTML 页面的 <body> 和 <head> 部分中，或者同时存在于两个部分中。通常的做法是把函数放入 <head> 部分中，或者放在页面底部。这样就可以把它们安置到同一处位置，不会干扰页面的内容。
+  
+如需在 HTML 页面中插入 JavaScript，请使用 <script> 标签。<script> 和 </script> 会告诉 JavaScript 在何处开始和结束。浏览器会解释并执行位于 <script> 和 </script>之间的 JavaScript 代码。那些老旧的实例可能会在 <script> 标签中使用 type="text/javascript"。现在已经不必这样做了。JavaScript 是所有现代浏览器以及 HTML5 中的默认脚本语言。
+  
+
+

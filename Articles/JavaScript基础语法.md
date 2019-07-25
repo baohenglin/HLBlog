@@ -71,7 +71,7 @@ function myFunction(a, b) { return a * b;}
 
 ## JavaScript 变量
 
-在编程语言中，变量用于存储数据值。JavaScript 使用关键字 var 来定义变量， 使用等号来为变量赋值。变量可以通过变量名访问。在指令式语言中，变量通常是可变的。字面量是一个恒定的值。JavaScript 中，常用驼峰法的命名规则来命名变量。
+在编程语言中，变量用于存储数据值。JavaScript 使用关键字 var 来定义变量， 使用等号来为变量赋值。变量可以通过变量名访问。在指令式语言中，变量通常是可变的。字面量是一个恒定的值。JavaScript 中，常用驼峰法的命名规则来命名变量。JavaScript具有隐含的全局概念，意味着你不声明的任何变量都会成为一个全局对象属性。
 
 变量也能以 $ 和 _ 符号开头（不过我们不推荐这么做），一般变量以字母开头，变量名称对大小写敏感（y 和 Y 是不同的变量）。
 
@@ -155,6 +155,40 @@ var cars=new Array("Saab","Volvo","BMW");
 var cars=["Saab","Volvo","BMW"];
 ```
 
+**JavaScript 对象**
+
+对象由花括号分隔。在括号内部，对象的属性以名称和值对的形式 (name : value) 来定义。属性由逗号分隔。
+
+```
+ar person={firstname:"John", lastname:"Doe", id:5566};
+```
+
+对象属性有两种寻址方式：
+
+```
+name=person.lastname;
+name=person["lastname"];
+```
+
+**Undefined 和 Null
+
+Undefined 这个值表示变量不含有值。使用var声明但未初始化的变量的默认值是Undefined。
+
+null逻辑上表示一个空对象的指针。使用typeof检测时返回object。
+
+由于undefined派生于null，因此在使用"=="比较时会返回ture。
+
+**声明变量类型**
+
+当您声明新变量时，可以使用关键词 "new" 来声明其类型。JavaScript 变量均为对象。当您声明一个变量时，就创建了一个新的对象。
+
+```
+var carname=new String;
+ var x=      new Number;
+ var y=      new Boolean;
+ var cars=   new Array;
+ var person= new Object;
+```
 
   
 

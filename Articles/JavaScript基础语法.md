@@ -120,6 +120,40 @@ var carname;
 
 JavaScript 标识符必须以字母、下划线（_）或美元符（$）开始。后续的字符可以是字母、数字、下划线或美元符（数字是不允许作为首字符出现的，以便 JavaScript 可以轻易区分开标识符和数字）。
 
+## JS数据类型：
+
+JS数据类型包括字符串（String）、数字(Number)、布尔(Boolean)、数组(Array)、对象(Object)、空（Null）、未定义（Undefined）。JavaScript 拥有动态类型。这意味着相同的变量可用作不同的类型。
+
+```
+var x;               // x 为 undefined
+var x = 5;           // 现在 x 为数字
+var x = "John";      // 现在 x 为字符串
+```
+
+JavaScript 布尔只能有两个值：true 或 false。
+
+**JavaScript 数组**
+
+下面的代码创建名为 cars 的数组:
+
+```
+var cars=new Array();
+ cars[0]="Saab";
+ cars[1]="Volvo";
+ cars[2]="BMW";
+```
+
+或者(condensed array)，如下：
+
+```
+var cars=new Array("Saab","Volvo","BMW");
+```
+
+或者(literal array)
+
+```
+var cars=["Saab","Volvo","BMW"];
+```
 
 
   

@@ -293,6 +293,57 @@ function displayDate()
 * onload        浏览器已完成页面的加载
 
 
+## JavaScript 字符串
+
+在 JavaScript 中，字符串写在单引号或双引号中。可以使用反斜杠 (\) 来转义 "Vikings" 字符串中的双引号，如下:
+
+```
+"We are the so-called \"Vikings\" from the north." 
+```
+
+通常， JavaScript 字符串是原始值，可以使用字符创建： var firstName = "John"。但我们也可以使用 new 关键字将字符串定义为一个对象：
+
+```
+var firstName = new String("John")
+```
+
+但是一般不要创建 String 对象。它会拖慢执行速度，并可能产生其他副作用。
+
+**字符串属性和方法**
+
+原始值字符串，如 "John", 没有属性和方法(因为他们不是对象)。原始值可以使用 JavaScript 的属性和方法，因为 JavaScript 在执行方法和属性时可以把原始值当作对象。
+
+**字符串属性**：
+
+* constructor	返回创建字符串属性的函数
+* length		返回字符串的长度
+* prototype	允许您向对象添加属性和方法
+
+
+**字符串方法**如下:
+
+* charAt()			返回指定索引位置的字符
+* charCodeAt()			返回指定索引位置字符的 Unicode 值
+* concat()			连接两个或多个字符串，返回连接后的字符串
+* fromCharCode()		将指定的 Unicode 值转换为字符串
+* indexOf()			返回字符串中检索指定字符第一次出现的位置
+* lastIndexOf()			返回字符串中检索指定字符最后一次出现的位置
+* localeCompare()		用本地特定的顺序来比较两个字符串
+* match()			找到一个或多个正则表达式的匹配
+* replace()			替换与正则表达式匹配的子串
+* search()			检索与正则表达式相匹配的值
+* slice()			提取字符串的片断，并在新的字符串中返回被提取的部分
+* split()			把字符串分割为子字符串数组
+* substr()			从起始索引号提取字符串中指定数目的字符
+* substring()			提取字符串中两个指定的索引号之间的字符
+* toLocaleLowerCase()		根据主机的语言环境把字符串转换为小写，只有几种语言（如土耳其语）具有地方特有的大小写映射
+* toLocaleUpperCase()		根据主机的语言环境把字符串转换为大写，只有几种语言（如土耳其语）具有地方特有的大小写映射
+* toLowerCase()			把字符串转换为小写
+* toString()			返回字符串对象值
+* toUpperCase()			把字符串转换为大写
+* trim()			移除字符串首尾空白
+* valueOf()			返回某个字符串对象的原始值
+
 
 
 

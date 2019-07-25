@@ -242,4 +242,58 @@ carname="Volvo";
 
 将声明一个全局变量 carname，即使它在函数内执行。
 
+在 ES6 中，提供了 let 关键字和 const 关键字。let 的声明方式与 var 相同，用 let 来代替 var 来声明变量，就可以把变量限制在当前代码块中。使用 const 声明的是常量，其值一旦被设定便不可被更改。
+
+
+## JavaScript 事件
+
+事件是可以被 JavaScript 侦测到的行为。HTML 事件是发生在 HTML 元素上的事情。当在 HTML 页面中使用 JavaScript 时， JavaScript 可以触发这些事件。HTML 事件可以是浏览器行为，也可以是用户行为。HTML 网页中的每个元素都可以产生某些可以触发 JavaScript 函数的事件。以下是 HTML 事件的实例：
+
+* HTML 页面完成加载
+* HTML input 字段改变时
+* HTML 按钮被点击
+
+在事件触发时 JavaScript 可以执行一些代码。HTML 元素中可以添加事件属性，使用 JavaScript 代码来添加 HTML 元素。
+
+下面例子中，JavaScript 代码将修改 id="demo" 元素的内容。
+
+```
+<button onclick="getElementById('demo').innerHTML=Date()">现在的时间是?</button>
+<p id="demo"></p>
+```
+
+下面例子，代码将修改自身元素的内容 (使用 this.innerHTML):
+
+```
+<button onclick="this.innerHTML=Date()">现在的时间是?</button>
+```
+
+JavaScript代码通常是几行代码。比较常见的是通过事件属性来调用：
+
+```
+<p>点击按钮执行 <em>displayDate()</em> 函数.</p>
+<button onclick="displayDate()">点我</button>
+
+<script>
+function displayDate()
+{
+	document.getElementById("demo").innerHTML=Date();
+}
+</script>
+<p id="demo"></p>
+```
+
+## 常见的HTML事件:
+
+* onchange      HTML 元素改变
+* onclick       用户点击 HTML 元素
+* onmouseover   用户在一个HTML元素上移动鼠标
+* onmouseout    用户从一个HTML元素上移开鼠标
+* onkeydown     用户按下键盘按键
+* onload        浏览器已完成页面的加载
+
+
+
+
+
 

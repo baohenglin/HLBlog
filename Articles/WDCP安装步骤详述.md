@@ -78,7 +78,7 @@ service wdcp stop
 根据WDCP面板的默认要求，我们需要登录账户，URL地址是我们VPS的"IP地址:8080"，然后用户名是admin，密码是wdlinux.cn，我们登录进去后需要修改密码。需要登录密码和MySQL的root密码。
 
 
-## 遇到的问题及解决方法
+## 更改登录名后无法登录的问题及解决方法
 
 如果我们在修改WDCP账户密码的同时也对账户名进行了修改，而且修改后的账户名中含有某些特殊字符(如@、*、_或者汉字等)，那么再退出之后重新登录时会提示“账户名错误”。
 
@@ -124,7 +124,7 @@ update wd_member set username="admin" where id=1;
 <br />
 参考链接：
 
-![wdcp(wdlinux) 最新安装教程](https://www.tracymc.cn/archives/2935)
+[wdcp(wdlinux) 最新安装教程](https://www.tracymc.cn/archives/2935)
 
 
 

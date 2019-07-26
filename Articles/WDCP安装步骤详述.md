@@ -45,6 +45,33 @@ LNAMP是Linux、nginx、Apache、Mysql、Perl/PHP/Python的首字母简写；
 
 如果我们最后可以看到上图所示的界面，表示WDCP面板安装完毕。
 
+**安装目录如下：**
+
+```
+/www/wdlinux
+```
+
+**数据库文件目录如下：**
+
+```
+/www/wdlinux/wdcp/data/wdcpdb.db
+```
+
+**卸载方法如下：**
+
+```
+rm -fr /www/wdlinux
+reboot
+```
+
+**wdcp后台的启动，重起，关闭方法如下：**
+
+```
+service wdcp start
+service wdcp restart
+service wdcp stop
+```
+
 
 ## 登录WDCP面板和修改账户密码
 
@@ -93,7 +120,11 @@ update wd_member set username="admin" where id=1;
 
 
 
+<br />
+<br />
+参考链接：
 
+![wdcp(wdlinux) 最新安装教程](https://www.tracymc.cn/archives/2935)
 
 
 

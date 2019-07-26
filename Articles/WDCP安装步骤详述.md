@@ -43,6 +43,15 @@ LNAMP是Linux、nginx、Apache、Mysql、Perl/PHP/Python的首字母简写；
 
 ![WDCP安装成功示意图.png](https://upload-images.jianshu.io/upload_images/4164292-af3f6804423f3426.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
+如果我们最后可以看到上图所示的界面，表示WDCP面板安装完毕。
+
+
+## 登录WDCP面板和修改账户密码
+
+根据WDCP面板的默认要求，我们需要登录账户，URL地址是我们VPS的"IP地址:8080"，然后用户名是admin，密码是wdlinux.cn，我们登录进去后需要修改密码。
+
+
+
 
 
 

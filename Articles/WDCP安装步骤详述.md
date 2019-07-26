@@ -71,7 +71,7 @@ sqlite3 /www/wdlinux/wdcp/data/wdcpdb.db
 
 ![WDCP更改登录问题.png](https://upload-images.jianshu.io/upload_images/4164292-39459604dfb48a30.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-* (4)列出某个表下的所有数据信息
+* (4)列出wd_member数据表下的所有数据信息
 
 ```
 select *from wd_member;

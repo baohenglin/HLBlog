@@ -69,12 +69,15 @@ sqlite3 /www/wdlinux/wdcp/data/wdcpdb.db
 .tables
 ```
 
+![WDCP更改登录问题.png](https://upload-images.jianshu.io/upload_images/4164292-39459604dfb48a30.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
 * (4)列出某个表下的所有数据信息
 
 ```
 select *from wd_member;
 ```
-![WDCP更改登录问题.png](https://upload-images.jianshu.io/upload_images/4164292-39459604dfb48a30.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+![修改前的username.png](https://upload-images.jianshu.io/upload_images/4164292-7d8af20268214d2e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 需要特别注意的是，select *from wd_member语句后面必须带上分号，否则指令不起作用。**一定要带分号！一定要带分号！一定要带分号！**
 
@@ -83,6 +86,8 @@ select *from wd_member;
 ```
 update wd_member set username="admin" where id=1;
 ```
+
+![修改后的username.png](https://upload-images.jianshu.io/upload_images/4164292-54c38f9deb2700b1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 这样就可以解决正常登录了。
 

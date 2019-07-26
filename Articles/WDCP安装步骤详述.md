@@ -1,1 +1,1 @@
-架构设计-MVC、MVP、MVVM详解
+wdCP(WDlinux Control Panel) 是一套Linux云主机服务器管理系统，旨在易于使用和管理Linux服务器，通过web方式就可以管理操作服务器和虚拟主机。方便查看系统资源使用，开放端口，进程，防火墙(iptables)设置等。通过web后台，就可以管理站点、FTP帐号、mysql数据库等。简单、方便、易操作。总的来说，wdcp(wdlinux)不错的一款国人免费linux主机管理面板，非常适合接触linux系统的新手朋友使用。

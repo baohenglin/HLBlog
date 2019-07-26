@@ -350,10 +350,146 @@ var firstName = new String("John")
 * 赋值运算符： +=、-=、*=、/=、%=
 * 字符串连接运算符： "+"用于把文本值或字符串变量加起来（连接起来）
 * 关系运算符：<、<=、>、>=、==、！=、===(比较两个运算数的返回值和数据类型是否相同)、!==(比较两个运算数的返回值和数据类型是否不同)
-* 逻辑运算符：&、|、!
+* 逻辑运算符：&&、||、!。JavaScript逻辑运算符的优先级是：！、&& 、||。
 * 对象运算符：in、instanceof、new、delete、.和[]、()
-* 位运算符
-* 条件运算符：?:
+* 位运算符：&、|
+* 条件运算符(三元运算符)：?:
+
+## JavaScript 类型转换
+
+在 JavaScript 中有 5 种不同的数据类型：
+
+* string
+* number
+* boolean
+* object
+* function
+
+3 种对象类型：
+
+* Object
+* Date
+* Array
+
+2 个不包含任何值的数据类型：
+
+* null
+* undefined
+
+**typeof 操作符**：可以使用 typeof 操作符来查看 JavaScript 变量的数据类型。
+
+NaN 的数据类型是 number。数组(Array)的数据类型是 object。日期(Date)的数据类型为 object。null 的数据类型是 object。未定义变量的数据类型为 undefined。如果对象是 JavaScript Array 或 JavaScript Date ，我们就无法通过 typeof 来判断他们的类型，因为都是 返回 Object。
+
+**constructor 属性**：constructor 属性返回所有 JavaScript 变量的构造函数。
+
+可以使用 constructor 属性来查看对象是否为数组 (包含字符串 "Array")。代码如下：
+
+```
+<p>判断是否为数组。</p>
+<p id="demo"></p>
+<script>
+var fruits = ["Banana", "Orange", "Apple", "Mango"];
+document.getElementById("demo").innerHTML = isArray(fruits);
+function isArray(myArray) {
+    return myArray.constructor.toString().indexOf("Array") > -1;
+}
+</script>
+```
+
+可以使用 constructor 属性来查看是对象是否为日期 (包含字符串 "Date")，代码如下：
+
+```
+<p>判断是否为日期。</p>
+<p id="demo"></p>
+<script>
+var myDate = new Date();
+document.getElementById("demo").innerHTML = isDate(myDate);
+function isDate(myDate) {
+    return myDate.constructor.toString().indexOf("Date") > -1;
+}
+</script>
+```
+**将数字转换为字符串**
+
+全局方法 String() 可以将数字转换为字符串。该方法可用于任何类型的数字，字母，变量，表达式。
+
+```
+<p> String() 方法可以将数字转换为字符串。</p>
+<p id="demo"></p>
+<script>
+var x = 123;
+document.getElementById("demo").innerHTML =
+    String(x) + "<br>" +
+    String(123) + "<br>" +
+    String(100 + 23);
+</script>
+```
+Number 方法 toString() 也是有同样的效果，可以将数字转换为字符串。
+
+```
+x.toString() 
+(123).toString() 
+(100 + 23).toString()
+```
+
+* toExponential()	把对象的值转换为指数计数法。
+* toFixed()		把数字转换为字符串，结果的小数点后有指定位数的数字。
+* toPrecision()		把数字格式化为指定的长度。
+
+**将布尔值转换为字符串**
+
+全局方法 String() 可以将布尔值转换为字符串。
+
+```
+String(false)        // 返回 "false"
+String(true)         // 返回 "true"
+```
+
+Boolean 方法 toString() 也有相同的效果。
+
+```
+false.toString()     // 返回 "false"
+true.toString()      // 返回 "true"
+```
+
+**将日期转换为字符串**
+
+全局方法 String() 可以将日期转换为字符串:
+
+```
+String(Date())
+```
+
+日期转换为字符串的函数包括以下这些：
+
+* getDate()		从 Date 对象返回一个月中的某一天 (1 ~ 31)。
+* getDay()		从 Date 对象返回一周中的某一天 (0 ~ 6)。
+* getFullYear()		从 Date 对象以四位数字返回年份。
+* getHours()		返回 Date 对象的小时 (0 ~ 23)。
+* getMilliseconds()	返回 Date 对象的毫秒(0 ~ 999)。
+* getMinutes()		返回 Date 对象的分钟 (0 ~ 59)。
+* getMonth()		从 Date 对象返回月份 (0 ~ 11)。
+* getSeconds()		返回 Date 对象的秒数 (0 ~ 59)。
+* getTime()		返回 1970 年 1 月 1 日至今的毫秒数。
+
+**将字符串转换为数字**
+
+全局方法 Number() 可以将字符串转换为数字。
+
+```
+Number("3.14")    // 返回 3.14
+Number(" ")       // 返回 0 
+Number("")        // 返回 0 
+Number("99 88")   // 返回 NaN
+```
+
+其他字符串转为数字的方法：
+
+```
+parseFloat()	解析一个字符串，并返回一个浮点数。
+parseInt()	解析一个字符串，并返回一个整数。
+```
+
 
 
 

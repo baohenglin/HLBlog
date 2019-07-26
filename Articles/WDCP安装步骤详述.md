@@ -31,3 +31,22 @@ tar zxvf lanmp_v3.2.tar.gz
 sh lanmp.sh
 ```
 
+安装过程中，会向用户提示选择安装哪种模式（LAMP、LNMP、LNAMP、install all service）,建议选择“install all service”，安装所有服务的话，以后可以在各个模式之间切换，只是安装时间长一些。
+
+```
+LAMP是Linux、Apache、Mysql、Perl/PHP/Python的首字母简写；
+LNMP是Linux、nginx、Mysql、Perl/PHP/Python的首字母简写；
+LNAMP是Linux、nginx、Apache、Mysql、Perl/PHP/Python的首字母简写；
+```
+
+安装成功如下所示：
+
+![WDCP安装成功示意图](![WDCP安装成功示意图.png](https://upload-images.jianshu.io/upload_images/4164292-af3f6804423f3426.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240))
+
+
+
+
+
+
+
+

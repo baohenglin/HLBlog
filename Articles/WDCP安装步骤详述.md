@@ -41,7 +41,7 @@ LNAMP是Linux、nginx、Apache、Mysql、Perl/PHP/Python的首字母简写；
 
 安装成功如下所示：
 
-![WDCP安装成功示意图](![WDCP安装成功示意图.png](https://upload-images.jianshu.io/upload_images/4164292-af3f6804423f3426.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240))
+![WDCP安装成功示意图.png](https://upload-images.jianshu.io/upload_images/4164292-af3f6804423f3426.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
 

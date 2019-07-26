@@ -80,7 +80,7 @@
 主题|文章|备注
 |:---|:---|:---|
 |Java|[《Java学习路线图》](https://github.com/baohenglin/HLBlog/blob/master/Articles/Java学习路线图.md)<br>|
-|工程化|[《WDCP的安装步骤详述》]()<br>|
+|工程化|[《WDCP的安装步骤详述》](https://github.com/baohenglin/HLBlog/blob/master/Articles/WDCP%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4%E8%AF%A6%E8%BF%B0.md)<br>|
 
 <!--## *🖥️后台*
 主题|文章|备注

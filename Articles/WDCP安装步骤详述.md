@@ -48,7 +48,52 @@ LNAMP是Linux、nginx、Apache、Mysql、Perl/PHP/Python的首字母简写；
 
 ## 登录WDCP面板和修改账户密码
 
-根据WDCP面板的默认要求，我们需要登录账户，URL地址是我们VPS的"IP地址:8080"，然后用户名是admin，密码是wdlinux.cn，我们登录进去后需要修改密码。
+根据WDCP面板的默认要求，我们需要登录账户，URL地址是我们VPS的"IP地址:8080"，然后用户名是admin，密码是wdlinux.cn，我们登录进去后需要修改密码。需要登录密码和MySQL的root密码。
+
+
+## 遇到的问题及解决方法
+
+如果我们在修改WDCP账户密码的同时也对账户名进行了修改，而且修改后的账户名中含有某些特殊字符(如"@""*""_"或者汉字等)，那么再退出之后重新登录时会提示“账户名错误”。
+
+解决方法如下：
+
+* (1)确保root账户处于登录状态
+* (2)打开“/www/wdlinux/wdcp/data/wdcpdb.db”数据库（在wdcpdb.db的wd_member中将username修改为最初的admin）
+
+```
+sqlite3 /www/wdlinux/wdcp/data/wdcpdb.db
+```
+* (3)列出所有的数据库的表
+
+```
+.tables
+```
+
+* (4)列出某个表下的所有数据信息
+
+```
+select *from wd_member;
+```
+![WDCP更改登录问题.png](https://upload-images.jianshu.io/upload_images/4164292-39459604dfb48a30.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+需要特别注意的是，select *from wd_member语句后面必须带上分号，否则指令不起作用。**一定要带分号！一定要带分号！一定要带分号！**
+
+* (5)修改wd_member表中的username的值。
+
+```
+update wd_member set username="admin" where id=1;
+```
+
+这样就可以解决正常登录了。
+
+
+
+
+
+
+
+
+
 
 
 

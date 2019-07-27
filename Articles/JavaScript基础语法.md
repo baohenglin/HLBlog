@@ -497,7 +497,39 @@ Number(false)     // 返回 0
 Number(true)      // 返回 1
 ```
 
+**将日期转换为数字**：全局方法 Number() 可将日期转换为数字。
 
+```
+d = new Date(); 
+Number(d)          // 返回 1404568027739
+```
+
+日期方法 getTime() 也有相同的效果。
+
+```
+d = new Date(); 
+d.getTime()        // 返回 1404568027739
+```
+
+自动转换类型 Type Conversion：当 JavaScript 尝试操作一个 "错误" 的数据类型时，会自动转换为 "正确" 的数据类型。
+
+自动转换为字符串：当你尝试输出一个对象或一个变量时 JavaScript 会自动调用变量的 toString() 方法。
+
+```
+document.getElementById("demo").innerHTML = myVar; 
+
+// if myVar = {name:"Fjohn"}  // toString 转换为 "[object Object]"
+// if myVar = [1,2,3,4]       // toString 转换为 "1,2,3,4"
+// if myVar = new Date()      // toString 转换为 "Fri Jul 18 2014 09:08:55 GMT+0200"
+```
+
+数字和布尔值也经常相互转换:
+
+```
+// if myVar = 123             // toString 转换为 "123"
+// if myVar = true            // toString 转换为 "true"
+// if myVar = false           // toString 转换为 "false"
+```
 
 
 

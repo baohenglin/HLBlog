@@ -690,6 +690,66 @@ document.write(patt1.test("The best things in life are free"));
 [js常用的正则表达式](https://www.w3cschool.cn/lwp2e2/uf1e12iq.html)
 [JavaScript正则表达式在线测试工具](https://www.w3cschool.cn/tools/index?name=javascriptregex)
 
+## JavaScript 错误处理 Throw、Try 和 Catch
+
+当 JavaScript 引擎执行 JavaScript 代码时，会发生各种错误：可能是语法错误，通常是程序员造成的编码错误或错别字。可能是拼写错误或语言中缺少的功能（可能由于浏览器差异）。可能是由于来自服务器或用户的错误输出而导致的错误。当然，也可能是由于许多其他不可预知的因素。
+
+**JavaScript 抛出（throw）错误**
+
+
+
+**try 和 catch语句**
+
+try 语句允许我们定义在执行时进行错误测试的代码块。catch 语句允许我们定义当 try 代码块发生错误时，所执行的代码块。JavaScript 语句 try 和 catch 是成对出现的。
+
+```
+try {
+   //在这里运行代码
+}
+catch(err) {
+   //在这里处理错误
+}
+```
+
+**Throw 语句**
+
+当错误发生时，当事情出问题时，JavaScript 引擎通常会停止，并生成一个错误消息。描述这种情况的技术术语是：JavaScript 将抛出一个错误。throw 语句允许我们创建自定义错误。如果把 throw 与 try 和 catch 一起使用，那么您能够控制程序流，并生成自定义的错误消息。异常可以是 JavaScript 字符串、数字、逻辑值或对象。
+
+throw语法：
+
+```
+throw exception 
+```
+
+下面例子检测输入变量的值。如果值是错误的，会抛出一个异常（错误）。catch 会捕捉到这个错误，并显示一段自定义的错误消息：
+
+```
+<script>
+function myFunction(){
+	try{ 
+		var x=document.getElementById("demo").value;
+		if(x=="")    throw "值为空";
+		if(isNaN(x)) throw "不是数字";
+		if(x>10)     throw "太大";
+		if(x<5)      throw "太小";
+	}
+	catch(err){
+		var y=document.getElementById("mess");
+		y.innerHTML="错误：" + err + "。";
+	}
+}
+</script>
+</head>
+<body>
+
+<h1>我的第一个 JavaScript</h1>
+<p>请输出一个 5 到 10 之间的数字:</p>
+<input id="demo" type="text">
+<button type="button" onclick="myFunction()">测试输入</button>
+<p id="mess"></p>
+
+</body>
+```
 
 
 

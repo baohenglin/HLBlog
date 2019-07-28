@@ -636,8 +636,38 @@ var res = str.replace("Microsoft", "w3cschool");
 * \uxxxx	查找以十六进制数 xxxx 规定的 Unicode 字符。
 
 
+量词:
 
+  量词	  描述
 
+* n+	匹配任何包含至少一个 n 的字符串。
+* n*	匹配任何包含零个或多个 n 的字符串。
+* n?	匹配任何包含零个或一个 n 的字符串。
+
+**test()**
+
+test() 方法是一个正则表达式方法。test() 方法用于检测一个字符串是否匹配某个模式，如果字符串中含有匹配的文本，则返回 true，否则返回 false。以下实例用于搜索字符串中的字符 "e"：
+
+```
+<script>
+var patt1=new RegExp("e");
+document.write(patt1.test("The best things in life are free"));
+</script>
+//字符串中含有 "e"，所以该实例输出为：true
+```
+
+**exec()方法**
+
+exec() 方法是一个正则表达式方法。exec() 方法用于检索字符串中的正则表达式的匹配。该函数返回一个数组，其中存放匹配的结果。如果未找到匹配，则返回值为 null。以下实例用于搜索字符串中的字母 "e":
+
+```
+<script>
+var patt1=new RegExp("e");
+document.write(patt1.exec("The best things in life are free"));
+</script>
+```
+
+字符串中含有 "e"，所以该实例输出为:e
 
 
 

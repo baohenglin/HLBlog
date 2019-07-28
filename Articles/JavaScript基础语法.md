@@ -531,6 +531,16 @@ document.getElementById("demo").innerHTML = myVar;
 // if myVar = false           // toString 转换为 "false"
 ```
 
+**null**
+
+在 JavaScript 中 null 表示 "什么都没有"，是一个只有一个值的特殊类型，表示一个空对象引用。当设置为“null”时，可以用来清空对象。
+
+```
+var person = null; // 值为 null(空), 但类型为对象
+```
+
+
+
 
 
 

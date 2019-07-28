@@ -844,6 +844,18 @@ Email: <input type="text" name="email">
 </body>
 ```
 
+## JavaScript 保留关键字
+
+Javascript 的保留关键字不可以用作变量、标签或者函数名。有些保留关键字是作为 Javascript 以后扩展使用。
+
+这些保留关键字包括：abstract、arguments、boolean、break、byte、case、catch、char、class、const、continue、debugger、default、delete、do、double、else、enum、eval、export、extends、false、final、finally、float、for、function、goto、if、implements、import、in、instanceof、int、interface、let、long、native、new、null、package、private、protected、public、return、short、static、super、switchsynchronized、this、throw、throws、transient、true、try、typeof、var、void、volatile、while、with、yield。
+
+## JavaScript 对象、属性和方法
+
+也应该避免使用 JavaScript 内置的对象、属性和方法的名称作为 Javascript 的变量或函数名。
+
+Array、Date、eval、function、hasOwnProperty、Infinity、isFinite、isNaN、isPrototypeOf、length、Math、NaN、name、Number、Object、prototype、String、toString、undefined、valueOf。
+
 
 
 

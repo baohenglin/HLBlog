@@ -567,7 +567,43 @@ var patt = /w3cschool/i
 
 实例解析：/w3cschool/i  是一个正则表达式。w3cschool  是一个模式 (用于检索)。i  是一个修饰符 (搜索不区分大小写)。
 
+**正则表达式的字符串方法
 
+在 JavaScript 中，正则表达式常用的两个字符串方法 : search() 和 replace()。search() 方法 用于检索字符串中指定的子字符串，或检索与正则表达式相匹配的子字符串，并返回子字符串的起始位置。replace() 方法 用于在字符串中用一些字符替换另一些字符，或替换一个与正则表达式匹配的子字符串。
+
+* search() 方法使用正则表达式。例如使用正则表达式搜索 "w3cschool" 字符串，且不区分大小写：
+
+```
+var str = "Visit w3cschool"; 
+var n = str.search(/w3cschool/i);
+```
+
+* replace() 方法使用正则表达式。例如使用正则表达式且不区分大小写将字符串中的 Microsoft 替换为 w3cschool :
+
+```
+var str = "Visit Microsoft!"; 
+var res = str.replace(/microsoft/i, "w3cschool");
+```
+
+**search() 方法使用字符串**
+
+search 方法可使用字符串作为参数。字符串参数会转换为正则表达式。检索字符串中 "w3cschool" 的子字符串：
+
+```
+var str = "Visit w3cschool!"; 
+var n = str.search("w3cschool");
+```
+
+**replace() 方法使用字符串**
+
+replace() 方法将接收的字符串作为参数。
+
+```
+var str = "Visit Microsoft!"; 
+var res = str.replace("Microsoft", "w3cschool");
+```
+
+由此可见，正则表达式参数可用在以上方法中 (替代字符串参数)。 正则表达式使得搜索功能更加强大(如实例中不区分大小写)。
 
 
 

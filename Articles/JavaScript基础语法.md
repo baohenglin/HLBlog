@@ -539,6 +539,13 @@ document.getElementById("demo").innerHTML = myVar;
 var person = null; // 值为 null(空), 但类型为对象
 ```
 
+**undefined**
+
+在 JavaScript 中 undefined 是一个没有设置值的变量。如果一个变量没有设置值的话，就会返回 undefined：
+
+```
+var person; // 值为 undefined(空), 类型是undefined
+```
 
 
 

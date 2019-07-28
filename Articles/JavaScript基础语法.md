@@ -644,6 +644,10 @@ var res = str.replace("Microsoft", "w3cschool");
 * n*	匹配任何包含零个或多个 n 的字符串。
 * n?	匹配任何包含零个或一个 n 的字符串。
 
+**RegExp 对象**
+
+在 JavaScript 中，RegExp 对象是一个预定义了属性和方法的正则表达式对象。
+
 **test()**
 
 test() 方法是一个正则表达式方法。test() 方法用于检测一个字符串是否匹配某个模式，如果字符串中含有匹配的文本，则返回 true，否则返回 false。以下实例用于搜索字符串中的字符 "e"：
@@ -669,6 +673,22 @@ document.write(patt1.exec("The best things in life are free"));
 
 字符串中含有 "e"，所以该实例输出为:e
 
+**compile()方法**
+
+compile() 方法用于改变 RegExp。compile() 既可以改变检索模式，也可以添加或删除第二个参数。
+
+```
+var patt1=new RegExp("e"); 
+document.write(patt1.test("The best things in life are free"));
+patt1.compile("d"); 
+document.write(patt1.test("The best things in life are free"));
+```
+
+由于字符串中存在 "e"，而没有 "d"，以上代码的输出是：truefalse。
+
+[JavaScript RegExp 参考手册](https://www.w3cschool.cn/jsref/jsref-obj-regexp.html)
+[js常用的正则表达式](https://www.w3cschool.cn/lwp2e2/uf1e12iq.html)
+[JavaScript正则表达式在线测试工具](https://www.w3cschool.cn/tools/index?name=javascriptregex)
 
 
 

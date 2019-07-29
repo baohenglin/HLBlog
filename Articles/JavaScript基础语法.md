@@ -856,6 +856,14 @@ Javascript 的保留关键字不可以用作变量、标签或者函数名。有
 
 Array、Date、eval、function、hasOwnProperty、Infinity、isFinite、isNaN、isPrototypeOf、length、Math、NaN、name、Number、Object、prototype、String、toString、undefined、valueOf。
 
+**Java 保留关键字**
+
+JavaScript 经常与 Java 一起使用。您应该避免使用一些 Java 对象和属性作为 JavaScript 标识符。Java保留关键字包括：getClass、java、JavaArray、javaClass、JavaObject、JavaPackage。
+
+**Windows 保留关键字**
+
+必须（为了可移植性，您也应该这么做）避免使用 HTML 和 Windows 对象和属性的名称作为 Javascript 的变量及函数名。
+
 
 
 

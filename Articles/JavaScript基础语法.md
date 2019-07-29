@@ -923,6 +923,28 @@ document.getElementById("demo").innerHTML =
 </body>
 ```
 
+## javascript:void(0) 含义
+
+javascript:void(0) 中最关键的是 void 关键字， void 是 JavaScript 中非常重要的关键字，该操作符指定要计算一个表达式但是不返回值。
+
+```
+<body>
+	
+    <a href="javascript:void(0)">单此处什么也不会发生</a>
+	
+</body>
+```
+
+当用户链接时，void(0) 计算为 0，但 Javascript 上没有任何效果。
+
+以下实例中，在用户点击链接后显示警告信息：
+
+```
+<body>	
+<p>点击以下链接查看结果：</p>
+<a href="javascript:void(alert('Warning!!!'))">点我!</a>
+</body>
+```
 
 
 

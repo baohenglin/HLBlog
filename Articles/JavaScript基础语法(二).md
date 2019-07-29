@@ -297,6 +297,89 @@ myFunction(obj); // 2
 console.log(obj.x); // 2
 ```
 
+## JavaScript 函数调用
+
+JavaScript 函数有 4 种调用方式。每种方式的不同在于 this 的初始化。一般而言，在Javascript中，this指向函数执行时的当前对象。注意 this 是保留关键字，你不能修改 this 的值。
+
+
+**调用 JavaScript 函数**
+
+```
+<body>
+<p>
+全局函数 (myFunction) 返回参数参数相乘的结果：
+</p>
+<p id="demo"></p>
+<script>
+function myFunction(a, b) {
+	return a * b;
+}
+document.getElementById("demo").innerHTML = myFunction(10, 2); 
+</script>
+</body>
+```
+
+以上函数不属于任何对象。但是在 JavaScript 中它始终是默认的全局对象。在 HTML 中默认的全局对象是 HTML 页面本身，所以函数是属于 HTML 页面。在浏览器中的页面对象是浏览器窗口(window 对象)。以上函数会自动变为 window 对象的函数。
+
+myFunction() 和 window.myFunction() 是一样的：
+
+```
+<body>
+<p>全局函数 myFunction() 会自动成为 window 对象的方法。</p>
+<p>myFunction() 类似于 window.myFunction()。</p>
+<p id="demo"></p>
+<script>
+function myFunction(a, b) {
+	return a * b;
+}
+document.getElementById("demo").innerHTML = window.myFunction(10, 2); 
+</script>
+</body>
+```
+
+**全局对象**
+
+当函数没有被自身的对象调用时， this 的值就会变成全局对象。在 web 浏览器中全局对象是浏览器窗口（window 对象）。
+
+下面的实例返回 this 的值是 window 对象:
+
+```
+<body>
+<p>在 HTML 中 <b>this</b> 的值, 在全局函数是一个 window 对象。</p>
+<p id="demo"></p>
+<script>
+function myFunction() {
+	return this;
+}
+document.getElementById("demo").innerHTML = myFunction(); 
+</script>
+</body>
+```
+
+函数作为全局对象调用，会使 this 的值成为全局对象。使用 window 对象作为一个变量容易造成程序崩溃。
+
+**函数作为方法调用**
+
+在 JavaScript 中你可以将函数定义为对象的方法。以下实例创建了一个对象 (myObject), 对象有两个属性 (firstName 和 lastName), 及一个方法 (fullName):
+
+```
+<body>
+<p>myObject.fullName() 返回 John Doe:</p>
+<p id="demo"></p>
+<script>
+var myObject = {
+    firstName:"John",
+    lastName: "Doe",
+    fullName: function() {
+		return this.firstName + " " + this.lastName;
+    }
+}
+document.getElementById("demo").innerHTML = myObject.fullName(); 
+</script>
+</body>
+```
+
+fullName 方法是一个函数。函数属于对象。 myObject 是函数的所有者。this对象，拥有 JavaScript 代码。实例中 this 的值为 myObject 对象。函数作为对象方法调用，会使得 this 的值成为对象本身。
 
 
 

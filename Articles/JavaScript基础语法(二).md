@@ -175,6 +175,99 @@ document.getElementById("demo").innerHTML = myFunction(8,8).toString();
 函数定义作为对象的属性，称之为对象方法。 函数如果用于创建新的对象，称之为对象的构造函数。
 
 
+## JavaScript 函数参数
+
+JavaScript 函数对参数的值(arguments)没有进行任何的检查。JavaScript 函数参数与大多数其他语言的函数参数的区别在于：它不会关注有多少个参数被传递，不关注传递的参数的数据类型。
+
+**函数显式参数与隐藏参数(arguments)**
+
+函数的显式参数：函数显式参数在函数定义时列出。函数隐藏参数(arguments)在函数调用时传递给函数真正的值。
+
+```
+function functionName(parameter1, parameter2, parameter3) {
+    code to be executed
+}
+```
+
+**参数规则**:
+
+```
+JavaScript 函数定义时参数没有指定数据类型。
+JavaScript 函数对隐藏参数(arguments)没有进行检测。
+JavaScript 函数对隐藏参数(arguments)的个数没有进行检测。
+```
+
+如果函数在调用时缺少参数，参数会默认设置为： undefined。有时这是可以接受的，但是建议最好为参数设置一个默认值。
+
+```
+<body>
+
+<p>设置参数的默认值。</p>
+<p id="demo"></p>
+<script>
+function myFunction(x, y) {
+    if (y === undefined) {
+        y = 0;
+    }    
+    return x * y;
+}
+document.getElementById("demo").innerHTML = myFunction(4);
+</script>
+
+</body>
+```
+
+如果函数调用时设置了过多的参数，参数将无法被引用，因为无法找到对应的参数名。 只能使用 arguments 对象来调用。
+
+**Arguments 对象**
+
+JavaScript 函数有个内置的对象 arguments 对象。argument 对象包含了函数调用的参数数组。通过这种方式你可以很方便的找到每一个index参数的值。
+
+```
+<body>
+<p>查找最大的数。</p>
+<p id="demo"></p>
+<script>
+x = findMax(1, 123, 500, 115, 44, 88);
+
+function findMax() {
+    var i, max = arguments[0];
+
+    if(arguments.length < 2)return max;
+
+    for (i = 0; i < arguments.length; i++) {
+        if (arguments[i] > max) {
+            max = arguments[i];
+        }
+    }
+    return max;
+}
+document.getElementById("demo").innerHTML = x;
+</script>
+</body>
+```
+
+创建一个函数用来统计所有数值的和：
+
+```
+<body>
+<p>计算所有参数之和：</p>
+<p id="demo"></p>
+<script>
+function sumAll() {
+    var i, sum = 0;
+    for(i = 0; i < arguments.length; i++) {
+        sum += arguments[i];
+    }
+    return sum;
+} 
+document.getElementById("demo").innerHTML =
+	sumAll(1, 123, 500, 115, 44, 88);
+</script>
+</body>
+```
+
+
 
 
 

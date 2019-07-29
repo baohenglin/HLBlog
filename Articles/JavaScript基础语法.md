@@ -925,7 +925,7 @@ document.getElementById("demo").innerHTML =
 
 ## javascript:void(0) 含义
 
-javascript:void(0) 中最关键的是 void 关键字， void 是 JavaScript 中非常重要的关键字，该操作符指定要计算一个表达式但是不返回值。
+javascript:void(0) 中最关键的是 void 关键字， void 是 JavaScript 中非常重要的关键字，该操作符指定要计算一个表达式但是不返回值。void()仅仅是代表不返回任何值，但是括号内的表达式还是要运行
 
 ```
 <body>
@@ -943,6 +943,23 @@ javascript:void(0) 中最关键的是 void 关键字， void 是 JavaScript 中�
 <body>	
 <p>点击以下链接查看结果：</p>
 <a href="javascript:void(alert('Warning!!!'))">点我!</a>
+</body>
+```
+
+**href="#"与href="javascript:void(0)"的区别**
+
+# 包含了一个位置信息，默认的锚是#top 也就是网页的上端。而javascript:void(0), 仅仅表示一个死链接。在页面很长的时候会使用 # 来定位页面的具体位置，格式为：# + id。如果你要定义一个死链接请使用 javascript:void(0) 。
+
+示例：
+
+```
+<body>
+<p>点击以下链接查看不同效果：</p>
+<a href="javascript:void(0);">点我没有反应的!</a>
+<br>
+<a href="#pos">点我定位到指定位置!</a>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<p id="pos">尾部定位点</p>
 </body>
 ```
 

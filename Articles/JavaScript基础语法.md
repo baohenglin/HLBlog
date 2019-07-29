@@ -873,6 +873,55 @@ JavaScript 经常与 Java 一起使用。您应该避免使用一些 Java 对象
 除了保留关键字，在 JavaScript 实现中也有一些非标准的关键字。一个实例是 const 关键字，用于定义变量。 一些 JavaScript 引擎把 const 当作 var 的同义词。另一些引擎则把 const 当作只读变量的定义。Const 是 JavaScript 的扩展。JavaScript 引擎支持它用在 Firefox 和 Chrome 中。但是它并不是 JavaScript 标准 ES3 或 ES5 的组成部分。建议：不要使用它。
 
 
+## JavaScript JSON
+
+JSON 英文全称 JavaScript Object Notation。JSON 是一种轻量级的存储和传输数据的格式。JSON 通常用于服务端向网页传递数据 。JSON 使用 JavaScript 语法，但是 JSON 格式仅仅是一个文本。 文本可以被任何编程语言读取及作为数据格式传递。JSON 格式在语法上与创建 JavaScript 对象代码是相同的。由于它们很相似，所以 JavaScript 程序可以很容易的将 JSON 数据转换为 JavaScript 对象。
+
+**JSON 语法规则**
+
+* 数据为 键/值 对：键/值对包括字段名称（在双引号中），后面一个冒号，然后是值。
+* 数据由逗号分隔;
+* 大括号保存对象：JSON 对象保存在大括号内，对象可以保存多个 键/值 对。
+* 方括号保存数组。
+
+**JSON 字符串转换为 JavaScript 对象**
+
+通常我们从服务器中读取 JSON 数据，并在网页中显示数据。
+
+首先，创建 JavaScript 字符串，字符串为 JSON 格式的数据：
+
+```
+var text = '{ "employees" : [' + 
+'{ "firstName":"John" , "lastName":"Doe" },' + 
+'{ "firstName":"Anna" , "lastName":"Smith" },' + 
+'{ "firstName":"Peter" , "lastName":"Jones" } ]}';
+```
+
+然后，使用 JavaScript 内置函数 JSON.parse() 将字符串转换为 JavaScript 对象:
+
+```
+var obj = JSON.parse(text);
+```
+
+最后，在你的页面中使用新的 JavaScript 对象：
+
+```
+<body>
+
+<h2>为 JSON 字符串创建对象</h2>
+<p id="demo"></p>
+<script>
+var text = '{"employees":[' +
+	'{"firstName":"John","lastName":"Doe" },' +
+	'{"firstName":"Anna","lastName":"Smith" },' +
+	'{"firstName":"Peter","lastName":"Jones" }]}';
+obj = JSON.parse(text);
+document.getElementById("demo").innerHTML =
+	obj.employees[1].firstName + " " + obj.employees[1].lastName;
+</script>
+
+</body>
+```
 
 
 

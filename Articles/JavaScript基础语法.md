@@ -864,6 +864,16 @@ JavaScript 经常与 Java 一起使用。您应该避免使用一些 Java 对象
 
 必须（为了可移植性，您也应该这么做）避免使用 HTML 和 Windows 对象和属性的名称作为 Javascript 的变量及函数名。
 
+**HTML 事件句柄**
+
+还应该避免使用 HTML 事件句柄的名称作为 Javascript 的变量及函数名。HTML事件句柄包括：onblur、onclick、onerror、onfocus、onkeydown、onkeypress、onkeyup、onmouseover、onload、onmouseup、onmousedown、onsubmit。
+
+**非标准 JavaScript关键字**
+
+除了保留关键字，在 JavaScript 实现中也有一些非标准的关键字。一个实例是 const 关键字，用于定义变量。 一些 JavaScript 引擎把 const 当作 var 的同义词。另一些引擎则把 const 当作只读变量的定义。Const 是 JavaScript 的扩展。JavaScript 引擎支持它用在 Firefox 和 Chrome 中。但是它并不是 JavaScript 标准 ES3 或 ES5 的组成部分。建议：不要使用它。
+
+
+
 
 
 

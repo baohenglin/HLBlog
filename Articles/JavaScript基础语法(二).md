@@ -38,3 +38,42 @@ document.getElementById("demo").innerHTML = x(4, 3);
 </body>
 ```
 
+以上函数实际上是一个 匿名函数 (函数没有名称)。函数存储在变量中，不需要函数名称，通常通过变量名来调用。
+
+## Function() 构造函数
+
+函数除了通过关键字 function 定义，函数同样可以通过内置的 JavaScript 函数构造器（Function()）定义。
+
+```
+<body>
+<p>JavaScrip 内置构造函数。</p>
+<p id="demo"></p>
+<script>
+var myFunction = new Function("a", "b", "return a * b");
+document.getElementById("demo").innerHTML = myFunction(4, 3);
+</script>
+</body>
+```
+
+实际上，不必使用构造函数。上面实例可以写成：
+
+```
+<body>
+<p id="demo"></p>
+<script>
+var myFunction = function (a, b) {return a * b}
+document.getElementById("demo").innerHTML = myFunction(4, 3);
+</script>
+</body>
+```
+
+【注意】在 JavaScript 中，很多时候，你需要避免使用 new 关键字。
+
+
+
+
+
+
+
+
+

@@ -267,6 +267,20 @@ document.getElementById("demo").innerHTML =
 </body>
 ```
 
+**通过值传递参数**
+
+avaScript函数传值只是将参数的值传入函数，函数会另外配置内存保存参数值，所以并不会改变原参数的值。
+
+```
+var x = 1;
+// 通过值传递参数
+function myFunction(x) {
+    x++; //修改参数x的值，将不会修改在函数外定义的变量 x
+    console.log(x);
+}
+myFunction(x); // 2
+console.log(x); // 1
+```
 
 
 

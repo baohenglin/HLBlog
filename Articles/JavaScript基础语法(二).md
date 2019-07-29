@@ -382,5 +382,48 @@ document.getElementById("demo").innerHTML = myObject.fullName();
 fullName 方法是一个函数。函数属于对象。 myObject 是函数的所有者。this对象，拥有 JavaScript 代码。实例中 this 的值为 myObject 对象。函数作为对象方法调用，会使得 this 的值成为对象本身。
 
 
+**使用构造函数调用函数**
+
+如果函数调用前使用了 new 关键字, 则是调用了构造函数。构造函数的调用会创建一个新的对象。新对象会继承构造函数的属性和方法。构造函数中 this 关键字没有任何的值。this 的值在函数调用时实例化对象(new object)时创建。
+
+```
+<body>
+<p>该实例中， myFunction 是函数构造函数:</p>
+<p id="demo"></p>
+<script>
+function myFunction(arg1, arg2) {
+    this.firstName = arg1;
+    this.lastName  = arg2;
+}
+var x = new myFunction("John","Doe")
+document.getElementById("demo").innerHTML = x.firstName; 
+</script>
+</body>
+```
+
+**作为函数方法调用函数**
+
+在 JavaScript 中, 函数是对象。JavaScript 函数有它的属性和方法。call() 和 apply() 是预定义的函数方法。 两个方法可用于调用函数，两个方法的第一个参数必须是对象本身。
+
+```
+function myFunction(a, b) {
+    return a * b;
+}
+myFunction.call(myObject, 10, 2);      // 返回 20
+```
+
+```
+function myFunction(a, b) {
+    return a * b;
+}
+myArray = [10,2];
+myFunction.apply(myObject, myArray);   // 返回 20
+```
+
+两个方法都使用了对象本身作为第一个参数。 两者的区别在于第二个参数： apply传入的是一个参数数组，也就是将多个参数组合成为一个数组传入，而call则作为call的参数传入（从第二个参数开始）。
+
+在 JavaScript 严格模式(strict mode)下, 在调用函数时第一个参数会成为 this 的值， 即使该参数不是一个对象。在 JavaScript 非严格模式(non-strict mode)下, 如果第一个参数的值是 null 或 undefined, 它将使用全局对象替代。通过 call() 或 apply() 方法你可以设置 this 的值, 且作为已存在对象的新方法调用。
+
+
 
 

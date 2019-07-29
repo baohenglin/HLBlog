@@ -532,4 +532,12 @@ function f1(){
 
 2）闭包会在父函数外部改变父函数内部变量的值。因此，如果你把父函数当作对象（object）使用，把闭包当作它的公用方法（Public Method），把内部变量当作它的私有属性（private value），这时一定要小心，不要随便改变父函数内部变量的值。
 
+## JavaScript HTML DOM(文档对象模型)
+
+通过 HTML DOM，可访问 JavaScript HTML 文档的所有元素。当网页被加载时，浏览器会创建页面的文档对象模型（Document Object Model）。HTML DOM 定义了用于 HTML 的一系列标准的对象，以及访问和处理 HTML 文档的标准方法。通过 DOM，你可以访问所有的 HTML 元素，连同它们所包含的文本和属性。
+
+HTML DOM 独立于平台和编程语言。它可被任何编程语言诸如 Java、JavaScript 和 VBScript 使用。HTML DOM 模型被构造为对象的树。
+
+通过可编程的对象模型，JavaScript 获得了足够的能力来创建动态的 HTML。JavaScript 能够改变页面中的所有 HTML 元素；JavaScript 能够改变页面中的所有 HTML 属性；JavaScript 能够改变页面中的所有 CSS 样式；JavaScript 能够对页面中的所有事件做出反应。
+
 

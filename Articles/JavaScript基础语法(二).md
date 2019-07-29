@@ -424,6 +424,112 @@ myFunction.apply(myObject, myArray);   // 返回 20
 
 在 JavaScript 严格模式(strict mode)下, 在调用函数时第一个参数会成为 this 的值， 即使该参数不是一个对象。在 JavaScript 非严格模式(non-strict mode)下, 如果第一个参数的值是 null 或 undefined, 它将使用全局对象替代。通过 call() 或 apply() 方法你可以设置 this 的值, 且作为已存在对象的新方法调用。
 
+## JavaScript 闭包
 
+在web页面中全局变量属于 window 对象。全局变量可应用于页面上的所有脚本。局部变量只能用于定义它函数内部。对于其他的函数或脚本代码是不可用的。全局和局部变量即便名称相同，它们也是两个不同的变量。修改其中一个，不会影响另一个的值。变量声明是如果不使用 var 关键字，那么它就是一个全局变量，即便它在函数内定义。
+
+**变量生命周期**
+
+全局变量的作用域是全局性的，即在整个JavaScript程序中，全局变量处处都在。而在函数内部声明的变量，只在函数内部起作用。这些变量是局部变量，作用域是局部性的；函数的参数也是局部性的，只在函数内部起作用。
+
+```
+<body>
+
+<p>全局变量计数。</p>
+<button type="button" onclick="myFunction()">计数!</button>
+<p id="demo">0</p>
+<script>
+var counter = 0;
+function add() {
+    return counter += 1;
+}
+function myFunction(){
+    document.getElementById("demo").innerHTML = add();
+}
+</script>
+
+</body>
+```
+
+**JavaScript 内嵌函数**
+
+所有函数都能访问全局变量。实际上，在 JavaScript 中，所有函数都能访问它们上一层的作用域。JavaScript 支持嵌套函数。嵌套函数可以访问上一层的函数变量。下面实例中，内嵌函数 plus() 可以访问父函数的 counter 变量：
+
+```
+<body>
+
+<p>局部变量计数。</p>
+<p id="demo">0</p>
+<script>
+document.getElementById("demo").innerHTML = add();
+function add() {
+	var counter = 0;
+    function plus() {counter += 1;}
+    plus();    
+    return counter; 
+}
+</script>
+
+</body>
+```
+
+**JavaScript闭包**
+
+闭包是可访问上一层函数作用域里变量的函数，即便上一层函数已经关闭。闭包（closure）是Javascript语言的一个难点，也是它的特色，很多高级应用都要依靠闭包实现。
+
+由于在Javascript语言中，只有函数内部的子函数才能读取局部变量，因此可以把闭包简单理解成"定义在一个函数内部的函数"。所以，在本质上，闭包就是将函数内部和函数外部连接起来的一座桥梁。
+
+```
+<body>
+<p>局部变量计数。</p>
+<button type="button" onclick="myFunction()">计数!</button>
+<p id="demo">0</p>
+<script>
+var add = (function () {
+    var counter = 0;
+    return function () {return counter += 1;}
+})();
+function myFunction(){
+    document.getElementById("demo").innerHTML = add();
+}
+</script>
+</body>
+```
+
+变量 add 指定了函数自我调用的返回字值。自我调用函数只执行一次。设置计数器为 0。并返回函数表达式。add变量可以作为一个函数使用。特别之处在于它可以访问函数上一层作用域的计数器。这个叫作 JavaScript 闭包。它使得函数拥有私有变量变成可能。计数器受匿名函数的作用域保护，只能通过 add 方法修改。
+
+
+**闭包的用途**
+
+闭包可以用在许多地方。它的最大用处有两个，一个是前面提到的可以读取函数内部的变量，另一个就是让这些变量的值始终保持在内存中。
+
+怎么来理解这句话呢？请看下面的代码：
+
+```
+function f1(){
+　　　　var n=999;
+　　　　nAdd=function(){n+=1}
+　　　　function f2(){
+　　　　　　alert(n);
+　　　　}
+　　　　return f2;
+　　}
+　　var result=f1();
+　　result(); // 999
+　　nAdd();
+　　result(); // 1000
+```
+
+在这段代码中，result实际上就是闭包f2函数。它一共运行了两次，第一次的值是999，第二次的值是1000。这证明了，函数f1中的局部变量n一直保存在内存中，并没有在f1调用后被自动清除。
+
+为什么会这样呢？原因就在于f1是f2的父函数，而f2被赋给了一个全局变量，这导致f2始终在内存中，而f2的存在依赖于f1，因此f1也始终在内存中，不会在调用结束后，被垃圾回收机制（garbage collection）回收。
+
+这段代码中另一个值得注意的地方，就是"nAdd=function(){n+=1}"这一行，首先在nAdd前面没有使用var关键字，因此nAdd是一个全局变量，而不是局部变量。其次，nAdd的值是一个匿名函数（anonymous function），而这个匿名函数本身也是一个闭包，所以nAdd相当于是一个setter，可以在函数外部对函数内部的局部变量进行操作。
+
+**使用闭包的注意点**
+
+1）由于闭包会使得函数中的变量都被保存在内存中，内存消耗很大，所以不能滥用闭包，否则会造成网页的性能问题，在IE中可能导致内存泄露。解决方法是，在退出函数之前，将不使用的局部变量全部删除。
+
+2）闭包会在父函数外部改变父函数内部变量的值。因此，如果你把父函数当作对象（object）使用，把闭包当作它的公用方法（Public Method），把内部变量当作它的私有属性（private value），这时一定要小心，不要随便改变父函数内部变量的值。
 
 

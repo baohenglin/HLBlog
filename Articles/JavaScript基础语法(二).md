@@ -540,4 +540,58 @@ HTML DOM 独立于平台和编程语言。它可被任何编程语言诸如 Java
 
 通过可编程的对象模型，JavaScript 获得了足够的能力来创建动态的 HTML。JavaScript 能够改变页面中的所有 HTML 元素；JavaScript 能够改变页面中的所有 HTML 属性；JavaScript 能够改变页面中的所有 CSS 样式；JavaScript 能够对页面中的所有事件做出反应。
 
+**查找 HTML 元素**
+
+通常，通过 JavaScript，您需要操作 HTML 元素。为了做到这件事情，您必须首先找到该元素。有三种方法来做这件事：
+
+* (1)通过 id 找到 HTML 元素。在 DOM 中查找 HTML 元素的最简单的方法，是通过使用元素的 id。如果找到该元素，则该方法将以对象（在 x 中）的形式返回该元素。如果未找到该元素，则 x 将包含 null。
+
+```
+<body>
+<p id="intro">你好世界!</p>
+<p>该实例展示了 <b>getElementById</b> 方法!</p>
+<script>
+x=document.getElementById("intro");
+document.write("<p>文本来自 id 为 intro 段落: " + x.innerHTML + "</p>");
+</script>
+</body>
+```
+
+* (2)通过标签名找到 HTML 元素。下面例子查找 id="main" 的元素，然后查找 id="main" 元素中的所有 <p> 元素：
+
+```
+<body>
+<p>你好世界!</p>
+<div id="main">
+<p> DOM 是非常有用的。</p>
+<p>该实例展示了  <b>getElementsByTagName</b> 方法</p>
+</div>
+<script>
+var x=document.getElementById("main");
+var y=x.getElementsByTagName("p");
+document.write('id="main"元素中的第一个段落为：' + y[1].innerHTML);
+</script>
+</body>
+```
+* (3)通过类名找到 HTML 元素。下面例子通过 getElementsByClassName 函数来查找 class="intro" 的元素：
+
+```
+<body>
+
+<p class="intro">你好世界!</p>
+<p>该实例展示了 <b>getElementsByClassName</b> 方法!</p>
+<script>
+x=document.getElementsByClassName("intro");
+document.write("<p>文本来自 class 为 intro 段落: " + x[0].innerHTML + "</p>");
+</script>
+<p><b>注意：</b>Internet Explorer 8 及更早 IE 版本不支持 getElementsByClassName() 方法。</p>
+</body>
+```
+
+
+
+
+
+
+
 

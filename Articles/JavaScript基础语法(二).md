@@ -282,6 +282,21 @@ myFunction(x); // 2
 console.log(x); // 1
 ```
 
+**通过对象传递参数**
+
+在JavaScript中，可以引用对象的值。因此我们在函数内部修改对象的属性就会修改其初始的值。修改对象属性可作用于函数外部（全局变量）。
+
+```
+var obj = {x:1};
+// 通过对象传递参数
+function myFunction(obj) {
+    obj.x++; //修改参数对象obj.x的值，函数外定义的obj也将会被修改
+    console.log(obj.x);
+}
+myFunction(obj); // 2
+console.log(obj.x); // 2
+```
+
 
 
 

@@ -22,7 +22,7 @@
 <a href="https://www.zhihu.com/people/bestswifter/activities"><img src="https://img.shields.io/badge/%E7%9F%A5%E4%B9%8E-@bestswifter-50E3C2.svg?style=flat&colorA=0083ea"></a>-->
 <i<!--mg src="https://img.shields.io/badge/PR-welcome%20!-brightgreen.svg?colorA=a0cd34-->">
 </p>
-&emsp;&emsp;此博客主要用来记录一些自己平时的学习总结和工作方面的思考感悟，以方便今后回顾查阅。同时也勉励自己日益精进，努力前行。此外，文中如有错误，还望各位读者踊跃指正，可将您的宝贵意见和建议发送至baohenglin@gmail.com。
+&emsp;&emsp;此博客主要用来记录一些自己平时的学习总结和工作方面的思考感悟，以方便今后回顾查阅。同时也勉励自己日益精进，努力前行。此外，由于笔者水平有限，如果文中有错误之处，还望各位读者悉心指正，可将您的宝贵意见和建议发送至baohenglin@gmail.com。
 
 ## *📖思考感悟*
 |主题|文章|备注|

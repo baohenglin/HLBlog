@@ -460,7 +460,7 @@ __block的内存管理示意图，如下所示：
 ![__block的内存管理示意图.png](https://upload-images.jianshu.io/upload_images/4164292-8c36a6f3228238f7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
-假设有两个block：block0和block1，而且这两个block都访问了__block变量。一开始这两个block都在栈上，__block变量也在栈上。当block0被拷贝到堆上时，会自动将block内部使用到的__block变量也拷贝到堆上，而且被拷贝到堆上的block0对被拷贝到栈上的__block变量是强引用；block1也会被拷贝到堆上面，由于之前已经将__block变量拷贝到堆上了，所以这一次不再拷贝，而且被拷贝到堆上的block1堆__block变量也是强引用。
+假设有两个block：block0和block1，而且这两个block都访问了__block变量。一开始这两个block都在栈上，__block变量也在栈上。当block0被拷贝到堆上时，会自动将block内部使用到的__block变量也拷贝到堆上，而且被拷贝到堆上的block0对被拷贝到堆上的__block变量是强引用；block1也会被拷贝到堆上，由于之前已经将__block变量拷贝到堆上了，所以这一次不再拷贝，而且被拷贝到堆上的block1堆__block变量也是强引用。
 
 * 当block从堆中被移除时，会调用block内部的dispose函数(__main_block_dispose_0函数)，__main_block_dispose_0函数内部会调用_Block_object_dispose函数，_Block_object_dispose函数会自动释放引用的__block变量,类似于release操作。
 

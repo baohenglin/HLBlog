@@ -38,5 +38,23 @@ objc_msgSend函数会依据接收者与选择子的类型来调用适当的方�
 * objc_msgSend_fpret函数。如果消息返回的是浮点数，那么可交由此函数处理。在某些架构的CPU中调用函数时，需要对“浮点数寄存器”(floating-point register)做特殊处理，也就是说，通常所用的objc_msgSend在这种情况下并不合适。这个函数是为了处理x86等架构CPU中某些令人稍觉惊讶的奇怪状况。
 * objc_msgSendSuper函数。如果要给超类发消息，例如[super message:parameter]，那么就交由此函数处理。也有另外两个与objc_msgSend_stret和objc_msgSend_fpret等效的函数，用于处理发给super的相应消息。
 
+刚才曾提到，objc_msgSend等函数一旦找到应该调用的方法实现之后，就会“跳转过去”。之所以能这样做，是因为Objective-C对象的每个方法都可以视为简单的C函数，其原型如下：
+
+```
+<return_type> Class_selector(id self, SEL _cmd, ...)
+```
+
+真正的函数名和上面写的可能不太一样，笔者用“类”（class）和“选择子”（selector）来命名是想解释其工作原理。每个类里都有一张表格，其中的指针都会指向这种函数，而选择子的名称则是查表时所用的“键”。objc_msgSend等函数正是通过这张表格来寻找应该执行的方法并跳至其实现的。请注意，原型的样子和objc_msgSend函数很像。这不是巧合，而是为了利用“尾调用优化”(tail-call optimization)技术，令“跳至方法实现”这一操作变得更简单些。
+
+如果某函数的最后一项操作是调用另外一个函数，那么就可以运用“尾调用优化”技术。编译器会生成调转至另一函数所需的指令码，而且不会向调用堆栈中推入新的“栈帧”(frame stack)。只有当某函数的最后一个操作仅仅是调用其他函数而不会将其返回值另作他用时，才能执行“尾调用优化”。这项优化对objc_msgSend非常关键，如果不这么做的话，那么每次调用Objective-C方法之前，都需要为调用objc_msgSend函数准备“栈帧”，大家在“栈踪迹”(stack trace)中可以看到这种“栈帧”。此外，如果不优化，还会过早地发生“栈溢出”(stack overflow)现象。
+
+
+
+
+
+
+
+
+
 
 

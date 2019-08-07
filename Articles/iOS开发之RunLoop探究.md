@@ -115,7 +115,7 @@ CF_EXPORT CFRunLoopRef _CFRunLoopGet0(pthread_t t) {
 	CFMutableDictionaryRef dict = CFDictionaryCreateMutable(kCFAllocatorSystemDefault, 0, NULL, &kCFTypeDictionaryValueCallBacks);
     //创建一个与主线程对应的RunLoop对象mainLoop
 	CFRunLoopRef mainLoop = __CFRunLoopCreate(pthread_main_thread_np());
-    //将线程和 与主线程对应的mainLoop存储到字典dict中
+    //将主线程以及和主线程对应的RunLoop对象mainLoop存储到字典dict中
 	CFDictionarySetValue(dict, pthreadPointer(pthread_main_thread_np()), mainLoop);
     //OSAtomicCompareAndSwap**[Barrier](type __oldValue, type __newValue, volatile type *__theValue)：这组函数用于比较__oldValue是否与__theValue指针指向的内存位置的值匹配，如果匹配，则将__newValue的值存储到__theValue指向的内存位置。
     //将创建的局部可变字典 dict 赋值给全局字典__CFRunLoops
@@ -131,7 +131,7 @@ CF_EXPORT CFRunLoopRef _CFRunLoopGet0(pthread_t t) {
     CFRunLoopRef loop = (CFRunLoopRef)CFDictionaryGetValue(__CFRunLoops, pthreadPointer(t));
     //解锁
     __CFUnlock(&loopsLock);
-    //如果获取不到RunLoop，那么就重新创建newLoop，并存储到字典__CFRunLoops中
+    //如果获取不到RunLoop，那么就重新创建newLoop，并存储到字典__CFRunLoops中(RunLoop 的创建发生在第一次获取该线程对应的RunLoop时)
     if (!loop) {
     //根据当前线程t创建一个RunLoop
 	CFRunLoopRef newLoop = __CFRunLoopCreate(t);

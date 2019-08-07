@@ -66,7 +66,29 @@ NSRunLoop *runloop = [NSRunLoop mainRunLoop];
 
 ## RunLoop与线程的关系
 
-获取RunLoop的源码如下所示：
+获取主线程对应的RunLoop的源码如下所示：
+
+```
+CFRunLoopRef CFRunLoopGetMain(void) {
+    CHECK_FOR_FORK();
+    static CFRunLoopRef __main = NULL; // no retain needed
+    if (!__main) __main = _CFRunLoopGet0(pthread_main_thread_np()); // no CAS needed
+    return __main;
+}
+```
+
+获取当前线程对应的RunLoop的源码如下：
+
+```
+CFRunLoopRef CFRunLoopGetCurrent(void) {
+    CHECK_FOR_FORK();
+    CFRunLoopRef rl = (CFRunLoopRef)_CFGetTSD(__CFTSDKeyRunLoop);
+    if (rl) return rl;
+    return _CFRunLoopGet0(pthread_self());
+}
+```
+
+其中CFRunLoopGetMain和CFRunLoopGetCurrent中都调用了_CFRunLoopGet0()函数，_CFRunLoopGet0函数的底层实现源码如下：
 
 ```
 //声明一个全局的可变字典 __CFRunLoops 用于存储每一条线程和对应的RunLoop ，key是线程pthread_t，value存储RunLoop

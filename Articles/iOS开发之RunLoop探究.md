@@ -44,7 +44,9 @@ int main(int argc, char * argv[]) {
 
 ## RunLoop对象
 
-iOS中有2套API来访问和使用RunLoop对象。其中一套基于OC的Foundation:NSRunLoop，另一套是基于C语言的Core Foundation:CFRunLoopRef。其中的NSRunLoop和CFRunLoopRef都代表着RunLoop对象。NSRunLoop是基于CFRunLoopRef的一层OC包装(这也是使用OC方式和C语言方式打印出来的主线程不同的原因，主线程真正的地址是使用C语言打印出来的地址)。CFRunLoopRef是开源的。[CFRunLoopRef下载链接](https://opensource.apple.com/tarballs/CF/)
+首先，iOS 开发中能遇到两个线程对象: pthread_t 和 NSThread。pthread_t 和 NSThread 是一一对应的。比如，你可以通过 pthread_main_thread_np() 或 [NSThread mainThread] 来获取主线程；也可以通过 pthread_self() 或 [NSThread currentThread] 来获取当前线程。
+
+iOS中有2套API来访问和使用RunLoop对象。其中一套基于OC的Foundation:NSRunLoop，另一套是基于C语言的Core Foundation:CFRunLoopRef，CFRunLoop 是基于 pthread 来管理的。其中的NSRunLoop和CFRunLoopRef都代表着RunLoop对象。NSRunLoop是基于CFRunLoopRef的一层OC包装(这也是使用OC方式和C语言方式打印出来的主线程不同的原因，主线程真正的地址是使用C语言打印出来的地址)。CFRunLoopRef是开源的。[CFRunLoopRef下载链接](https://opensource.apple.com/tarballs/CF/)
 
 获取当前线程的RunLoop对象：
 
@@ -63,6 +65,81 @@ NSRunLoop *runloop = [NSRunLoop mainRunLoop];
 ```
 
 ## RunLoop与线程的关系
+
+获取RunLoop的源码如下所示：
+
+```
+//声明一个全局的可变字典 __CFRunLoops 用于存储每一条线程和对应的RunLoop ，key是线程pthread_t，value存储RunLoop
+static CFMutableDictionaryRef __CFRunLoops = NULL;
+// loopsLock 用于访问 __CFRunLoops 时加锁，锁的目的是:考虑线程安全问题，防止多条线程同时访问__CFRunLoops对应的内存空间
+static CFLock_t loopsLock = CFLockInit;
+
+// should only be called by Foundation
+// t==0 is a synonym(代名词) for "main thread" that always works
+//获取 RunLoop函数
+CF_EXPORT CFRunLoopRef _CFRunLoopGet0(pthread_t t) {
+    //kNilPthreadT表示空的线程
+    //判断t所指向的线程是否为空，如果为空，就获取当前的主线程进行赋值
+    if (pthread_equal(t, kNilPthreadT)) {
+	t = pthread_main_thread_np();
+    }
+    //处理线程安全，加锁
+    __CFLock(&loopsLock);
+    //判断全局的可变字典__CFRunLoops是否为空
+    if (!__CFRunLoops) {
+        //解锁
+        __CFUnlock(&loopsLock);
+    //定义一个局部可变字典 dict
+	CFMutableDictionaryRef dict = CFDictionaryCreateMutable(kCFAllocatorSystemDefault, 0, NULL, &kCFTypeDictionaryValueCallBacks);
+    //创建一个与主线程对应的RunLoop对象mainLoop
+	CFRunLoopRef mainLoop = __CFRunLoopCreate(pthread_main_thread_np());
+    //将线程和 与主线程对应的mainLoop存储到字典dict中
+	CFDictionarySetValue(dict, pthreadPointer(pthread_main_thread_np()), mainLoop);
+    //OSAtomicCompareAndSwap**[Barrier](type __oldValue, type __newValue, volatile type *__theValue)：这组函数用于比较__oldValue是否与__theValue指针指向的内存位置的值匹配，如果匹配，则将__newValue的值存储到__theValue指向的内存位置。
+    //将创建的局部可变字典 dict 赋值给全局字典__CFRunLoops
+	if (!OSAtomicCompareAndSwapPtrBarrier(NULL, dict, (void * volatile *)&__CFRunLoops)) {
+        //赋值成功后，release局部可变字典dict
+	    CFRelease(dict);
+	}
+    //将mainLoop成功存储到字典__CFRunLoops后对mainLoop执行一次release操作（因为mainLoop存储到字典后会自动执行一次retain操作。）
+	CFRelease(mainLoop);
+        __CFLock(&loopsLock);
+    }
+    //从全局的字典__CFRunLoops中获取对应于当前线程的RunLoop
+    CFRunLoopRef loop = (CFRunLoopRef)CFDictionaryGetValue(__CFRunLoops, pthreadPointer(t));
+    //解锁
+    __CFUnlock(&loopsLock);
+    //如果获取不到RunLoop，那么就重新创建newLoop，并存储到字典__CFRunLoops中
+    if (!loop) {
+    //根据当前线程t创建一个RunLoop
+	CFRunLoopRef newLoop = __CFRunLoopCreate(t);
+        __CFLock(&loopsLock);
+    //再一次从全局字典__CFRunLoops中获取对应于当前线程的RunLoop
+	loop = (CFRunLoopRef)CFDictionaryGetValue(__CFRunLoops, pthreadPointer(t));
+    //如果还是获取不到RunLoop，就将当前线程t和刚创建的RunLoop都存储到全局字典__CFRunLoops中
+	if (!loop) {
+        //将当前线程t和刚创建的RunLoop都存储到全局字典__CFRunLoops中
+	    CFDictionarySetValue(__CFRunLoops, pthreadPointer(t), newLoop);
+        //赋值,用于返回值
+	    loop = newLoop;
+	}
+        // don't release run loops inside the loopsLock, because CFRunLoopDeallocate may end up taking it
+        __CFUnlock(&loopsLock);
+    //release局部变量 newLoop
+	CFRelease(newLoop);
+    }
+    //判断是否为当前线程，如果是就注册一个回调，当线程销毁时，顺便也销毁其对应的 RunLoop
+    if (pthread_equal(t, pthread_self())) {
+        _CFSetTSD(__CFTSDKeyRunLoop, (void *)loop, NULL);
+        if (0 == _CFGetTSD(__CFTSDKeyRunLoopCntr)) {
+            _CFSetTSD(__CFTSDKeyRunLoopCntr, (void *)(PTHREAD_DESTRUCTOR_ITERATIONS-1), (void (*)(void *))__CFFinalizeRunLoop);
+        }
+    }
+    return loop;
+}
+```
+
+由以上代码可知：
 
 * 每条线程都有唯一的一个与之对应的RunLoop对象。
 * RunLoop保存在一个全局的Dictionary里，线程作为key，RunLoop作为value。

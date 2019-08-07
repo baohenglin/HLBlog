@@ -91,9 +91,9 @@ CFRunLoopRef CFRunLoopGetCurrent(void) {
 其中CFRunLoopGetMain和CFRunLoopGetCurrent中都调用了_CFRunLoopGet0()函数，_CFRunLoopGet0函数的底层实现源码如下：
 
 ```
-//声明一个全局的可变字典 __CFRunLoops 用于存储每一条线程和对应的RunLoop ，key是线程pthread_t，value存储RunLoop
+//声明一个全局的可变字典 __CFRunLoops 用于存储每一条线程以及和该线程对应的RunLoop对象 ，key是线程pthread_t，value是RunLoop对象
 static CFMutableDictionaryRef __CFRunLoops = NULL;
-// loopsLock 用于访问 __CFRunLoops 时加锁，锁的目的是:考虑线程安全问题，防止多条线程同时访问__CFRunLoops对应的内存空间
+// loopsLock 用于访问 __CFRunLoops 时加锁，锁的目的是:保证线程读写安全，防止多条线程同时访问__CFRunLoops对应的内存空间
 static CFLock_t loopsLock = CFLockInit;
 
 // should only be called by Foundation

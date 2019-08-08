@@ -826,6 +826,13 @@ iOS的多线程方案有以下这几种：
 
 **4.GCD的队列类型有哪些？**
 
+GCD的队列可以分为两大类型，分别是
+
+* 串行队列(Serial Dispatch Queue)：串行队列是指让任务一个接着一个地执行的队列（一个任务执行完毕后，再执行下一个任务）。需要注意的是主队列(dispatch_queue queue = dispatch_get_main_queue();)其实也是串行队列。
+* 并发队列(Concurrent Dispatch Queue)：并发队列是指可以让多个任务并发(同时)执行（自动开启多个线程同时执行任务）的队列。并发功能只有在异步(dispatch_async)函数下才有效。
+
+
+
 **5.说一下OperationQueue和GCD的区别以及各自的优势**
 
 **6.线程安全的处理手段有哪些？**

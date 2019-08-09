@@ -169,7 +169,7 @@ GCD的队列可以分为两大类型，分别是
 
 ![多线程安全隐患加锁示意图.png](https://upload-images.jianshu.io/upload_images/4164292-aa39e64672a572fd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-## iOS中的线程同步方案
+## iOS中的10种线程同步方案
 
 * (1)OSSpinLock：等待锁的线程会处于忙等（busy-wait）状态，一直占用CPU资源，所以OSSpinLock是自旋锁(是一种高级锁)。目前OSSpinLock已不再安全，可能会出现优先级反转(Priority Inversion)的问题。有可能产生优先级反转的原因：如果等待锁的线程优先级比较高，它会一直占用着CPU资源，优先级低的线程就无法释放锁。所以在项目中不推荐使用OSSpinLock。
 
@@ -854,6 +854,8 @@ GCD的队列可以分为两大类型，分别是
 
 
 **6.线程安全的处理手段有哪些？**
+
+思路：详见“iOS中的10种线程同步方案”
 
 **7.OC中的锁你了解哪些？使用以上这些锁需要注意哪些问题？自旋锁和互斥锁的异同？**
 

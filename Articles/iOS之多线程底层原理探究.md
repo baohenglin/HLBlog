@@ -275,7 +275,7 @@ os_unfair_lock_lock(&lock);
 os_unfair_lock_unlock(&lock);
 ```
 
-* (3)pthread_mutex(互斥锁)：等待锁的线程会处于休眠状态，所以pthread_mutex是“互斥锁”，是一种low-level lock。
+* (3)pthread_mutex(互斥锁)：等待锁的线程会处于休眠状态，所以pthread_mutex是“互斥锁”，是一种low-level lock。互斥锁的实现原理与信号量非常相似，不是使用忙等，而是阻塞线程并休眠，需要进行上下文切换。
 
 使用时需要导入头文件 #import <pthread.h>，具体用法如下：
 
@@ -290,13 +290,14 @@ os_unfair_lock_unlock(&lock);
 pthread_mutexattr_t attr;
 pthread_mutexattr_init(&attr);
 //PTHREAD_MUTEX_DEFAULT:普通锁
-pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_NORMAL);
+pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_NORMAL);//定义锁的属性
 //初始化锁
 pthread_mutex_init(&_mutexLock,&attr);
 //销毁锁的属性
 pthread_mutexattr_destroy(&attr);
 //加锁
 pthread_mutex_lock(&_mutexLock);
+//临界区代码
 //解锁
 pthread_mutex_unlock(&_mutexLock);
 
@@ -307,6 +308,20 @@ pthread_mutex_unlock(&_mutexLock);
     pthread_mutex_destroy(&_mutexLock);
 }
 ```
+
+由于 pthread_mutex 有多种类型，有 PTHREAD_MUTEX_NORMAL、PTHREAD_MUTEX_ERRORCHECK、PTHREAD_MUTEX_RECURSIVE、PTHREAD_MUTEX_DEFAULT等。
+
+如果互斥锁类型为 PTHREAD_MUTEX_NORMAL，则不提供死锁检测。尝试重新锁定互斥锁会导致死锁。如果某个线程尝试解除锁定的互斥锁不是由该线程锁定或未锁定，则将产生不确定的行为。
+
+如果互斥锁类型为 PTHREAD_MUTEX_ERRORCHECK，则会提供错误检查。如果某个线程尝试重新锁定的互斥锁已经由该线程锁定，则将返回错误。如果某个线程尝试解除锁定的互斥锁不是由该线程锁定或者未锁定，则将返回错误。
+
+如果互斥锁类型为 PTHREAD_MUTEX_RECURSIVE，则该互斥锁会保留锁定计数这一概念。线程首次成功获取互斥锁时，锁定计数会设置为 1。线程每重新锁定该互斥锁一次，锁定计数就增加 1。线程每解除锁定该互斥锁一次，锁定计数就减小 1。 锁定计数达到 0 时，该互斥锁即可供其他线程获取。如果某个线程尝试解除锁定的互斥锁不是由该线程锁定或者未锁定，则将返回错误。
+
+如果互斥锁类型是 PTHREAD_MUTEX_DEFAULT，则尝试以递归方式锁定该互斥锁将产生不确定的行为。对于不是由调用线程锁定的互斥锁，如果尝试解除对它的锁定，则会产生不确定的行为。如果尝试解除锁定尚未锁定的互斥锁，则会产生不确定的行为。
+
+**pthread_mutex使用注意事项：**
+
+一般情况下，一个线程只能申请一次锁，也只能在获得锁的情况下才能释放锁，多次申请锁或释放未获得的锁都会导致崩溃。假设在已经获得锁的情况下再次申请锁，线程会因为等待锁的释放而进入睡眠状态，因此就不可能再释放锁，从而导致死锁。然而这种情况经常会发生，比如某个函数申请了锁，在临界区内又递归调用了自己。幸运的是 pthread_mutex 支持递归锁，也就是允许一个线程递归的申请锁，只要把 attr 的类型改成 PTHREAD_MUTEX_RECURSIVE 即可(递归锁的特点：允许同一条线程对同一把锁进行重复加锁而不会引发死锁)。
 
 **pthread_mutex-递归锁**
 

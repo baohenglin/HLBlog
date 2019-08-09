@@ -977,6 +977,8 @@ GCD的队列可以分为两大类型，分别是
 * 临界区代码复杂或者循环量大
 * 临界区竞争非常激烈
 
+**[自旋锁和互斥锁的异同详见【扩展 10-8】自旋锁和互斥锁的异同？](https://github.com/baohenglin/iOS-Interview-Question/blob/master/Article/iOSInterviewQuestionsSummaryThree.md)**
+
 **8.任选C/OC/C++其中一种语言，实现自旋锁和互斥锁？**
 
 **9.performSelector: withObject: afterDelay:方法的本质是往RunLoop中添加定时器，子线程默认没有启动RunLoop。**

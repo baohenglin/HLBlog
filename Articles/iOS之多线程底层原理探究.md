@@ -518,7 +518,7 @@ NSCondition遵守了NSLocking协议，使用的时候同样是lock，unlock加�
 }
 ```
 
-* (9)NSConditionLock(条件锁)：是对NSCondition的进一步封装，可以设置具体的条件值。
+* (9)NSConditionLock(条件锁)：是对NSCondition的进一步封装，可以设置具体的条件值。它的本质就是一个生产者-消费者模型。
 API如下：
 
 ```
@@ -530,9 +530,11 @@ API如下：
 - (instancetype)initWithCondition:(NSInteger)condition NS_DESIGNATED_INITIALIZER;
 
 @property (readonly) NSInteger condition;
+//消费者方法
 - (void)lockWhenCondition:(NSInteger)condition;
 - (BOOL)tryLock;
 - (BOOL)tryLockWhenCondition:(NSInteger)condition;
+//生产者方法
 - (void)unlockWithCondition:(NSInteger)condition;
 - (BOOL)lockBeforeDate:(NSDate *)limit;
 - (BOOL)lockWhenCondition:(NSInteger)condition beforeDate:(NSDate *)limit;

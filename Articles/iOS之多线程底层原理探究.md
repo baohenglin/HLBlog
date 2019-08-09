@@ -399,7 +399,9 @@ dispatch_semaphore实现原理大致如下：Dispatch Semaphore信号量主要�
 @end
 ```
 
-* (6)NSLock：是对pthread_mutex普通锁的OC形式的封装。
+* (6)NSLock：是对pthread_mutex普通锁的OC形式的封装。NSLock 只是在内部封装了一个 pthread_mutex，属性为 PTHREAD_MUTEX_ERRORCHECK，它会损失一定性能换来错误提示。
+
+NSLock的实现非常简单，通过宏，定义了 lock 方法。这里使用宏定义的原因是，OC 内部还有其他几种锁，他们的 lock 方法都是一模一样，仅仅是内部 pthread_mutex 互斥锁的类型不同。通过宏定义，可以简化方法的定义。
 
 ```
 #import "NSLockDemo.h"
@@ -438,9 +440,14 @@ dispatch_semaphore实现原理大致如下：Dispatch Semaphore信号量主要�
 @end
 ```
 * (7)NSRecursiveLock(递归锁)：NSRecursiveLock也是对**pthread_mutex递归锁**OC形式的封装，API跟NSLock基本一致。
+
+NSRecursiveLock 与 NSLock 的区别在于内部封装的 pthread_mutex_t 对象的类型不同，NSRecursiveLock的类型为 PTHREAD_MUTEX_RECURSIVE，而NSLock的类型为 PTHREAD_MUTEX_ERRORCHECK。
+
 * (8)NSCondition(条件锁)：NSCondition条件锁，是对锁mutex和条件cond的OC封装。
 
-NSCondition的应用场景是某条线程，比如线程A执行到某处时发现条件不满足，此时就会在此处等待，并打开这把锁，允许其他线程去执行任务（加锁解锁）。当其他线程执行完任务后，会解锁，并发送一个符合条件的信号，此时条件满足了，线程A就会给这把锁重新加锁，并往下继续执行代码。NSConditionLock主要用在按照一定顺序执行任务的场合。这也使二者的区别。
+NSCondition 的底层是通过条件变量(condition variable) pthread_cond_t和互斥锁来实现的。条件变量有点像信号量，提供了线程阻塞与信号机制，因此可以用来阻塞某个线程，并等待某个数据就绪，随后唤醒线程，比如常见的生产者-消费者模式。
+
+NSCondition的应用场景是某条线程，比如线程A执行到某处时发现条件不满足，此时就会在此处等待，并打开这把锁，允许其他线程去执行任务（加锁解锁）。当其他线程执行完任务后，会解锁，并发送一个符合条件的信号，此时条件满足了，线程A就会给这把锁重新加锁，并往下继续执行代码。NSConditionLock主要用在按照一定顺序执行任务的场合。
 
 ```
 @interface NSCondition : NSObject <NSLocking> {
@@ -649,6 +656,7 @@ API如下：
 - (void)hl_remove
 {
     pthread_mutex_lock(&_mutex);
+    //wait 方法除了会被 signal 方法唤醒，有时还会被虚假唤醒，所以需要在这里进行判断。
     if (self.dataArr.count == 0) {
         //等待(休眠)条件_cond，将锁_mutex放开，被唤醒之后，重新加锁_mutex
         //_cond:将来用来唤醒自己的条件。注意等待的条件必须和唤醒的条件完全一样。
@@ -660,6 +668,7 @@ API如下：
 //线程2
 - (void)hl_add
 {
+    //添加互斥锁以保证消费者拿到的数据是线程安全的。
     pthread_mutex_lock(&_mutex);
     [self.dataArr addObject:@"Test"];
     //信号：唤醒一个等待该条件的线程

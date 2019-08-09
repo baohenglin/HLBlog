@@ -251,11 +251,11 @@ do {
 ```
 **自旋锁使用注意事项**：
 
-* (1)**过多占用CPU资源**
+* <1>**过多占用CPU资源**
 
 如果临界区的执行时间过长，不适合使用自旋锁(原因：过多占用CPU资源)**。之前我们介绍过时间片轮转算法，线程在多种情况下会退出自己的时间片。其中一种是用完了时间片的时间，被操作系统强制抢占。除此以外，当线程进行 I/O 操作，或进入睡眠状态时，都会主动让出时间片。显然在 while 循环中，线程处于忙等状态，白白浪费 CPU 时间，最终因为超时被操作系统抢占时间片。如果临界区执行时间较长，比如是文件读写，这种忙等是毫无必要的。
 
-* (2)**引起死锁**
+* <2>**引起死锁**
 
 自旋锁使用不当可能引起**死锁**问题。**试图递归地获得自旋锁必然会引起死锁。**所以递归程序决不能在持有自旋锁时调用它自己，也决不能在递归调用时试图获得相同的自旋锁。
 
@@ -332,6 +332,13 @@ dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
 //让信号量的值加1
 dispatch_semaphore_signal(semaphore);
 ```
+dispatch_semaphore实现原理大致如下：Dispatch Semaphore信号量主要是dispatch_semaphore_wait和dispatch_semaphore_signal函数，wait会将信号量值减一，如果大于等于0就立即返回，否则等待信号量唤醒或者超时；signal会将信号量值加一，如果value大于0立即返回，否则唤醒某个等待中的线程。
+
+**[dispatch_semaphore实现原理详解](https://xiaozhuanlan.com/topic/4365017982)**
+
+**dispatch_semaphore注意事项：**
+
+信号量在销毁或重新创建的时候如果还在使用则会引起崩溃。
 
 * (5)dispatch_queue(DISPATCH_QUEUE_SERIAL)：直接使用GCD的串行队列，也是可以实现线程同步的。
 

@@ -171,10 +171,11 @@ GCD的队列可以分为两大类型，分别是
 
 ## iOS中的10种线程同步方案
 
-* (1)OSSpinLock：等待锁的线程会处于忙等（busy-wait）状态，一直占用CPU资源，所以OSSpinLock是自旋锁(是一种高级锁)。目前OSSpinLock已不再安全，可能会出现优先级反转(Priority Inversion)的问题，所以在项目中不推荐使用OSSpinLock。那么OSSpinLock为什么会产生优先级反转呢？主要原因发生在低优先级线程拿到锁时，高优先级线程进入忙等(busy-wait)状态，消耗大量 CPU 时间，从而导致低优先级线程拿不到 CPU 时间，也就无法完成任务并释放锁。这种问题被称为优先级反转。
+* (1)OSSpinLock(自旋锁)：等待锁的线程会处于忙等（busy-wait）状态，一直占用CPU资源，所以**OSSpinLock是自旋锁**(是一种高级锁)。目前OSSpinLock已不再安全，可能会出现优先级反转(Priority Inversion)的问题，所以在项目中不推荐使用OSSpinLock。那么OSSpinLock为什么会产生优先级反转呢？主要原因发生在低优先级线程拿到锁时，高优先级线程进入忙等(busy-wait)状态，消耗大量 CPU 时间，从而导致低优先级线程拿不到 CPU 时间，也就无法完成任务并释放锁。这种问题被称为优先级反转。
 
 为什么高优先级线程处于“忙等”状态会导致低优先级线程拿不到时间片？这还得从操作系统的线程调度说起。现代操作系统在管理普通线程时，通常采用时间片轮转算法(Round Robin，简称 RR)。每个线程会被分配一段时间片(quantum)，通常在 10-100 毫秒左右。当线程用完属于自己的时间片以后，就会被操作系统挂起，放入等待队列中，直到下一次被分配时间片。
 
+**OSSpinLock自旋锁的使用**
 
 需要先导入头文件 #import <libkern/OSAtomic.h>，用法如下：
 
@@ -187,10 +188,72 @@ bool result = OSSpinLockTry(&lock);
 OSSpinLockLock(&lock);
 //解锁
 OSSpinLockUnlock(&_moneyLock);
-
 ```
 
-* (2)os_unfair_lock：os_unfair_lock用于取代不安全的OSSpinLock，从iOS10开始才支持。从底层调用来看，等待os_unfair_lock锁的线程会处于休眠状态，而不是像自旋锁那样忙等，所以os_unfair_lock是互斥锁，是一种low-level lock(低级锁：低级锁的特点是等不到锁的时候就进入休眠)。
+**[自旋锁实现原理](https://juejin.im/post/57f6e9f85bbb50005b126e5f)**
+
+自旋锁的目的是为了确保临界区只有一个线程可以访问，它的使用可以用下面这段伪代码来描述:
+
+```
+do {
+    Acquire Lock
+        Critical section  // 临界区
+    Release Lock
+        Reminder section // 不需要锁保护的代码
+}
+```
+
+在 Acquire Lock 这一步，我们申请加锁，目的是为了保护临界区(Critical Section) 中的代码不会被多个线程执行。
+
+自旋锁的实现思路很简单，理论上来说只要定义一个全局变量，用来表示锁的可用情况即可，伪代码如下:
+
+```
+bool lock = false; // 一开始没有锁上，任何线程都可以申请锁
+do {
+    while(lock); // 如果 lock 为 true 就一直死循环，相当于申请锁
+    lock = true; // 挂上锁，这样别的线程就无法获得锁
+        Critical section  // 临界区
+    lock = false; // 相当于释放锁，这样别的线程可以进入临界区
+        Reminder section // 不需要锁保护的代码        
+}
+```
+
+这段代码存在一个问题: 如果一开始有多个线程同时执行 while 循环，他们都不会在这里卡住，而是继续执行，这样就无法保证锁的可靠性了。解决思路也很简单，只要确保申请锁的过程是原子操作即可。
+
+**原子操作**
+
+狭义上的原子操作表示一条不可打断的操作，也就是说线程在执行操作过程中，不会被操作系统挂起，而是一定会执行完。在单处理器环境下，一条汇编指令显然是原子操作，因为中断也要通过指令来实现。
+
+然而在多处理器的情况下，能够被多个处理器同时执行的操作任然算不上原子操作。因此，真正的原子操作必须由硬件提供支持，比如 x86 平台上如果在指令前面加上 “LOCK” 前缀，对应的机器码在执行时会把总线锁住，使得其他 CPU不能再执行相同操作，从而从硬件层面确保了操作的原子性。
+
+上述申请锁的过程，可以用一个原子性操作 test_and_set 来完成，它用伪代码可以这样表示:
+
+```
+bool test_and_set (bool *target) {
+    bool rv = *target; 
+    *target = TRUE; 
+    return rv;
+}
+```
+
+这段代码的作用是把 target 的值设置为 1，并返回原来的值。当然，在具体实现时，它通过一个原子性的指令来完成。
+
+自旋锁实现的完整伪代码如下：
+
+```
+bool lock = false; // 一开始没有锁上，任何线程都可以申请锁
+do {
+    while(test_and_set(&lock); // test_and_set 是一个原子操作
+        Critical section  // 临界区
+    lock = false; // 相当于释放锁，这样别的线程可以进入临界区
+        Reminder section // 不需要锁保护的代码        
+}
+```
+
+如果临界区的执行时间过长，不适合使用自旋锁。之前我们介绍过时间片轮转算法，线程在多种情况下会退出自己的时间片。其中一种是用完了时间片的时间，被操作系统强制抢占。除此以外，当线程进行 I/O 操作，或进入睡眠状态时，都会主动让出时间片。显然在 while 循环中，线程处于忙等状态，白白浪费 CPU 时间，最终因为超时被操作系统抢占时间片。如果临界区执行时间较长，比如是文件读写，这种忙等是毫无必要的。
+
+
+* (2)os_unfair_lock(互斥锁)：os_unfair_lock用于取代不安全的OSSpinLock，从iOS10开始才支持。从底层调用来看，等待os_unfair_lock锁的线程会处于休眠状态，而不是像自旋锁那样忙等，所以os_unfair_lock是互斥锁，是一种low-level lock(低级锁：低级锁的特点是等不到锁的时候就进入休眠)。
 
 使用时需要导入头文件 #import <os/lock.h>,具体用法如下：
 
@@ -203,10 +266,9 @@ os_unfair_lock_trylock(&lock);
 os_unfair_lock_lock(&lock);
 //解锁
 os_unfair_lock_unlock(&lock);
-
 ```
 
-* (3)pthread_mutex：等待锁的线程会处于休眠状态，所以pthread_mutex是“互斥锁”，是一种low-level lock。
+* (3)pthread_mutex(互斥锁)：等待锁的线程会处于休眠状态，所以pthread_mutex是“互斥锁”，是一种low-level lock。
 
 使用时需要导入头文件 #import <pthread.h>，具体用法如下：
 
@@ -241,7 +303,7 @@ pthread_mutex_unlock(&_mutexLock);
 
 **pthread_mutex-递归锁**
 
-将pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);的第二个参数设置为PTHREAD_MUTEX_RECURSIVE，表示该锁是递归锁。除此属性值不同之外，其他用法与pthread_mutex默认的普通锁(PTHREAD_MUTEX_NORMAL)完全一致。
+将pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);的第二个参数设置为PTHREAD_MUTEX_RECURSIVE，表示该锁是**递归锁**。除此属性值不同之外，其他用法与pthread_mutex默认的普通锁(PTHREAD_MUTEX_NORMAL)完全一致。
 
 递归锁的特点：允许同一条线程对同一把锁进行重复加锁而不会引发死锁。因为只是允许同一条线程重复加锁，所以递归锁依然能够保证线程安全。
 
@@ -344,8 +406,8 @@ dispatch_semaphore_signal(semaphore);
 }
 @end
 ```
-* (7)NSRecursiveLock：NSRecursiveLock也是对pthread_mutex递归锁OC形式的封装，API跟NSLock基本一致。
-* (8)NSCondition：NSCondition条件锁，是对锁mutex和条件cond的OC封装。
+* (7)NSRecursiveLock(递归锁)：NSRecursiveLock也是对**pthread_mutex递归锁**OC形式的封装，API跟NSLock基本一致。
+* (8)NSCondition(条件锁)：NSCondition条件锁，是对锁mutex和条件cond的OC封装。
 
 NSCondition的应用场景是某条线程，比如线程A执行到某处时发现条件不满足，此时就会在此处等待，并打开这把锁，允许其他线程去执行任务（加锁解锁）。当其他线程执行完任务后，会解锁，并发送一个符合条件的信号，此时条件满足了，线程A就会给这把锁重新加锁，并往下继续执行代码。NSConditionLock主要用在按照一定顺序执行任务的场合。这也使二者的区别。
 
@@ -418,7 +480,7 @@ NSCondition遵守了NSLocking协议，使用的时候同样是lock，unlock加�
 }
 ```
 
-* (9)NSConditionLock：是对NSCondition的进一步封装，可以设置具体的条件值。
+* (9)NSConditionLock(条件锁)：是对NSCondition的进一步封装，可以设置具体的条件值。
 API如下：
 
 ```
@@ -477,7 +539,7 @@ API如下：
 }
 ```
 
-* (10)@synchronized：是对pthread_mutex递归锁的封装，支持递归加锁。其实现源码可以在objc4的objc-sync.mm文件查看。
+* (10)@synchronized：是对**pthread_mutex递归锁**的封装，支持递归加锁。其实现源码可以在objc4的objc-sync.mm文件查看。
 
 @synchronized的实现原理是：利用HashMap（哈希表/散列表），将传入的对象作为key，并通过key获取一把与之对应的锁(Value)；如果传入的对象相同，那么获取的锁也是相同的；如果传入的对象不同，那么得到的是不同的锁。
 

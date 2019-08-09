@@ -171,7 +171,7 @@ GCD的队列可以分为两大类型，分别是
 
 ## iOS中的10种线程同步方案
 
-* (1)OSSpinLock：等待锁的线程会处于忙等（busy-wait）状态，一直占用CPU资源，所以OSSpinLock是自旋锁(是一种高级锁)。目前OSSpinLock已不再安全，可能会出现优先级反转(Priority Inversion)的问题。有可能产生优先级反转的原因：如果等待锁的线程优先级比较高，它会一直占用着CPU资源，优先级低的线程就无法释放锁。所以在项目中不推荐使用OSSpinLock。
+* (1)OSSpinLock：等待锁的线程会处于忙等（busy-wait）状态，一直占用CPU资源，所以OSSpinLock是自旋锁(是一种高级锁)。目前OSSpinLock已不再安全，可能会出现优先级反转(Priority Inversion)的问题。主要原因发生在低优先级线程拿到锁时，高优先级线程进入忙等(busy-wait)状态，消耗大量 CPU 时间，从而导致低优先级线程拿不到 CPU 时间，也就无法完成任务并释放锁。这种问题被称为优先级反转。所以在项目中不推荐使用OSSpinLock。
 
 那么OSSpinLock为什么会产生优先级反转呢？
 

@@ -216,7 +216,11 @@ CADispalyLink、NSTimer会对target产生强引用，如果target又对它们产
 
 2.简述内存的几大区域
 
+[扩展 11-1】介绍下内存的几大区域](https://github.com/baohenglin/iOS-Interview-Question/blob/master/Article/iOSInterviewQuestionsSummaryFour.md)
+
 3.谈谈对iOS内存管理的理解
+
+[扩展 11-2】简述对iOS内存管理的理解](https://github.com/baohenglin/iOS-Interview-Question/blob/master/Article/iOSInterviewQuestionsSummaryFour.md)
 
 4.autorelease对象在什么时候会被release的？
 

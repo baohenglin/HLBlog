@@ -268,9 +268,11 @@ dispatch_async(dispatch_get_global_queue(0, 0), ^{
 <br>
 
 #### 参考资料
-https://blog.ibireme.com/2015/11/12/smooth_user_interfaces_for_ios/
-http://www.cocoachina.com/ios/20180507/23298.html
-https://www.cnblogs.com/LeeGof/p/6803146.html?utm_source=itdadao&utm_medium=referral
+[iOS 保持界面流畅的技巧](https://blog.ibireme.com/2015/11/12/smooth_user_interfaces_for_ios/)
+
+[关于 IPA瘦身的探索与思考](http://www.cocoachina.com/ios/20180507/23298.html)
+
+[iOS安装包瘦身的那些事儿](https://www.cnblogs.com/LeeGof/p/6803146.html?utm_source=itdadao&utm_medium=referral)
 
 
 

@@ -538,7 +538,16 @@ function f1(){
 
 HTML DOM 独立于平台和编程语言。它可被任何编程语言诸如 Java、JavaScript 和 VBScript 使用。HTML DOM 模型被构造为对象的树。
 
-通过可编程的对象模型，JavaScript 获得了足够的能力来创建动态的 HTML。JavaScript 能够改变页面中的所有 HTML 元素；JavaScript 能够改变页面中的所有 HTML 属性；JavaScript 能够改变页面中的所有 CSS 样式；JavaScript 能够对页面中的所有事件做出反应。
+HTML DOM 模型被构造为对象的树：
+
+![HTML DOM树.png](https://upload-images.jianshu.io/upload_images/4164292-01defdc1b7719238.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+通过可编程的对象模型，JavaScript 获得了足够的能力来创建动态的 HTML。包括如下几方面：
+
+* JavaScript 能够改变页面中的所有 HTML 元素；
+* JavaScript 能够改变页面中的所有 HTML 属性；
+* JavaScript 能够改变页面中的所有 CSS 样式；
+* JavaScript 能够对页面中的所有事件做出反应。
 
 **查找 HTML 元素**
 

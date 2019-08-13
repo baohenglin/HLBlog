@@ -597,6 +597,68 @@ document.write("<p>文本来自 class 为 intro 段落: " + x[0].innerHTML + "</
 </body>
 ```
 
+## HTML DOM 改变 HTML 内容
+
+HTML DOM 允许 JavaScript 改变 HTML 元素的内容。
+
+**改变 HTML 输出流**
+
+在 JavaScript 中，document.write() 可用于直接向 HTML 输出流写内容。需要特别注意的是，绝对不要在文档加载完成之后使用 document.write()。这会覆盖该文档。
+
+```
+<body>
+<script>
+document.write(Date());
+</script>
+</body>
+```
+
+**改变 HTML 内容**
+
+改变 HTML 元素的内容的语法如下：
+
+```
+document.getElementById(id).innerHTML=new HTML
+```
+
+示例：
+
+```
+<body>
+
+<p id="p1">Hello World!</p>
+<script>
+document.getElementById("p1").innerHTML="新文本!";
+</script>
+<p>以上段落通过脚本修改文本。</p>
+
+</body>
+```
+
+**改变 HTML 属性**
+
+如需改变 HTML 元素的属性，请使用这个语法：
+
+```
+document.getElementById(id).attribute=new value
+```
+
+示例：
+
+```
+<body>
+
+<img id="image" src="smiley.gif">
+
+<script>
+document.getElementById("image").src="landscape.jpg";
+</script>
+
+</body>
+```
+
+
+
 
 
 

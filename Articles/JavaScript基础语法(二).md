@@ -657,6 +657,151 @@ document.getElementById("image").src="landscape.jpg";
 </body>
 ```
 
+## HTML DOM 改变 CSS
+
+HTML DOM 允许 JavaScript 改变 HTML 元素的样式。
+
+**改变 HTML 样式**
+
+如需改变 HTML 元素的样式，请使用这个语法：  
+
+```
+document.getElementById(id).style.property=new style
+```
+
+示例1：
+
+```
+<body> 
+<p id="p2">Hello World!</p> 
+<script> 
+document.getElementById("p2").style.color="blue"; 
+</script> 
+<p>The paragraph above was changed by a script.</p> 
+</body> 
+```
+
+示例2：本例表示的是 当用户点击按钮时，改变了 id="id1" 的 HTML 元素的样式
+
+```
+<body> 
+<h1 id="id1">My Heading 1</h1> 
+<button type="button" 
+onclick="document.getElementById('id1').style.color='red'"> 
+Click Me!</button> 
+</body> 
+```
+
+## HTML DOM 事件
+
+HTML DOM 使 JavaScript 有能力对 HTML 事件做出反应。我们可以在事件发生时执行 JavaScript，比如当用户在 HTML 元素上点击时。如需在用户点击某个元素时执行代码，请向一个 HTML 事件属性添加 JavaScript 代码： 
+
+```
+onclick=JavaScript
+```
+
+HTML 事件包括以下这些：
+
+* 当用户点击鼠标时;
+* 当网页已加载时;
+* 当图像已加载时;
+* 当鼠标移动到元素上时;
+* 当输入字段被改变时;
+* 当提交 HTML 表单时;
+* 当用户触发按键时。
+
+```
+<body>
+<h1 onclick="this.innerHTML='Ooops!'">点击文本!</h1>
+</body>
+```
+
+也可写成这种形式：
+
+```
+<!DOCTYPE html> 
+<html> 
+<head> 
+<script> 
+function changetext(id) 
+{ 
+   id.innerHTML="Ooops!"; 
+} 
+</script> 
+</head> 
+
+<body> 
+<h1 onclick="changetext(this)">Click on this text!</h1> 
+</body> 
+</html>
+```
+
+**HTML 事件属性**
+
+如需向 HTML 元素分配 事件，您可以使用事件属性。向 button 元素分配 onclick 事件：
+
+```
+<body>
+
+<p>点击按钮执行 <em>displayDate()</em> 函数.</p>
+<button onclick="displayDate()">点我</button>
+
+<script>
+function displayDate()
+{
+	document.getElementById("demo").innerHTML=Date();
+}
+</script>
+<p id="demo"></p>
+
+</body>
+```
+
+**使用 HTML DOM 来分配事件**
+
+HTML DOM 允许您使用 JavaScript 来向 HTML 元素分配事件。向 button 元素分配 onclick 事件：
+
+```
+<body>
+
+<p>点击按钮执行 <em>displayDate()</em> 函数.</p>
+<button id="myBtn">点这里</button>
+
+<script>
+document.getElementById("myBtn").onclick=function(){displayDate()};
+function displayDate()
+{
+	document.getElementById("demo").innerHTML=Date();
+}
+</script>
+
+<p id="demo"></p>
+
+</body>
+```
+
+在上面的例子中，名为 displayDate 的函数被分配给 id=myBtn" 的 HTML 元素。按钮点击时Javascript函数将会被执行。
+
+**onload 和 onunload 事件**
+
+onload 和 onunload 事件会在用户进入或离开页面时被触发。onload 事件可用于检测访问者的浏览器类型和浏览器版本，并基于这些信息来加载网页的正确版本。onload 和 onunload 事件可用于处理 cookie。
+
+```
+<body onload="checkCookies()">
+<script>
+function checkCookies(){
+	if (navigator.cookieEnabled==true){
+		alert("Cookies 可用")
+	}
+	else{
+		alert("Cookies 不可用")
+	}
+}
+</script>
+<p>弹窗-提示浏览器cookie是否可用。</p>
+</body>
+```
+
 
 
 

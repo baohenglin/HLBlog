@@ -935,5 +935,93 @@ function displayDate() {
 </body>
 ```
 
+**向原元素添加事件句柄**
+
+```
+<body>
+
+<p>该实例使用 addEventListener() 方法在用户点击按钮时执行函数。</p>
+<button id="myBtn">点我</button>
+<script>
+document.getElementById("myBtn").addEventListener("click", myFunction);
+function myFunction() {
+    alert ("Hello World!");
+}
+</script>
+
+</body>
+```
+
+**向同一个元素中添加多个事件句柄**
+
+addEventListener() 方法允许向同个元素添加多个事件，且不会覆盖已存在的事件：
+
+```
+<body>
+
+<p>该实例使用 addEventListener() 方法向同个按钮中添加两个点击事件。</p>
+<button id="myBtn">点我</button>
+<script>
+var x = document.getElementById("myBtn");
+x.addEventListener("click", myFunction);
+x.addEventListener("click", someOtherFunction);
+function myFunction() {
+    alert ("Hello World!")
+}
+function someOtherFunction() {
+    alert ("函数已执行!")
+}
+</script>
+
+</body>
+</html>
+```
+
+**向 Window 对象添加事件句柄**
+
+addEventListener() 方法允许你在 HTML DOM 对象添加事件监听， HTML DOM 对象如： HTML 元素, HTML 文档, window 对象。或者其他支出的事件对象如: xmlHttpRequest 对象。
+
+```
+<body>
+
+<p>实例在window对象中使用 addEventListener() 方法。</p>
+<p>尝试重置浏览器的窗口触发 "resize" 事件句柄。</p>
+<p id="demo"></p>
+<script>
+window.addEventListener("resize", function(){
+    document.getElementById("demo").innerHTML = Math.random();
+});
+</script>
+
+</body>
+```
+
+**传递参数**
+
+当传递参数值时，使用"匿名函数"调用带参数的函数：
+
+```
+<body>
+
+<p>实例演示了在使用 addEventListener() 方法时如何传递参数。</p>
+<p>点击按钮执行计算。</p>
+<button id="myBtn">点我</button>
+<p id="demo"></p>
+<script>
+var p1 = 5;
+var p2 = 7;
+document.getElementById("myBtn").addEventListener("click", function() {
+    myFunction(p1, p2);
+});
+function myFunction(a, b) {
+    var result = a * b;
+    document.getElementById("demo").innerHTML = result;
+}
+</script>
+
+</body>
+```
+
+
 
 

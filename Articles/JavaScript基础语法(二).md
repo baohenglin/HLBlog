@@ -802,6 +802,80 @@ function checkCookies(){
 </body>
 ```
 
+**onchange 事件**
+
+onchange 事件常结合对输入字段的验证来使用。下面是一个如何使用 onchange 的例子。当用户改变输入字段的内容时，会调用 upperCase() 函数。
+
+```
+<head>
+<script>
+function myFunction(){
+	var x=document.getElementById("fname");
+	x.value=x.value.toUpperCase();
+}
+</script>
+</head>
+<body>
+
+输入你的名字: <input type="text" id="fname" onchange="myFunction()">
+<p>当你离开输入框后，函数将被触发，将小写字母转为大写字母。</p>
+
+</body>
+```
+
+**onmouseover 和 onmouseout 事件**
+
+onmouseover 和 onmouseout 事件可用于在用户的鼠标移至 HTML 元素上方或移出元素时触发函数。
+
+```
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>W3Cschool教程(w3cschool.cn)</title>
+</head>
+<body>
+
+<div onmouseover="mOver(this)" onmouseout="mOut(this)" style="background-color:#D94A38;width:120px;height:20px;padding:40px;">Mouse Over Me</div>
+<script>
+function mOver(obj){
+	obj.innerHTML="Thank You"
+}
+function mOut(obj){
+	obj.innerHTML="Mouse Over Me"
+}
+</script>
+
+</body>
+</html>
+```
+
+**onmousedown、onmouseup 以及 onclick 事件**
+
+onmousedown, onmouseup 以及 onclick 构成了鼠标点击事件的所有部分。首先当点击鼠标按钮时，会触发 onmousedown 事件，当释放鼠标按钮时，会触发 onmouseup 事件，最后，当完成鼠标点击时，会触发 onclick 事件。
+
+```
+<body>
+
+<div onmousedown="mDown(this)" onmouseup="mUp(this)" style="background-color:#D94A38;width:90px;height:20px;padding:40px;">Click Me</div>
+
+<script>
+function mDown(obj)
+{
+    obj.style.backgroundColor="#1ec5e5";
+    obj.innerHTML="Release Me"
+}
+
+function mUp(obj)
+{
+    obj.style.backgroundColor="#D94A38";
+    obj.innerHTML="Thank You"
+}
+</script>
+
+</body>
+```
+
 
 
 

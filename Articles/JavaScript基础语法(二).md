@@ -876,11 +876,32 @@ function mUp(obj)
 </body>
 ```
 
+**onfocus 事件**
 
+当输入字段获得焦点时，触发某事件。
 
+下面的例子，当输入字段获得焦点时，改变其背景色：
 
+```
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>W3Cschool教程(w3cschool.cn)</title>
+<script>
+function myFunction(x){
+	x.style.background="yellow";
+}
+</script>
+</head>
+<body>
 
+输入你的名字: <input type="text" onfocus="myFunction(this)">
+<p>当输入框获取焦点时，修改背景色（background-color属性） 将被触发。</p>
 
+</body>
+</html>
+```
 
 
 

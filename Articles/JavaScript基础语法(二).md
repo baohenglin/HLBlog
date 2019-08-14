@@ -1161,4 +1161,47 @@ function myFunction() {
 </html>
 ```
 
+## HTML DOM 元素
+
+在文档对象模型 (DOM) 中，每个节点都是一个对象。DOM 节点有三个重要的属性，分别是：
+
+* nodeName : 节点的名称
+* nodeValue ：节点的值
+* nodeType ：节点的类型
+
+**创建新的 HTML 元素**
+
+如需向 HTML DOM 添加新元素，您必须首先创建该元素（元素节点），然后向一个已存在的元素追加该元素。
+
+示例如下：
+
+```
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>W3Cschool教程(w3cschool.cn)</title>
+</head>
+<body>
+
+<div id="div1">
+<p id="p1">这是一个段落。</p>
+<p id="p2">这是另一个段落。</p>
+</div>
+<script>
+//创建新的<p> 元素
+var para=document.createElement("p");
+//如需向 <p> 元素添加文本，您必须首先创建文本节点。这段代码创建了一个文本节点
+var node=document.createTextNode("这是一个新段落。");
+//向 <p> 元素追加文本节点
+para.appendChild(node);
+var element=document.getElementById("div1");
+//向一个已有的元素追加这个新元素
+element.appendChild(para);
+</script>
+
+</body>
+</html>
+```
+
 

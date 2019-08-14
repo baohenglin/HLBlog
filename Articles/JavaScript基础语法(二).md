@@ -1204,4 +1204,28 @@ element.appendChild(para);
 </html>
 ```
 
+**删除已有的 HTML 元素**
+
+以下代码是用来将已有的元素删除：
+
+```
+<div id="div1">
+<p id="p1">This is a paragraph.</p>
+<p id="p2">This is another paragraph.</p>
+</div>
+<script>
+var parent=document.getElementById("div1");
+var child=document.getElementById("p1");
+//从父元素中删除子元素
+parent.removeChild(child);
+</script>
+```
+
+常用的解决方案：找到您希望删除的子元素，然后使用其 parentNode 属性来找到父元素：
+
+```
+var child=document.getElementById("p1");
+child.parentNode.removeChild(child);
+```
+
 

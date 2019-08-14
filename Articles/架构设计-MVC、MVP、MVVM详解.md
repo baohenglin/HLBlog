@@ -123,3 +123,13 @@ MVVM确实能够使得Model层和View层解耦，但是如果你需要实现MVVM
 2. 你自己用过哪些设计模式？
 
 3. 一般开始做一个项目，你的架构是如何思考的？
+
+
+<br>
+<br>
+<br>
+## 参考链接:
+
+[浅谈 MVC、MVP 和 MVVM 架构模式](https://draveness.me/mvx)
+
+

@@ -1036,7 +1036,49 @@ function myFunction(a, b) {
 addEventListener(event, function, useCapture);
 ```
 
-***useCapture默认值为 false, 即冒泡传递，当值为 true 时, 事件使用捕获传递。**
+**useCapture默认值为 false, 即冒泡传递，当值为 true 时, 事件使用捕获传递。**
+
+```
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>W3Cschool教程(w3cschool.cn)</title>
+<style>
+div {
+    background-color: coral;
+    border: 1px solid;
+    padding: 50px;
+}
+</style>
+</head>
+<body>
+
+<p>实例演示了在添加不同事件监听时，冒泡与捕获的不同。</p>
+<div id="myDiv">
+	<p id="myP">点击段落，我是冒泡。</p>
+</div><br>
+<div id="myDiv2">
+	<p id="myP2">点击段落，我是捕获。 </p>
+</div>
+<script>
+document.getElementById("myP").addEventListener("click", function() {
+    alert("你点击了 P 元素!");
+}, false);
+document.getElementById("myDiv").addEventListener("click", function() {
+    alert(" 你点击了 DIV 元素 !");
+}, false);
+document.getElementById("myP2").addEventListener("click", function() {
+    alert("你点击了 P2 元素!");
+}, true);
+document.getElementById("myDiv2").addEventListener("click", function() {
+    alert("你点击了 DIV2 元素 !");
+}, true);
+</script>
+
+</body>
+</html>
+```
 
 
 

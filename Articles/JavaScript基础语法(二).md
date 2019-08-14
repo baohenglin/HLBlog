@@ -1124,22 +1124,41 @@ function removeHandler() {
 </html>
 ```
 
+**需要注意的是**，IE 8 及更早 IE 版本，Opera 7.0及其更早版本不支持 addEventListener() 和 removeEventListener() 方法。但是，对于这类浏览器版本可以使用 detachEvent() 方法来移除事件句柄:
 
+```
+element.attachEvent(event, function);
+element.detachEvent(event, function);
+```
 
+示例如下：
 
+```
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>W3Cschool教程(w3cschool.cn)</title>
+</head>
+<body>
 
+<p> Internet Explorer 8 及更早IE版本不支持addEventListener() 方法。</p>
+<p>该实例演示了所有浏览器兼容的解决方法。</p>
+<button id="myBtn">点我</button>
+<script>
+var x = document.getElementById("myBtn");
+if (x.addEventListener) {
+    x.addEventListener("click", myFunction);
+} else if (x.attachEvent) {
+    x.attachEvent("onclick", myFunction);
+}
+function myFunction() {
+    alert("Hello World!");
+}
+</script>
 
-
-
-
-
-
-
-
-
-
-
-
-
+</body>
+</html>
+```
 
 

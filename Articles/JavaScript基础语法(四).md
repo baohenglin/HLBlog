@@ -124,7 +124,98 @@ function person(firstname,lastname,age,eyecolor)
 
 JavaScript 是面向对象的语言，但 JavaScript 不使用类。在 JavaScript 中，不会创建类，也不会通过类来创建对象。JavaScript 基于 prototype，而不是基于类的。
 
+**JavaScript for...in 循环**
 
+JavaScript for...in 语句循环遍历对象的属性。
+
+```
+for (variable in object)
+{
+   code to be executed
+}
+```
+
+示例1：
+
+```
+<body>
+	
+<p>点击下面的按钮，循环遍历对象 "person" 的属性。</p>
+<button onclick="myFunction()">点击这里</button>
+<p id="demo"></p>
+<script>
+function myFunction(){
+	var x;
+	var txt="";
+	var person={fname:"Bill",lname:"Gates",age:56}; 
+	for (x in person){
+		txt=txt + person[x];
+	}
+	document.getElementById("demo").innerHTML=txt;
+}
+</script>
+	
+</body>
+```
+
+下面给出一个完整简易的dictionary实现。注意其外部使用了function，内部使用了Object对象的动态添加属性的一些特性。
+
+```
+<!DOCTYE html>
+<html> 	
+	<head> 	 	
+		<script> 	 	
+			function dictionary(){ 	 	
+				//Define an object for a dictionary type 	 	
+				var _obj = new Object(); 	 	
+				//Check whether a certain key contained or not 	 	
+				this.containsKey = function(k){ 	 	
+					var isContained = false; 	 	
+					for(var attr in _obj){ 	 	
+						if(attr == k){ 	 	
+							isContained = true; 	 	
+							break; 	 	
+						} 	 	
+					} 	 	
+					return isContained; 	 	
+				} 	 	
+				//Add a new element 	 	
+				this.addElement = function(k,v){ 	 	
+					if(!this.containsKey(k)){ 	 	
+						_obj[k] = v; 	 	
+					} 	 	
+				} 	 	
+				//Remove an existing element 	 	
+				this.removeElement = function(k){ 	 	
+					if(this.containsKey(k)){ 	 	
+						delete _obj[k]; 	 	
+					} 	 	
+				} 	 	
+				//Print the result 	 	
+				this.printAll = function(){ 	 	
+					var result = JSON.stringify(_obj); 	 	
+					return result; 	 	
+				} 	 	
+			} 	 	
+			var newD = new dictionary(); 	 	
+			function AddAndPrint(){ 	 	
+				newD.addElement("0000","张三"); 	 	
+				newD.addElement("0001","李四"); 	 	
+				document.getElementById("divContent").innerHTML = newD.printAll(); 	 	
+			} 	 	
+			function RemoveAndPrint(k){ 	 	
+				newD.removeElement("0000"); 	 	
+				document.getElementById("divContent").innerHTML = newD.printAll(); 	 	
+			} 	 	
+		</script> 	 	
+	</head> 	 	
+	<body> 	 	
+		<div id="divContent"></div> 	 	
+		<input type="button" value="Click Me To Add" onclick="AddAndPrint();"/> 	 	
+		<input type="button" value="Click Me To Remove" onclick="RemoveAndPrint(&#39;0000&#39;);"/> 	 	
+	</body> 	 	
+</html>
+```
 
 
 

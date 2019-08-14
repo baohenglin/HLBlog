@@ -40,7 +40,7 @@ var x=message.toUpperCase();
 
 创建新对象有两种不同的方法：
 
-* 定义并创建对象的实例；
+* (1)定义并创建对象的实例；
 
 这个例子创建了对象的一个新实例，并向其添加了四个属性：
 
@@ -58,7 +58,7 @@ person.eyecolor="blue";
 person={firstname:"John",lastname:"Doe",age:50,eyecolor:"blue"};
 ```
 
-* 使用函数来定义对象(对象构造器)，然后创建新的对象实例。
+* (2)使用函数来定义对象(对象构造器)，然后创建新的对象实例。
 
 ```
 <body>
@@ -69,7 +69,7 @@ function person(firstname,lastname,age,eyecolor){
 	this.firstname=firstname;
 	this.lastname=lastname;
 	this.age=age;
-    this.eyecolor=eyecolor;
+        this.eyecolor=eyecolor;
 }
 myFather=new person("John","Doe",50,"blue");
 document.write(myFather.firstname + " is " + myFather.age + " years old.");
@@ -77,6 +77,52 @@ document.write(myFather.firstname + " is " + myFather.age + " years old.");
 
 </body>
 ```
+
+**创建 JavaScript 对象实例**
+
+一旦您有了对象构造器，就可以创建新的对象实例，如下所示：
+
+```
+var myFather=new person("John","Doe",50,"blue");
+var myMother=new person("Sally","Rally",48,"green");
+```
+
+**把属性添加到 JavaScript 对象**
+
+您可以通过为对象赋值，向已有对象添加新属性。假设 personObj 已存在 - 您可以为其添加这些新属性：firstname、lastname、age 以及 eyecolor：
+
+```
+person.firstname="John";
+ person.lastname="Doe";
+ person.age=30;
+ person.eyecolor="blue";
+
+ x=person.firstname;
+```
+
+**把方法添加到 JavaScript 对象**
+
+方法只不过是附加在对象上的函数。在构造器函数内部定义对象的方法：
+
+```
+function person(firstname,lastname,age,eyecolor)
+ {
+     this.firstname=firstname;
+     this.lastname=lastname;
+     this.age=age;
+     this.eyecolor=eyecolor;
+
+     this.changeName=changeName;
+     function changeName(name)
+     {
+           this.lastname=name;
+     }
+ }
+```
+
+**JavaScript prototype**
+
+JavaScript 是面向对象的语言，但 JavaScript 不使用类。在 JavaScript 中，不会创建类，也不会通过类来创建对象。JavaScript 基于 prototype，而不是基于类的。
 
 
 

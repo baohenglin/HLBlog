@@ -1080,6 +1080,49 @@ document.getElementById("myDiv2").addEventListener("click", function() {
 </html>
 ```
 
+**removeEventListener() 方法**
+
+removeEventListener() 方法的作用是移除由 addEventListener() 方法添加的事件句柄。
+
+示例如下：
+
+```
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>W3Cschool教程(w3cschool.cn)</title>
+</head>
+<head>
+<style>
+#myDIV {
+    background-color: coral;
+    border: 1px solid;
+    padding: 50px;
+    color: white;
+}
+</style>
+</head>
+<body>
+
+<div id="myDIV"> div 元素添加了 onmousemove 事件句柄，鼠标在桔红色的框内移动时会显示随机数。
+  <p>点击按钮移除 DIV 的事件句柄。</p>
+  <button onclick="removeHandler()" id="myBtn">点我</button>
+</div>
+<p id="demo"></p>
+<script>
+document.getElementById("myDIV").addEventListener("mousemove", myFunction);
+function myFunction() {
+    document.getElementById("demo").innerHTML = Math.random();
+}
+function removeHandler() {
+    document.getElementById("myDIV").removeEventListener("mousemove", myFunction);
+}
+</script>
+
+</body>
+</html>
+```
 
 
 

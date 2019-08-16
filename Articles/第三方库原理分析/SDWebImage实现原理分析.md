@@ -21,3 +21,25 @@ SDWebImage是一个支持从远程服务器下载并缓存图片功能的开源�
 * (2)当图片缓存(ImageCache)中没有图片时，SDWebImage接下来会检查沙盒中是否存在与URL匹配的图片。如果存在，则将沙盒中的图片存储到图片缓存(ImageCache)中，然后再按照第1步再次进行判断。
 * (3)如果沙盒中也不存在与URL匹配的图片，则显示占位图，然后根据图片的下载队列缓存(OperationCache)判断是否正在下载，如果正在下载则等待，避免二次下载。如果不存在则创建下载队列并添加到下载队列缓存(OperationCache)中，下载完毕后将下载操作从下载队列缓存(OperationCache)中移除，并且将image存储到图片缓存(ImageCache)中。
 * (4)刷新UI并将image存入沙盒缓存。
+
+
+<br />
+<br />
+<br />
+<br />
+
+## 参考链接
+
+[SDWebImage](https://github.com/SDWebImage/SDWebImage)
+
+[SDWebImage实现分析](http://southpeak.github.io/2015/02/07/sourcecode-sdwebimage/)
+
+
+[SDWebImage原理和缓存机制](https://www.xubojoy.cn/2018/08/13/SDWebImage%E5%8E%9F%E7%90%86%E5%92%8C%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/)
+
+[SDWebImage源码解析](https://juejin.im/post/5bbec080e51d450e4d3021c0)
+
+[SDWebImage源码解析](https://www.jianshu.com/p/29ab0939f7ec)
+
+
+

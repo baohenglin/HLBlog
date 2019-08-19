@@ -298,12 +298,52 @@ var answer="He is called \"Johnny\"";
 
 **字符串（String）**
 
-字符串（String）使用长度属性length来计算字符串的长度。
+* (1)字符串（String）使用长度属性length来计算字符串的长度。
 
 ```
 var txt="Hello World!"; 
 document.write(txt.length);
 ```
+
+* (2)字符串使用 **indexOf**() 来定位字符串中某一个指定的字符首次出现的位置。
+
+```
+var str="Hello world, welcome to the universe."; 
+var n=str.indexOf("welcome");
+```
+
+如果没找到对应的字符函数返回-1。
+
+* (3)**lastIndexOf**() 方法在字符串末尾开始查找字符串出现的位置。
+
+* (4)**match**()函数用来查找字符串中特定的字符，并且如果找到的话，则返回这个字符。
+
+* (5)**replace**() 方法在字符串中用某些字符替换另一些字符。
+
+```
+str="Please visit Microsoft!" 
+var n=str.replace("Microsoft","w3cschool");
+```
+
+* (6)字符串大小写转换使用函数 toUpperCase() / toLowerCase()
+
+```
+var txt="Hello World!";       // String 
+var txt1=txt.toUpperCase();   // txt1 is txt converted to upper 
+var txt2=txt.toLowerCase();   // txt2 is txt converted to lower
+```
+
+* (7)**split**()函数用于将字符串转为数组
+
+```
+var str="a,b,c,d,e,f";
+var n=str.split(",");
+```
+	
+
+
+
+
 
 
 

@@ -388,7 +388,96 @@ function myFunction(){
 </body>
 ```
 
+使用 **setFullYear**() 设置具体的日期
 
+```
+<body>
+
+<p id="demo">单击按钮显示修改后的年月日。</p>
+<button onclick="myFunction()">点我</button>
+<script>
+function myFunction(){
+	var d = new Date();
+	d.setFullYear(2020,10,3);
+	var x = document.getElementById("demo");
+	x.innerHTML=d;
+}
+</script>
+<p>记住JavaScript月数是从0至11。10是11月。</p>
+</body>
+```
+
+**toUTCString**() 用来将当日的日期（根据 UTC）转换为字符串:
+
+```
+<script>
+function myFunction(){
+	var d = new Date();
+	var x = document.getElementById("demo");
+	x.innerHTML=d.toUTCString();
+}
+</script>
+```
+
+使用 **getDay**() 和数组来显示星期，而不仅仅是数字:
+
+```
+<body>
+<p id="demo">单击按钮显示今天周几</p>
+<button onclick="myFunction()">点我</button>
+<script>
+function myFunction(){
+	var d = new Date();
+	var weekday=new Array(7);
+	weekday[0]="Sunday";
+	weekday[1]="Monday";
+	weekday[2]="Tuesday";
+	weekday[3]="Wednesday";
+	weekday[4]="Thursday";
+	weekday[5]="Friday";
+	weekday[6]="Saturday";
+	var x = document.getElementById("demo");
+	x.innerHTML=weekday[d.getDay()];
+}
+</script>
+</body>
+```
+**在网页上显示一个钟表** 代码如下：
+
+```
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>W3Cschool教程(w3cschool.cn)</title>
+</head>
+<head>
+<script>
+function startTime(){
+	var today=new Date();
+	var h=today.getHours();
+	var m=today.getMinutes();
+	var s=today.getSeconds();// 在小于10的数字钱前加一个‘0’
+	m=checkTime(m);
+	s=checkTime(s);
+	document.getElementById('txt').innerHTML=h+":"+m+":"+s;
+	t=setTimeout(function(){startTime()},500);
+}
+function checkTime(i){
+	if (i<10){
+		i="0" + i;
+	}
+	return i;
+}
+</script>
+</head>
+<body onload="startTime()">
+	
+<div id="txt"></div>
+	
+</body>
+</html>
+```
 
 
 

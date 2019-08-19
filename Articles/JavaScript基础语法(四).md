@@ -347,8 +347,46 @@ Javascript 中可以使用反斜线（\）插入特殊符号，如：撇号,引�
 ```
 var txt="We are the so-called \"Vikings\" from the north.";
 ```
-	
 
+## JavaScript Date（日期）对象
+
+**Date**()返回当日的日期和时间
+
+```
+var d=new Date();
+```
+
+使用 **getFullYear**() 获取年份
+
+```
+<body>
+<p id="demo">点击按钮获取今年的年份。</p>
+<button onclick="myFunction()">点我</button>
+<script>
+function myFunction(){
+	var d = new Date();
+	var x = document.getElementById("demo");
+	x.innerHTML=d.getFullYear();
+}
+</script>
+</body>
+```
+
+**getTime**() 返回从 1970 年 1 月 1 日至今的毫秒数。
+
+```
+<body>
+<p id="demo">单击按钮显示1970年1月1号至今的毫秒数。</p>
+<button onclick="myFunction()">点我</button>
+<script>
+function myFunction(){
+	var d = new Date();
+	var x = document.getElementById("demo");
+	x.innerHTML=d.getTime();
+}
+</script>
+</body>
+```
 
 
 

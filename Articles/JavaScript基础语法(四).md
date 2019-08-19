@@ -124,7 +124,7 @@ function person(firstname,lastname,age,eyecolor)
 
 JavaScript 是面向对象的语言，但 JavaScript 不使用类。在 JavaScript 中，不会创建类，也不会通过类来创建对象。JavaScript 基于 prototype，而不是基于类的。
 
-**JavaScript for...in 循环**
+**for...in 循环语句**
 
 JavaScript for...in 语句循环遍历对象的属性。
 
@@ -216,6 +216,16 @@ function myFunction(){
 	</body> 	 	
 </html>
 ```
+
+## JavaScript Number 对象
+
+JavaScript 的 Number 对象是经过封装的能让你处理数字值的对象。JavaScript 的 Number 对象由 Number() 构造器创建。极大或极小的数字可通过科学（指数）计数法来写：
+
+```
+var y=123e5;    // 12300000 
+var z=123e-5;   // 0.00123
+```
+
 
 
 

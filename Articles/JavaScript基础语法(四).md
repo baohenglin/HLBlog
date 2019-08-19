@@ -258,6 +258,35 @@ myNumber.toString(2);    // returns 10000000
 
 NaN 属性是代表非数字值的特殊值。该属性用于指示某个值不是数字。可以把 Number 对象设置为该值，来指示其不是数字值。你可以使用 isNaN() 全局函数来判断一个值是否是 NaN 值。在 JavaScript 中，如果参数无法被转换为数字，则返回 NaN。
 
+**数字可以是数字或者对象**
+
+```
+var x = 123; 
+var y = new Number(123); 
+typeof(x) // returns Number 
+typeof(y) // returns Object
+```
+
+**数字属性**
+
+数字属性包括：MAX_VALUE、MIN_VALUE、NEGATIVE_INFINITY、POSITIVE_INFINITY、NaN、prototype、constructor。
+
+**数字方法**
+
+数字方法包括：
+
+* toExponential()
+* toFixed()
+* toPrecision()
+* toString()
+* valueOf()
+
+
+
+
+
+
+
 
 
 

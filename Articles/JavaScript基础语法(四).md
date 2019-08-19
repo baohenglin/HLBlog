@@ -339,6 +339,14 @@ var txt2=txt.toLowerCase();   // txt2 is txt converted to lower
 var str="a,b,c,d,e,f";
 var n=str.split(",");
 ```
+
+**特殊字符**
+
+Javascript 中可以使用反斜线（\）插入特殊符号，如：撇号,引号等其他特殊符号。
+
+```
+var txt="We are the so-called \"Vikings\" from the north.";
+```
 	
 
 

@@ -281,6 +281,32 @@ typeof(y) // returns Object
 * toString()
 * valueOf()
 
+## JavaScript 字符串（String）对象
+
+一个字符串用于存储一系列字符就像 "John Doe"。一个字符串可以使用单引号或双引号。使用位置（索引）可以访问字符串中任何的字符。
+
+```
+var character=carname[7];
+```
+
+可以在字符串中使用转义字符（\）使用引号：
+
+```
+var answer='It\'s alright'; 
+var answer="He is called \"Johnny\"";
+```
+
+**字符串（String）**
+
+字符串（String）使用长度属性length来计算字符串的长度。
+
+```
+var txt="Hello World!"; 
+document.write(txt.length);
+```
+
+
+
 
 
 

@@ -99,6 +99,54 @@ if (!poll && (currentMode->_observerMask & kCFRunLoopAfterWaiting))
     __CFRunLoopDoObservers(runloop, currentMode, kCFRunLoopAfterWaiting);
 ```
 
+**第6步**：RunLoop被唤醒后就要开始处理消息了。消息事件包括以下几种：
+
+* 如果是Timer时间到了的话，就触发Timer的回调；
+* 如果是dispatch的话，就执行block；
+* 如果是source1事件的话，就处理这个事件。
+
+消息执行完后，就执行加到loop里的block。代码如下：
+
+```
+handle_msg:
+// 如果 Timer 时间到，就触发 Timer 回调
+if (msg-is-timer) {
+    __CFRunLoopDoTimers(runloop, currentMode, mach_absolute_time())
+} 
+// 如果 dispatch 就执行 block
+else if (msg_is_dispatch) {
+    __CFRUNLOOP_IS_SERVICING_THE_MAIN_DISPATCH_QUEUE__(msg);
+} 
+
+// Source1 事件的话，就处理这个事件
+else {
+    CFRunLoopSourceRef source1 = __CFRunLoopModeFindSourceForMachPort(runloop, currentMode, livePort);
+    sourceHandledThisLoop = __CFRunLoopDoSource1(runloop, currentMode, source1, msg);
+    if (sourceHandledThisLoop) {
+        mach_msg(reply, MACH_SEND_MSG, reply);
+    }
+}
+```
+
+**第7步**：根据当前的RunLoop的状态来判断是否需要执行下一个loop。当被外部强制停止或loop超时时，就不继续执行下一个loop了，否则继续走下一个loop。代码如下：
+
+```
+if (sourceHandledThisLoop && stopAfterHandle) {
+     // 事件已处理完
+    retVal = kCFRunLoopRunHandledSource;
+} else if (timeout) {
+    // 超时
+    retVal = kCFRunLoopRunTimedOut;
+} else if (__CFRunLoopIsStopped(runloop)) {
+    // 外部调用者强制停止
+    retVal = kCFRunLoopRunStopped;
+} else if (__CFRunLoopModeIsEmpty(runloop, currentMode)) {
+    // mode 为空，RunLoop 结束
+    retVal = kCFRunLoopRunFinished;
+}
+```
+
+
 
 
 

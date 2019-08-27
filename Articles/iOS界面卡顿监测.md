@@ -1,3 +1,6 @@
+
+本篇文章是学习戴铭的 [《如何利用 RunLoop 原理去监控卡顿》](https://time.geekbang.org/column/article/89494)这篇文章的阅读笔记。
+
 ## 造成卡顿的几种原因：
 
 * 复杂UI、图文混排的绘制量过大；
@@ -5,6 +8,8 @@
 * 在主线程做大量的IO操作；
 * 运算量过大，CPU持续高占用；
 * 死锁和主子线程抢锁。
+
+## RunLoop方案来监控卡顿
 
 那么如何监控卡顿呢？是要监控FPS吗？监控FPS来判断卡顿是否准确呢？
 
@@ -14,11 +19,52 @@ FPS是一秒显示的帧数，也就是一秒内画面变化的数量。如果�
 
 我们可以**通过监听RunLoop的状态来监控卡顿**。监控卡顿其实就是要找出主线程都做了哪些事情。众所周知，线程的消息事件是依赖于NSRunLoop的，所以从NSRunLoop入手，就可以知道主线程上都调用了哪些方法。我们通过监听NSRunLoop的状态，就能够发现调用方法是否执行时间过长，从而判断是否出现了卡顿现象。
 
-## RunLoop原理
-
 RunLoop这个对象在iOS里由CFRunLoop实现。简单来说，RunLoop是用来监听输入源，进行调度处理的。输入源可以是输入设备、网络、周期性或延迟时间、异步回调。RunLoop会接收两种类型的输入源：一种是来自另一个线程或者来自不同应用的异步消息；另一种是来自预定时间或者重复间隔的同步事件。
 
 RunLoop的作用是当有事件要去处理时保持线程忙，当没有事件要处理时让线程进入休眠。所以，了解**RunLoop原理不仅可以运用到监控卡顿上，还可以提高用户的交互体验。通过将那些繁重而不紧急会大量占用CPU的任务（比如图片加载），放到空闲的RunLoop模式里执行，就可以避免在UITrackingRunLoopMode这个RunLoop模式里执行。**UITrackingRunLoopMode是用户进行滑动操作时切换到的RunLoop模式，避免在这个RunLoop模式执行繁重的CPU任务，可以提高用户体验。
+
+## RunLoop原理
+
+接下来，通过CFRunLoop源码来学习RunLoop的底层原理。
+
+**第1步**：通知Observers，RunLoop要开始进入loop了。紧接着就进入loop。代码如下：
+
+```
+// 通知 observers
+if (currentMode->_observerMask & kCFRunLoopEntry ) 
+    __CFRunLoopDoObservers(runloop, currentMode, kCFRunLoopEntry);
+// 进入 loop
+result = __CFRunLoopRun(rl, currentMode, seconds, returnAfterSourceHandled, previousMode);
+```
+
+**第2步**：开启一个do while来保活线程。通知Observers：RunLoop会触发Timer回调、Source0回调，接着执行加入的block。代码如下：
+
+```
+// 通知 Observers RunLoop 会触发 Timer 回调
+if (currentMode->_observerMask & kCFRunLoopBeforeTimers)
+    __CFRunLoopDoObservers(runloop, currentMode, kCFRunLoopBeforeTimers);
+// 通知 Observers RunLoop 会触发 Source0 回调
+if (currentMode->_observerMask & kCFRunLoopBeforeSources)
+    __CFRunLoopDoObservers(runloop, currentMode, kCFRunLoopBeforeSources);
+// 执行 block
+__CFRunLoopDoBlocks(runloop, currentMode);
+```
+
+接下来，触发Source0回调，如果有Source1是ready状态的话，就会跳转到handle_msg去处理消息。代码如下：
+
+```
+if (MACH_PORT_NULL != dispatchPort ) {
+    Boolean hasMsg = __CFRunLoopServiceMachPort(dispatchPort, &msg)
+    if (hasMsg) goto handle_msg;
+}
+```
+
+
+
+
+
+
+
 
 
 

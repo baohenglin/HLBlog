@@ -21,7 +21,7 @@ FPS是一秒显示的帧数，也就是一秒内画面变化的数量。如果�
 
 RunLoop这个对象在iOS里由CFRunLoop实现。简单来说，RunLoop是用来监听输入源，进行调度处理的。输入源可以是输入设备、网络、周期性或延迟时间、异步回调。RunLoop会接收两种类型的输入源：一种是来自另一个线程或者来自不同应用的异步消息；另一种是来自预定时间或者重复间隔的同步事件。
 
-RunLoop的作用是当有事件要去处理时保持线程忙，当没有事件要处理时让线程进入休眠。所以，了解**RunLoop原理不仅可以运用到监控卡顿上，还可以提高用户的交互体验。通过将那些繁重而不紧急会大量占用CPU的任务（比如图片加载），放到空闲的RunLoop模式里执行，就可以避免在UITrackingRunLoopMode这个RunLoop模式里执行。**UITrackingRunLoopMode是用户进行滑动操作时切换到的RunLoop模式，避免在这个RunLoop模式执行繁重的CPU任务，可以提高用户体验。
+RunLoop的作用是当有事件要去处理时保持线程忙，当没有事件要处理时让线程进入休眠。所以，了解**RunLoop原理不仅可以运用到监控卡顿上，还可以提高用户的交互体验。通过将那些繁重而不紧急会大量占用CPU的任务（比如图片加载），放到空闲的RunLoop模式里执行，就可以避免在UITrackingRunLoopMode这个RunLoop模式里执行**。UITrackingRunLoopMode是用户进行滑动操作时切换到的RunLoop模式，避免在这个RunLoop模式执行繁重的CPU任务，可以提高用户体验。
 
 ## RunLoop原理
 
@@ -145,6 +145,29 @@ if (sourceHandledThisLoop && stopAfterHandle) {
     retVal = kCFRunLoopRunFinished;
 }
 ```
+
+**RunLoop的6种状态**
+
+```
+typedef CF_OPTIONS(CFOptionFlags, CFRunLoopActivity) {
+    kCFRunLoopEntry , // 进入 loop
+    kCFRunLoopBeforeTimers , // 触发 Timer 回调
+    kCFRunLoopBeforeSources , // 触发 Source0 回调（进入休眠前的状态）
+    kCFRunLoopBeforeWaiting , // 即将进入休眠，等待 mach_port 消息
+    kCFRunLoopAfterWaiting  , // 接收 mach_port 消息（唤醒线程后的状态）
+    kCFRunLoopExit , // 退出 loop
+    kCFRunLoopAllActivities  // loop 所有状态改变
+}
+```
+
+**如果RunLoop的线程，进入睡眠前方法的执行时间过长而导致无法进入睡眠，或者线程唤醒后接收消息时间过长而无法进入下一步的话，就可以认为是线程受阻了。如果这个线程是主线程的话，表现出来的就是出现了卡顿。所以，如果我们要利用RunLoop原理来监控卡顿的话，就是要关注这两个阶段。RunLoop在进入睡眠之前和唤醒后的两个loop状态定义的值，分别是kCFRunLoopBeforeSource和kCFRunLoopAfterWaiting，也就是要触发Source0回调和接收mach_port消息的这两个状态。**
+
+## 如何检查卡顿？
+
+
+
+
+
 
 
 

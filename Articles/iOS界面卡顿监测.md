@@ -173,7 +173,14 @@ CFRunLoopObserverContext context = {0,(__bridge void*)self,NULL,NULL};
 runLoopObserver = CFRunLoopObserverCreate(kCFAllocatorDefault,kCFRunLoopAllActivities,YES,0,&runLoopObserverCallBack,&context);
 ```
 
-然后将创建好的观察者runLoopObserver添加到主线程RunLoop的common模式下观察。紧接着，创建一个持续的子线程专门用来监控主线程的RunLoop状态。
+然后将创建好的观察者runLoopObserver添加到主线程RunLoop的common模式下观察。代码如下：
+
+```
+//将观察者添加到主线程runloop的common模式下的观察中
+CFRunLoopAddObserver(CFRunLoopGetMain(), runLoopObserver, kCFRunLoopCommonModes);
+```
+
+紧接着，创建一个持续的子线程专门用来监控主线程的RunLoop状态。
 
 一旦发现**进入睡眠前的kCFRunLoopBeforeSource状态或者唤醒后的状态kCFRunLoopAfterWaiting在设置的时间阀值内一直没有变化**，即可判定为**卡顿**。接下来，我们就可以dump出堆栈的信息，从而进一步分析出具体是哪个方法的执行时间过长。
 

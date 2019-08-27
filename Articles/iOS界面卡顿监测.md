@@ -59,6 +59,46 @@ if (MACH_PORT_NULL != dispatchPort ) {
 }
 ```
 
+**第3步**：回调触发后，通知Observers：RunLoop的线程将进入休眠（sleep）状态。代码如下：
+
+```
+Boolean poll = sourceHandledThisLoop || (0ULL == timeout_context->termTSR);
+if (!poll && (currentMode->_observerMask & kCFRunLoopBeforeWaiting)) {
+    __CFRunLoopDoObservers(runloop, currentMode, kCFRunLoopBeforeWaiting);
+}
+```
+
+**第4步**：进入休眠后，会等待mach_port的消息，以再次唤醒。唤醒休眠线程的事件包括以下四个：
+
+* 基于port的Source事件；
+* Timer时间到；
+* RunLoop超时；
+* 被调用者唤醒。
+
+等待唤醒的代码如下：
+
+```
+do {
+    __CFRunLoopServiceMachPort(waitSet, &msg, sizeof(msg_buffer), &livePort) {
+        // 基于 port 的 Source 事件、调用者唤醒
+        if (modeQueuePort != MACH_PORT_NULL && livePort == modeQueuePort) {
+            break;
+        }
+        // Timer 时间到、RunLoop 超时
+        if (currentMode->_timerFired) {
+            break;
+        }
+} while (1);
+```
+
+**第5步**：唤醒时通知Observer，RunLoop的线程刚刚被唤醒了。代码如下：
+
+```
+//通知Observer：RunLoop的线程已经被唤醒了。
+if (!poll && (currentMode->_observerMask & kCFRunLoopAfterWaiting))
+    __CFRunLoopDoObservers(runloop, currentMode, kCFRunLoopAfterWaiting);
+```
+
 
 
 

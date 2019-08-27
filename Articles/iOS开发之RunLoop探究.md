@@ -320,15 +320,15 @@ CFRunLoopObserverRef observer = CFRunLoopObserverCreateWithHandler(kCFAllocatorD
 
 RunLoop的大体上的运行逻辑其实就是循环处理某种模式下的Source0、Source1、Timers、Observers。那么Source0、Source1、Timers、Observers具体表示什么呢？
 
-* Source0:
+* Source0:负责App内部事件，由App负责管理触发，包括：
 
-&emsp;&emsp;(1)触摸事件处理;
+&emsp;&emsp;(1)触摸事件(UITouch事件)处理;
 
 &emsp;&emsp;(2)performSelector:onThread:方法
 
-* Source1:
+* Source1:Source1是CFRunLoopSourceRef除了Source0之外的另一个版本。Source1除了包含回调指针外包含一个**mach port**，和Source0需要手动触发不同，Source1可以监听系统端口和其他线程相互发送消息，它能够主动唤醒RunLoop(由操作系统内核进行管理，例如CFMessagePort消息)。
 
-&emsp;&emsp;(1)基于Port的线程间通信;
+&emsp;&emsp;(1)监听基于Port的线程间通信;
 
 &emsp;&emsp;(2)系统事件捕捉
 

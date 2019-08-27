@@ -1,5 +1,5 @@
 
-本篇文章是学习戴铭的 [《如何利用 RunLoop 原理去监控卡顿》](https://time.geekbang.org/column/article/89494)这篇文章的阅读笔记。
+本篇文章是学习戴铭老师的 [《如何利用 RunLoop 原理去监控卡顿》](https://time.geekbang.org/column/article/89494)这篇文章所做的学习笔记。
 
 ## 造成卡顿的几种原因：
 

@@ -214,7 +214,73 @@ dispatch_async(dispatch_get_global_queue(0, 0), ^{
 
 通过WatchDog设置的时间，可以把启动的阀值设置为10秒，其他状态则都默认设置为3秒。总的原则就是，要小于WatchDog的限制时间。当然了，这个阀值也不用小得太多，原则就是要优先解决用户感知最明显的体验问题。
 
+## 如何获取卡顿的方法堆栈信息？
 
+子线程监控发现主线程卡顿后，还需要记录当前出现卡顿的方法堆栈信息，并适时推送到服务端供开发者分析，从而解决卡顿问题。那么到底该如何获取卡顿的方法堆栈信息呢？
+
+**获取堆栈信息的一种方法是直接调用系统函数。**这种方法的优点在于，性能消耗小。但是这种方法只能获取简单的信息，也没有办法配合dSYM来获取具体是哪行代码出了问题，而且能够获取的信息类型也有限。这种方法，因为性能比较好，所以适用于观察大盘统计卡顿情况，而不是想要找到卡顿原因的场景。
+
+直接调用系统函数方法的主要思路是：用signal进行错误信息的获取。具体代码如下：
+
+```
+static int s_fatal_signals[] = {
+    SIGABRT,
+    SIGBUS,
+    SIGFPE,
+    SIGILL,
+    SIGSEGV,
+    SIGTRAP,
+    SIGTERM,
+    SIGKILL,
+};
+
+static int s_fatal_signal_num = sizeof(s_fatal_signals) / sizeof(s_fatal_signals[0]);
+
+void UncaughtExceptionHandler(NSException *exception) {
+    NSArray *exceptionArray = [exception callStackSymbols]; // 得到当前调用栈信息
+    NSString *exceptionReason = [exception reason];       // 非常重要，就是崩溃的原因
+    NSString *exceptionName = [exception name];           // 异常类型
+}
+
+void SignalHandler(int code)
+{
+    NSLog(@"signal handler = %d",code);
+}
+
+void InitCrashReport()
+{
+    // 系统错误信号捕获
+    for (int i = 0; i < s_fatal_signal_num; ++i) {
+        signal(s_fatal_signals[i], SignalHandler);
+    }
+    
+    //oc 未捕获异常的捕获
+    NSSetUncaughtExceptionHandler(&UncaughtExceptionHandler);
+}
+
+int main(int argc, char * argv[]) {
+    @autoreleasepool {
+        InitCrashReport();
+        return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
+```
+
+**另一种方法是直接用PLCrashReporter这个开源的第三方库来获取堆栈信息。** 这种方法的优势在于，能够定位到问题代码的具体位置，而且性能消耗也不大。所以推荐使用此方法。
+
+具体如何使用PLCrashReporter来获取堆栈信息，代码如下：
+
+```
+// 获取数据
+NSData *lagData = [[[PLCrashReporter alloc]
+                                          initWithConfiguration:[[PLCrashReporterConfig alloc] initWithSignalHandlerType:PLCrashReporterSignalHandlerTypeBSD symbolicationStrategy:PLCrashReporterSymbolicationStrategyAll]] generateLiveReport];
+// 转换成 PLCrashReport 对象
+PLCrashReport *lagReport = [[PLCrashReport alloc] initWithData:lagData error:NULL];
+// 进行字符串格式化处理
+NSString *lagReportString = [PLCrashReportTextFormatter stringValueForCrashReport:lagReport withTextFormat:PLCrashReportTextFormatiOS];
+// 将字符串上传服务器
+NSLog(@"lag happen, detail below: \n %@",lagReportString);
+```
+
+搜集到卡顿的方法堆栈信息以后，开发者可以根据搜集到的具体日志信息来分析并解决卡顿问题。
 
 
 

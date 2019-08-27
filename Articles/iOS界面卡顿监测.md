@@ -146,7 +146,7 @@ if (sourceHandledThisLoop && stopAfterHandle) {
 }
 ```
 
-**RunLoop的6种状态**
+## RunLoop的6种状态
 
 ```
 typedef CF_OPTIONS(CFOptionFlags, CFRunLoopActivity) {
@@ -160,9 +160,72 @@ typedef CF_OPTIONS(CFOptionFlags, CFRunLoopActivity) {
 }
 ```
 
-**如果RunLoop的线程，进入睡眠前方法的执行时间过长而导致无法进入睡眠，或者线程唤醒后接收消息时间过长而无法进入下一步的话，就可以认为是线程受阻了。如果这个线程是主线程的话，表现出来的就是出现了卡顿。所以，如果我们要利用RunLoop原理来监控卡顿的话，就是要关注这两个阶段。RunLoop在进入睡眠之前和唤醒后的两个loop状态定义的值，分别是kCFRunLoopBeforeSource和kCFRunLoopAfterWaiting，也就是要触发Source0回调和接收mach_port消息的这两个状态。**
+如果RunLoop的线程，**进入睡眠前方法的执行时间过长**而导致无法进入睡眠，或者**线程唤醒后接收消息时间过长**而无法进入下一步的话，就可以认为是线程受阻了。如果这个线程是主线程的话，表现出来的就是出现了卡顿。所以，如果我们要利用RunLoop原理来监控卡顿的话，就是要关注这两个阶段。RunLoop在进入睡眠之前和唤醒后的两个loop状态定义的值，分别是**kCFRunLoopBeforeSource**和**kCFRunLoopAfterWaiting**，也就是要触发Source0回调和接收mach_port消息的这两个状态。**
 
 ## 如何检查卡顿？
+
+那么如何对loop的kCFRunLoopBefore和kCFRunLoopAfterWaiting这两个状态进行监听呢？此外，监听的时间值如何设置才合理呢？
+
+首先，需要**创建一个CFRunLoopObserverContext观察者**，代码如下：
+
+```
+CFRunLoopObserverContext context = {0,(__bridge void*)self,NULL,NULL};
+runLoopObserver = CFRunLoopObserverCreate(kCFAllocatorDefault,kCFRunLoopAllActivities,YES,0,&runLoopObserverCallBack,&context);
+```
+
+然后将创建好的观察者runLoopObserver添加到主线程RunLoop的common模式下观察。紧接着，创建一个持续的子线程专门用来监控主线程的RunLoop状态。
+
+一旦发现**进入睡眠前的kCFRunLoopBeforeSource状态或者唤醒后的状态kCFRunLoopAfterWaiting在设置的时间阀值内一直没有变化**，即可判定为**卡顿**。接下来，我们就可以dump出堆栈的信息，从而进一步分析出具体是哪个方法的执行时间过长。
+
+开启一个子线程监控的代码如下：
+
+```
+// 创建子线程监控
+dispatch_async(dispatch_get_global_queue(0, 0), ^{
+    // 子线程开启一个持续的 loop 用来进行监控
+    while (YES) {
+        long semaphoreWait = dispatch_semaphore_wait(dispatchSemaphore, dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC));
+        if (semaphoreWait != 0) {
+            if (!runLoopObserver) {
+                timeoutCount = 0;
+                dispatchSemaphore = 0;
+                runLoopActivity = 0;
+                return;
+            }
+            //kCFRunLoopBeforeSource 和 kCFRunLoopAfterWaiting 这两个状态能够检测到是否卡顿
+            if (runLoopActivity == kCFRunLoopBeforeSources || runLoopActivity == kCFRunLoopAfterWaiting) {
+                // 将堆栈信息上报服务器的代码放到这里
+            } //end activity
+        }// end semaphore wait
+        timeoutCount = 0;
+    }// end while
+});
+```
+
+上述代码中的NSEC_PER_SEC表示触发卡顿的时间阀值，单位是秒。此处，我们将时间阀值设置为 3 * NSEC_PER_SEC ，也就是3秒，那么为什么将时间阀值设置为3秒？这样设置合理吗？
+
+其实，触发卡顿的时间阀值，我们可以根据WatchDog机制来设置。WatchDog在不同状态下设置的不同时间。如下所示：
+
+* 启动（Launch）：20s；
+* 恢复（Resume）：10s；
+* 挂起（Suspend）：10s；
+* 退出（Quit）：6s；
+* 后台（Background）：3min(在iOS7之前，每次申请10min；之后改为每次申请3min，可连续申请，最多申请到10min)。
+
+通过WatchDog设置的时间，可以把启动的阀值设置为10秒，其他状态则都默认设置为3秒。总的原则就是，要小于WatchDog的限制时间。当然了，这个阀值也不用小得太多，原则就是要优先解决用户感知最明显的体验问题。
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

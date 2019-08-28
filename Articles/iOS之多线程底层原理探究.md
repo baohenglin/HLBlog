@@ -993,10 +993,12 @@ GCD的队列可以分为两大类型，分别是
 * USEC：微妙
 * NSEC：纳秒
 
-* #define NSEC_PER_SEC 1000000000ull     每秒有1000,000,000 纳秒
-* #define NSEC_PER_MSEC 1000000ull       每毫秒有1000,000 纳秒
-* #define USEC_PER_SEC 1000000ull        每秒有1000,000 微妙
-* #define NSEC_PER_USEC 1000ull          每微妙有1000 纳秒
+```
+#define NSEC_PER_SEC 1000000000ull     //每秒有1000,000,000 纳秒
+#define NSEC_PER_MSEC 1000000ull       //每毫秒有1000,000 纳秒
+#define USEC_PER_SEC 1000000ull        //每秒有1000,000 微妙
+#define NSEC_PER_USEC 1000ull          //每微妙有1000 纳秒
+```
 
 
 ## GNUstep

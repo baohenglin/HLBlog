@@ -983,6 +983,21 @@ GCD的队列可以分为两大类型，分别是
 
 **9.performSelector: withObject: afterDelay:方法的本质是往RunLoop中添加定时器，子线程默认没有启动RunLoop。**
 
+**10.GCD当中的时间单位**
+
+1秒(s) =1000 毫秒(ms) = 1,000,000 微秒(μs) = 1,000,000,000 纳秒(ns)
+             
+* PER：每
+* SEC：秒
+* MSEC：毫秒
+* USEC：微妙
+* NSEC：纳秒
+
+* #define NSEC_PER_SEC 1000000000ull     每秒有1000,000,000 纳秒
+* #define NSEC_PER_MSEC 1000000ull       每毫秒有1000,000 纳秒
+* #define USEC_PER_SEC 1000000ull        每秒有1000,000 微妙
+* #define NSEC_PER_USEC 1000ull          每微妙有1000 纳秒
+
 
 ## GNUstep
 

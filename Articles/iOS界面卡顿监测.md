@@ -25,7 +25,7 @@
 目前想到的大致可行的方案有以下三个：
 
 * (1)基于RunLoop的监控方案
-* (2)基于线程的监控方案（本文暂不讨论）
+* (2)基于线程的监控方案（本文暂不讨论，可参考[PMainThreadWatcher](https://github.com/music4kid/PMainThreadWatcher)）
 * (3)基于FPS的监控方案
 
 ## RunLoop方案来监控卡顿

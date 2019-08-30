@@ -162,6 +162,10 @@ typedef CF_OPTIONS(CFOptionFlags, CFRunLoopActivity) {
 
 如果RunLoop的线程，**进入睡眠前方法的执行时间过长**而导致无法进入睡眠，或者**线程唤醒后接收消息时间过长**而无法进入下一步的话，就可以认为是线程受阻了。如果这个线程是主线程的话，表现出来的就是出现了卡顿。所以，如果我们要利用RunLoop原理来监控卡顿的话，就是要关注这两个阶段。RunLoop在进入睡眠之前和唤醒后的两个loop状态定义的值，分别是**kCFRunLoopBeforeSource**和**kCFRunLoopAfterWaiting**，也就是要触发Source0回调和接收mach_port消息的这两个状态。**
 
+**为什么监听kCFRunLoopBeforeSource和kCFRunLoopAfterWaiting这两个状态就能够监控卡顿呢？为什么不是kCFRunLoopBeforeWaiting和kCFRunLoopAfterWaiting呢？**
+
+因为RunLoop进入休眠之前(kCFRunLoopBeforeWaiting)会执行source0等方法，唤醒(kCFRunLoopAfterWaiting)后要接收mach_port消息。如果在执行source0或者接收mach_port消息的时候太耗时，那么就会导致卡顿。我们把kCFRunLoopBeforeSources作为执行Source0S等方法的开始时间节点，将kCFRunLoopAfterWaiting作为接收mach_port消息的开始时间节点，所以只需要监控这两个状态是否超过设定的时间阀值。而如果监控kCFRunLoopBeforeWaiting状态，当监听到kCFRunLoopBeforeWaiting状态时，其实已经执行完了source0，无法监控source0的耗时长短，故不能监听kCFRunLoopBeforeWaiting这个状态。
+
 ## 如何检查卡顿？
 
 那么如何对loop的kCFRunLoopBefore和kCFRunLoopAfterWaiting这两个状态进行监听呢？此外，监听的时间值如何设置才合理呢？
@@ -220,6 +224,8 @@ dispatch_async(dispatch_get_global_queue(0, 0), ^{
 * 后台（Background）：3min(在iOS7之前，每次申请10min；之后改为每次申请3min，可连续申请，最多申请到10min)。
 
 通过WatchDog设置的时间，可以把启动的阀值设置为10秒，其他状态则都默认设置为3秒。总的原则就是，要小于WatchDog的限制时间。当然了，这个阀值也不用小得太多，原则就是要优先解决用户感知最明显的体验问题。
+
+【注意】虽然总的原则是必须要小于WatchDog的限制时间，但是从实践来看，可以将**监控卡顿的时间阀值设置为20ms**。
 
 ## 如何获取卡顿的方法堆栈信息？
 

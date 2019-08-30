@@ -293,6 +293,38 @@ NSLog(@"---------卡顿信息\n%@\n--------------",report);
 搜集到卡顿的方法堆栈信息以后，开发者可以根据搜集到的具体日志信息来分析并解决卡顿问题。
 
 
+## 测试用例
+
+当滑动tableView时，人为设置卡顿(休眠)，来测试我们实时监控卡顿的代码是否有效。
+
+```
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *identifierStr = @"mycell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifierStr];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifierStr];
+    }
+    NSString *cellText = nil;
+    if (indexPath.row % 5 == 0) {
+        //滑动列表时，人为设置卡顿(休眠)，来测试我们实时监控卡顿的代码是否有效。
+        //每5行休眠0.05s（50ms）
+        usleep(50 * 1000);
+        cellText = @"休眠：做一些耗时操作";
+    } else {
+        cellText = [NSString stringWithFormat:@"cell - %ld",indexPath.row];
+    }
+    cell.textLabel.text = cellText;
+    return cell;
+}
+```
+
+## 实测数据
+
+![卡顿次数实时数据.png](https://upload-images.jianshu.io/upload_images/4164292-00bb31df1f7fa323.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+通过PLCrashReporter捕获到的卡顿信息，如下所示：
+
+![卡顿信息.png](https://upload-images.jianshu.io/upload_images/4164292-4a9ddd52171bf149.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
 

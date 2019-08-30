@@ -160,7 +160,7 @@ typedef CF_OPTIONS(CFOptionFlags, CFRunLoopActivity) {
 }
 ```
 
-如果RunLoop的线程，**进入睡眠前方法的执行时间过长**而导致无法进入睡眠，或者**线程唤醒后接收消息时间过长**而无法进入下一步的话，就可以认为是线程受阻了。如果这个线程是主线程的话，表现出来的就是出现了卡顿。所以，如果我们要利用RunLoop原理来监控卡顿的话，就是要关注这两个阶段。RunLoop在进入睡眠之前和唤醒后的两个loop状态定义的值，分别是**kCFRunLoopBeforeSource**和**kCFRunLoopAfterWaiting**，也就是要触发Source0回调和接收mach_port消息的这两个状态。**
+如果RunLoop的线程，**进入睡眠前方法的执行时间过长**而导致无法进入睡眠，或者**线程唤醒后接收消息时间过长**而无法进入下一步的话，就可以认为是线程受阻了。如果这个线程是主线程的话，表现出来的就是出现了卡顿。所以，如果我们要利用RunLoop原理来监控卡顿的话，就是要关注这两个阶段。RunLoop在进入睡眠之前和唤醒后的两个loop状态定义的值，分别是**kCFRunLoopBeforeSource**和**kCFRunLoopAfterWaiting**，也就是要触发Source0回调和接收mach_port消息的这两个状态。
 
 **为什么监听kCFRunLoopBeforeSource和kCFRunLoopAfterWaiting这两个状态就能够监控卡顿呢？为什么不是kCFRunLoopBeforeWaiting和kCFRunLoopAfterWaiting呢？**
 

@@ -276,15 +276,12 @@ int main(int argc, char * argv[]) {
 具体如何使用PLCrashReporter来获取堆栈信息，代码如下：
 
 ```
-// 获取数据
-NSData *lagData = [[[PLCrashReporter alloc]
-                                          initWithConfiguration:[[PLCrashReporterConfig alloc] initWithSignalHandlerType:PLCrashReporterSignalHandlerTypeBSD symbolicationStrategy:PLCrashReporterSymbolicationStrategyAll]] generateLiveReport];
-// 转换成 PLCrashReport 对象
-PLCrashReport *lagReport = [[PLCrashReport alloc] initWithData:lagData error:NULL];
-// 进行字符串格式化处理
-NSString *lagReportString = [PLCrashReportTextFormatter stringValueForCrashReport:lagReport withTextFormat:PLCrashReportTextFormatiOS];
-// 将字符串上传服务器
-NSLog(@"lag happen, detail below: \n %@",lagReportString);
+PLCrashReporterConfig *config = [[PLCrashReporterConfig alloc] initWithSignalHandlerType:PLCrashReporterSignalHandlerTypeBSD symbolicationStrategy:PLCrashReporterSymbolicationStrategyAll];
+PLCrashReporter *crashReporter = [[PLCrashReporter alloc] initWithConfiguration:config];
+NSData *data = [crashReporter generateLiveReport];
+PLCrashReport *reporter = [[PLCrashReport alloc] initWithData:data error:NULL];
+NSString *report = [PLCrashReportTextFormatter stringValueForCrashReport:reporter withTextFormat:PLCrashReportTextFormatiOS];
+NSLog(@"---------卡顿信息\n%@\n--------------",report);
 ```
 
 搜集到卡顿的方法堆栈信息以后，开发者可以根据搜集到的具体日志信息来分析并解决卡顿问题。

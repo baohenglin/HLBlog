@@ -339,6 +339,9 @@ NSLog(@"---------卡顿信息\n%@\n--------------",report);
 
 ## 实测数据
 
+[完整demo代码](https://github.com/baohenglin/Real-time-monitoring-of-Caton-with-RunLoop)
+
+
 以下是通过iPhone6s真机测试，获得的真实数据：
 
 ![卡顿次数实时数据.png](https://upload-images.jianshu.io/upload_images/4164292-00bb31df1f7fa323.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)

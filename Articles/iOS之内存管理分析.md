@@ -102,7 +102,7 @@ dispatch_queue_t queue = dispatch_get_global_queue(0, 0);
 
 ## copy VS MutableCopy、浅拷贝 VS 深拷贝
 
-copy的目的是为了产生一个副本对象，和源对象互补影响。也就是改变了源对象，不会影响副本对象；修改了副本对象，不会影响源对象。
+copy的目的是为了产生一个副本对象，和源对象互不影响。也就是改变了源对象，不会影响副本对象；修改了副本对象，不会影响源对象。
 
 iOS提供了2个拷贝方法copy和mutableCopy，其中copy是不可变拷贝，产生的是不可变副本；mutableCopy是可变拷贝，产生的是可变副本。
 

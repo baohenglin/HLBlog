@@ -222,7 +222,7 @@ dispatch_async(dispatch_get_global_queue(0, 0), ^{
 
 * runtime阶段
 
-&emsp;&emsp; ✅ 尽量使用 +initialize 方法和 dispatch_once 取代所有的_attribute_((constructor))、C++静态构造器、ObjC的+load方法；
+&emsp;&emsp; ✅ 尽量使用 +initialize 方法和 dispatch_once 取代所有的_attribute_((constructor))、C++静态构造器、ObjC的+load方法(轻量化+load方法中的内容)；
 
 ```
 + (void)initialize
@@ -239,6 +239,11 @@ dispatch_async(dispatch_get_global_queue(0, 0), ^{
 &emsp;&emsp; ✅ 在不影响用户体验的前提下，尽可能将一些操作延迟，不要全部都放在finishLaunching方法中；
 
 &emsp;&emsp; ✅ 按需加载，只加载必须展示的数据，其他非必须的数据可以稍后请求。
+
+* 主⻚面Controller中的viewDidLoad和viewWillAppear方法中尽量少做事情.
+* 如果APP有loading广告页并且对分辨率的要求较高,可以尝试做缓存处理。
+* 如果启动流程依赖网络请求回来才能继续,那么需要考虑网络极差情况下的启动速度。
+* 耗时操作进行异步处理
 
 ### *4.安装包瘦身*
 

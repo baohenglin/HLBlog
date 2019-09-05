@@ -254,6 +254,8 @@ public class Employee{
 }
 ```
 
+如果其他类想要访问该变量，可以这样访问：Employee.DEPARTMENT。
+
 
 
 

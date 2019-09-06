@@ -54,9 +54,70 @@ var x=myCars.length             // the number of elements in myCars
 var y=myCars.indexOf("Volvo")   // the index position of "Volvo"
 ```
 
+**合并两个数组**
 
+```
+var hege = ["Cecilie", "Lone"];
+var stale = ["Emil", "Tobias", "Linus"];
+var children = hege.concat(stale);
+```
 
+合并三个数组：
 
+```
+var parents = ["Jani", "Tove"];
+var brothers = ["Stale", "Kai Jim", "Borge"];
+var children = ["Cecilie", "Lone"];
+var family = parents.concat(brothers, children);
+```
+
+**删除数组的最后一个元素**
+
+```
+var fruits = ["Banana", "Orange", "Apple", "Mango"];
+fruits.pop();
+```
+
+**在数组末尾添加一个新元素**
+
+```
+var fruits = ["Banana", "Orange", "Apple", "Mango"];
+fruits.push("Kiwi")
+```
+
+**数组反转排序**
+
+```
+fruits.reverse();
+```
+
+**删除数组第一个元素**
+
+```
+fruits.shift();
+```
+
+**截取下标1到2的元素**
+
+```
+var fruits = ["Banana", "Orange", "Lemon", "Apple", "Mango"];
+var citrus = fruits.slice(1,3);
+```
+
+**数组元素按照字母升序排列**
+
+```
+var fruits = ["Banana", "Orange", "Apple", "Mango"];
+fruits.sort();
+```
+
+**数组元素按照数字字母升序**
+
+```
+var points = [40,100,1,5,25,10];
+points.sort(function(a,b){return a-b});
+```
+  
 
 
 

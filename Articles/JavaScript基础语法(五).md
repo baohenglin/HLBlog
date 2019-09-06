@@ -17,7 +17,7 @@ mycars[2] = "BMW";
 var myCars=new Array("Saab","Volvo","BMW");
 ```
 
-* (3)字面
+* (3)字面的方式
 
 ```
 var myCars=["Saab","Volvo","BMW"];

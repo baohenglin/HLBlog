@@ -2,7 +2,7 @@
 
 [JavaScript Array 对象](https://www.w3cschool.cn/jsref/jsref-obj-array.html)
 
-数组对象的作用是：使用单独的变量名来存储一系列的值。创建数组有三种方式：
+数组对象的作用是：使用单独的变量名来存储一系列的值。创建数组有以下三种方式：
 
 * (1)常规方式
 

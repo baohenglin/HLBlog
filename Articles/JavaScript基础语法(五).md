@@ -195,7 +195,111 @@ var patt1=new RegExp("e");
 document.write(patt1.exec("The best things in life are free"));
 ```
 
+## JavaScript Window 对象
 
+Window 对象表示浏览器中打开的窗口。在客户端 JavaScript 中，Window 对象是全局对象，所有的表达式都在当前的环境中计算。
 
+[JavaScript Window 对象的参考手册](https://www.w3cschool.cn/jsref/obj-window.html)
+
+**Window 子对象**
+
+Window的子对象主要有如下几个：
+
+* JavaScript document 对象
+* JavaScript frames 对象
+* JavaScript history 对象
+* JavaScript location 对象
+* JavaScript navigator 对象
+* JavaScript screen 对象
+
+## JavaScripy execCommand函数
+
+execCommand方法是执行一个对当前文档，当前选择或者给出范围的命令。处理Html数据时常用如下格式：document.execCommand(sCommand[,交互方式, 动态参数]) ，其中：sCommand为指令参数（如下例中的”2D-Position”），交互方式参数如果是true的话将显示对话框，如果为false的话，则不显示对话框（下例中的”false”即表示不显示对话框），动态参数一般为一可用值或属性值（如下例中的”true”）。
+
+```
+document.execCommand("2D-Position","false","true");
+```
+
+相关指令参数及意义：
+
+```
+2D-Position 允许通过拖曳移动绝对定位的对象。
+AbsolutePosition 设定元素的 position 属性为“absolute”(绝对)。
+BackColor 设置或获取当前选中区的背景颜色。
+BlockDirLTR 目前尚未支持。
+BlockDirRTL 目前尚未支持。
+Bold 切换当前选中区的粗体显示与否。
+BrowseMode 目前尚未支持。
+Copy 将当前选中区复制到剪贴板。
+CreateBookmark 创建一个书签锚或获取当前选中区或插入点的书签锚的名称。
+CreateLink 在当前选中区上插入超级链接，或显示一个对话框允许用户指定要为当前选中区插入的超级链接的 URL。
+Cut 将当前选中区复制到剪贴板并删除之。
+Delete 删除当前选中区。
+DirLTR 目前尚未支持。
+DirRTL 目前尚未支持。
+EditMode 目前尚未支持。
+FontName 设置或获取当前选中区的字体。
+FontSize 设置或获取当前选中区的字体大小。
+ForeColor 设置或获取当前选中区的前景(文本)颜色。
+FormatBlock 设置当前块格式化标签。
+Indent 增加选中文本的缩进。
+InlineDirLTR 目前尚未支持。
+InlineDirRTL 目前尚未支持。
+InsertButton 用按钮控件覆盖当前选中区。
+InsertFieldset 用方框覆盖当前选中区。
+InsertHorizontalRule 用水平线覆盖当前选中区。
+InsertIFrame 用内嵌框架覆盖当前选中区。
+InsertImage 用图像覆盖当前选中区。
+InsertInputButton 用按钮控件覆盖当前选中区。
+InsertInputCheckbox 用复选框控件覆盖当前选中区。
+InsertInputFileUpload 用文件上载控件覆盖当前选中区。
+InsertInputHidden 插入隐藏控件覆盖当前选中区。
+InsertInputImage 用图像控件覆盖当前选中区。
+InsertInputPassword 用密码控件覆盖当前选中区。
+InsertInputRadio 用单选钮控件覆盖当前选中区。
+InsertInputReset 用重置控件覆盖当前选中区。
+InsertInputSubmit 用提交控件覆盖当前选中区。
+InsertInputText 用文本控件覆盖当前选中区。
+InsertMarquee 用空字幕覆盖当前选中区。
+InsertOrderedList 切换当前选中区是编号列表还是常规格式化块。
+InsertParagraph 用换行覆盖当前选中区。
+InsertSelectDropdown 用下拉框控件覆盖当前选中区。
+InsertSelectListbox 用列表框控件覆盖当前选中区。
+InsertTextArea 用多行文本输入控件覆盖当前选中区。
+InsertUnorderedList 切换当前选中区是项目符号列表还是常规格式化块。
+Italic 切换当前选中区斜体显示与否。
+JustifyCenter 将当前选中区在所在格式化块置中。
+JustifyFull 目前尚未支持。
+JustifyLeft 将当前选中区所在格式化块左对齐。
+JustifyNone 目前尚未支持。
+JustifyRight 将当前选中区所在格式化块右对齐。
+LiveResize 迫使 MSHTML 编辑器在缩放或移动过程中持续更新元素外观，而不是只在移动或缩放完成后更新。
+MultipleSelection 允许当用户按住 Shift 或 Ctrl 键时一次选中多于一个站点可选元素。
+Open 目前尚未支持。
+Outdent 减少选中区所在格式化块的缩进。
+OverWrite 切换文本状态的插入和覆盖。
+Paste 用剪贴板内容覆盖当前选中区。
+PlayImage 目前尚未支持。
+Print 打开打印对话框以便用户可以打印当前页。
+Redo 目前尚未支持。
+Refresh 刷新当前文档。
+RemoveFormat 从当前选中区中删除格式化标签。
+RemoveParaFormat 目前尚未支持。
+SaveAs 将当前 Web 页面保存为文件。
+SelectAll 选中整个文档。
+SizeToControl 目前尚未支持。
+SizeToControlHeight 目前尚未支持。
+SizeToControlWidth 目前尚未支持。
+Stop 目前尚未支持。
+StopImage 目前尚未支持。
+StrikeThrough 目前尚未支持。
+Subscript 目前尚未支持。
+Superscript 目前尚未支持。
+UnBookmark 从当前选中区中删除全部书签。
+Underline 切换当前选中区的下划线显示与否。
+Undo 目前尚未支持。
+Unlink 从当前选中区中删除全部超级链接。
+Unselect 清除当前选中区的选中状态。
+```
 
 

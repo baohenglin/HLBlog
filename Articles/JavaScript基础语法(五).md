@@ -212,6 +212,28 @@ Window的子对象主要有如下几个：
 * JavaScript navigator 对象
 * JavaScript screen 对象
 
+**Window 尺寸**
+
+对于Internet Explorer、Chrome、Firefox、Opera 以及 Safari：
+
+* window.innerHeight - 浏览器窗口的内部高度
+* window.innerWidth - 浏览器窗口的内部宽度
+
+对于 Internet Explorer 8、7、6、5：
+
+* document.documentElement.clientHeight
+* document.documentElement.clientWidth
+
+或者
+
+* document.body.clientHeight
+* document.body.clientWidth
+
+```
+var w=window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+var h=window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+```
+
 ## JavaScripy execCommand函数
 
 execCommand方法是执行一个对当前文档，当前选择或者给出范围的命令。处理Html数据时常用如下格式：document.execCommand(sCommand[,交互方式, 动态参数]) ，其中：sCommand为指令参数（如下例中的”2D-Position”），交互方式参数如果是true的话将显示对话框，如果为false的话，则不显示对话框（下例中的”false”即表示不显示对话框），动态参数一般为一可用值或属性值（如下例中的”true”）。
@@ -301,5 +323,68 @@ Undo 目前尚未支持。
 Unlink 从当前选中区中删除全部超级链接。
 Unselect 清除当前选中区的选中状态。
 ```
+
+## JavaScript弹框
+
+可以在 JavaScript 中创建三种消息框：警告框、确认框、提示框。
+
+* 警告框。警告框经常用于确保用户可以得到某些信息。当警告框出现后，用户需要点击确定按钮才能继续进行操作。
+
+```
+window.alert("sometext");
+```
+
+window.alert() 方法可以不带上window对象，直接使用alert()方法。
+
+* 确认框。确认框通常用于验证是否接受用户操作。当确认卡弹出时，用户可以点击 "确认" 或者 "取消" 来确定用户操作。当你点击 "确认", 确认框返回 true， 如果点击 "取消", 确认框返回 false。
+
+```
+window.confirm("sometext");
+```
+
+* 提示框。提示框经常用于提示用户在进入页面前输入某个值。当提示框出现后，用户需要输入某个值，然后点击确认或取消按钮才能继续操纵。如果用户点击确认，那么返回值为输入的值。如果用户点击取消，那么返回值为 null。
+
+```
+window.prompt("sometext","defaultvalue");
+```
+例如：
+
+```
+<body>
+
+<p>点击按钮查看输入的对话框。</p>
+<button onclick="myFunction()">点我</button>
+<p id="demo"></p>
+<script>
+function myFunction(){
+	var x;
+	var person=prompt("请输入你的名字","Harry Potter");
+	if (person!=null && person!=""){
+	    x="你好 " + person + "！今天感觉如何？";
+	    document.getElementById("demo").innerHTML=x;
+	}
+}
+</script>
+
+</body>
+</html>
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

@@ -118,8 +118,49 @@ var points = [40,100,1,5,25,10];
 points.sort(function(a,b){return a-b});
 ```
   
+## JavaScript Boolean（布尔）对象
 
+创建 Boolean 对象。下面的代码定义了一个名为 myBoolean 的布尔对象：
 
+```
+var myBoolean=new Boolean();
+```
+如果布尔对象无初始值或者其值为:0、-0、null、""、false、undefined、NaN，那么对象的值为false，否则，其值为true。
+
+## JavaScript Math（算数）对象
+
+Math（算数）对象的作用是：执行常见的算数任务。
+
+**Math 对象**：Math 对象提供多种算数值类型和函数。无需在使用这个对象之前对它进行定义。Math 对象不能使用 new 关键字创建对象实例。直接用 “对象名.成员”的格式来访问其属性或者方法。
+
+**算数值**
+
+JavaScript 提供 8 种可被 Math 对象访问的算数值：
+
+```
+ Math.E
+ Math.PI
+ Math.SQRT2
+ Math.SQRT1_2
+ Math.LN2
+ Math.LN10
+ Math.LOG2E
+ Math.LOG10E
+```
+
+**算数方法**
+
+下面的例子使用了 Math 对象的 round 方法对一个数进行四舍五入:
+
+```
+document.write(Math.round(4.7));
+```
+
+下面的例子使用了 Math 对象的 random() 方法来返回一个介于 0 和 1 之间的随机数：
+
+```
+document.write(Math.random());
+```
 
 
 

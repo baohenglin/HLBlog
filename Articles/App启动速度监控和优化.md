@@ -83,6 +83,111 @@ main()函数执行后的阶段，指的是从main()函数执行开始，到appDe
 
 **为什么说 hook 了 objc_msgSend方法，就可以 hook 全部的Objective-C的方法呢**？这是因为 Objective-C里每个对象都会指向一个类，每个类都会有一个方法列表，方法列表里的每个方法都是由 selector、函数指针和 metadata组成的。objc_msgSend方法的作用就是在运行时根据对象和方法的 selector 去查找对应的函数指针，然后执行该函数。也就是说 objc_msgSend是 Objective-C里方法执行的必经之路，所以hook Objc_msgSend能够监控所有的 Objective-C的方法。
 
+objc_msgSend本身是用汇编语言编写的，原因有两个：(1)objc_msgSend的调用频次最高，在它上面进行的性能优化能够提升整个App生命周期的性能。而汇编语言在性能优化上属于原子级优化，能够把优化做到极致。(2)其他语言难以实现未知参数跳转到任意函数指针的功能。
+
+[苹果公司objc_msgSend源码](https://opensource.apple.com/source/objc4/objc4-723/runtime/Messengers.subproj/objc-msg-arm64.s.auto.html)
+
+objc_msgSend方法执行的逻辑是：先获取对象对应类的信息，再获取方法的缓存，根据方法的selector查找函数指针，经过异常错误处理后，最后跳转到对应函数的实现。
+
+
+objc_msgSend方法执行的逻辑是：先获取对象对应类的信息，再获取方法的缓存，根据方法的selector查找函数指针，经过异常错误处理后，最后跳转到对应函数的实现。
+
+下面，我们再看看怎么 hook objc_msgSend 方法？Facebook开源了一个库(fishhook)，可以在iOS上运行的 Mach-O 二进制文件中动态地重新绑定符号。[fishhook源码](https://github.com/facebook/fishhook)
+
+fishhook实现的大致思路是，通过重新绑定符号，可以实现对 C 方法的 hook。dyld是通过更新 Mach-O 二进制的  __ DATA segment 特定的部分中指针来绑定 lazy 和 non-lazy 符号，通过确认传递给 rebind_symbol 里每个符号名称更新的位置，就可以找出对应替换来重新绑定这些符号。
+
+只依靠fishhook无法完成 hook objc_msgSend 的全部任务，我们**需要实现两个方法 pushCallRecord 和 popCallRecord，来分别记录 objc_msgSend 方法调用前后的时间，然后相减就能够得到某方法的执行耗时**。
+
+下面针对 arm64 架构，编写一个可保留未知参数并跳转到 c 中任意函数指针的汇编代码，实现对 objc_msgSend的 hook。arm64 有31个64 bit 的整数型寄存器，分别用 x0到 x30 表示。主要的实现思路是：
+
+* 1. 入栈参数，参数寄存器是 x0~x7。对于 objc_msgSend 方法来说，x0第一个参数是传入对象，x1第二个参数是选择器 _ cmd。syscall 的 number 会放到 x8里。
+* 2. 交换寄存器中保存的参数，将用于返回的寄存器 lr 中的数据移到 x1 里。
+* 3. 使用 bl label 语法调用 pushCallRecord 函数。
+* 4. 执行原始的 objc_msgSend，保存返回值。
+* 5. 使用 bl label 语法调用 popCallRecord 函数。
+
+具体的汇编代码，如下图所示：
+
+```
+static void replacementObjc_msgSend() {
+  __asm__ volatile (
+    // sp 是堆栈寄存器，存放栈的偏移地址，每次都指向栈顶。
+    // 保存 {q0-q7} 偏移地址到 sp 寄存器
+      "stp q6, q7, [sp, #-32]!\n"
+      "stp q4, q5, [sp, #-32]!\n"
+      "stp q2, q3, [sp, #-32]!\n"
+      "stp q0, q1, [sp, #-32]!\n"
+    // 保存 {x0-x8, lr}
+      "stp x8, lr, [sp, #-16]!\n"
+      "stp x6, x7, [sp, #-16]!\n"
+      "stp x4, x5, [sp, #-16]!\n"
+      "stp x2, x3, [sp, #-16]!\n"
+      "stp x0, x1, [sp, #-16]!\n"
+    // 交换参数.
+      "mov x2, x1\n"
+      "mov x1, lr\n"
+      "mov x3, sp\n"
+    // 调用 preObjc_msgSend，使用 bl label 语法。bl 执行一个分支链接操作，label 是无条件分支的，是和本指令的地址偏移，范围是 -128MB 到 +128MB
+      "bl __Z15preObjc_msgSendP11objc_objectmP13objc_selectorP9RegState_\n"
+      "mov x9, x0\n"
+      "mov x10, x1\n"
+      "tst x10, x10\n"
+    // 读取 {x0-x8, lr} 从保存到 sp 栈顶的偏移地址读起
+      "ldp x0, x1, [sp], #16\n"
+      "ldp x2, x3, [sp], #16\n"
+      "ldp x4, x5, [sp], #16\n"
+      "ldp x6, x7, [sp], #16\n"
+      "ldp x8, lr, [sp], #16\n"
+    // 读取 {q0-q7}
+      "ldp q0, q1, [sp], #32\n"
+      "ldp q2, q3, [sp], #32\n"
+      "ldp q4, q5, [sp], #32\n"
+      "ldp q6, q7, [sp], #32\n"
+      "b.eq Lpassthrough\n"
+    // 调用原始 objc_msgSend。使用 blr xn 语法。blr 除了从指定寄存器读取新的 PC 值外效果和 bl 一样。xn 是通用寄存器的 64 位名称分支地址，范围是 0 到 31
+      "blr x9\n"
+    // 保存 {x0-x9}
+      "stp x0, x1, [sp, #-16]!\n"
+      "stp x2, x3, [sp, #-16]!\n"
+      "stp x4, x5, [sp, #-16]!\n"
+      "stp x6, x7, [sp, #-16]!\n"
+      "stp x8, x9, [sp, #-16]!\n"
+    // 保存 {q0-q7}
+      "stp q0, q1, [sp, #-32]!\n"
+      "stp q2, q3, [sp, #-32]!\n"
+      "stp q4, q5, [sp, #-32]!\n"
+      "stp q6, q7, [sp, #-32]!\n"
+    // 调用 postObjc_msgSend hook.
+      "bl __Z16postObjc_msgSendv\n"
+      "mov lr, x0\n"
+    // 读取 {q0-q7}
+      "ldp q6, q7, [sp], #32\n"
+      "ldp q4, q5, [sp], #32\n"
+      "ldp q2, q3, [sp], #32\n"
+      "ldp q0, q1, [sp], #32\n"
+    // 读取 {x0-x9}
+      "ldp x8, x9, [sp], #16\n"
+      "ldp x6, x7, [sp], #16\n"
+      "ldp x4, x5, [sp], #16\n"
+      "ldp x2, x3, [sp], #16\n"
+      "ldp x0, x1, [sp], #16\n"
+      "ret\n"
+      "Lpassthrough:\n"
+    // br 无条件分支到寄存器中的地址
+      "br x9"
+    );
+}
+```
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -179,6 +179,35 @@ static void replacementObjc_msgSend() {
 }
 ```
 
+现在，我们就可以获取到每个 Objective-C 方法的耗时了。接下来我们再来研究怎样才能记录和展示方法调用的层级关系和顺序？
+
+**第一步，设计两个结构体 CallRecord 和 ThreadCallStack**。其中 CallRecord 记录调用方法详细信息，包括 obj 和 SEL等；ThreadCallStack 里面，需要用 index 记录当前调用方法树的深度。有了 SEL 再通过 NSStringFromSelector 就能够获得方法名，有了 obj 通过 object_getClass 能够得到 Class，再用 NSStringFromClass 就能够获得类名。
+
+代码如下：
+
+```
+// Shared structures.
+typedef struct CallRecord_ {
+  id obj;   // 通过 object_getClass 能够得到 Class 再通过 NSStringFromClass 能够得到类名
+  SEL _cmd; // 通过 NSStringFromSelector 方法能够得到方法名
+  uintptr_t lr;
+  int prevHitIndex;
+  char isWatchHit;
+} CallRecord;
+typedef struct ThreadCallStack_ {
+  FILE *file;
+  char *spacesStr;
+  CallRecord *stack;
+  int allocatedLength;
+  int index; //index 记录当前调用方法树的深度
+  int numWatchHits;
+  int lastPrintedIndex;
+  int lastHitIndex;
+  char isLoggingEnabled;
+  char isCompleteLoggingEnabled;
+} ThreadCallStack;
+
+```
 
 
 

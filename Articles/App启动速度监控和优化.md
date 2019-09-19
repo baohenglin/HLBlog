@@ -209,6 +209,78 @@ typedef struct ThreadCallStack_ {
 
 ```
 
+**第二步，pthread_setspecific()可以将私有数据设置在指定线程上，pthread_getspecific()用来读取这个私有数据。**利用这个特性，我们就可以将 ThreadCallStack 的数据和该线程绑定在一起，随时进行数据存取。代码如下：
+
+```
+static inline ThreadCallStack * getThreadCallStack() {
+  ThreadCallStack *cs = (ThreadCallStack *)pthread_getspecific(threadKey); // 读取
+  if (cs == NULL) {
+    cs = (ThreadCallStack *)malloc(sizeof(ThreadCallStack));
+#ifdef MAIN_THREAD_ONLY
+    cs->file = (pthread_main_np()) ? newFileForThread() : NULL;
+#else
+    cs->file = newFileForThread();
+#endif
+    cs->isLoggingEnabled = (cs->file != NULL);
+    cs->isCompleteLoggingEnabled = 0;
+    cs->spacesStr = (char *)malloc(DEFAULT_CALLSTACK_DEPTH + 1);
+    memset(cs->spacesStr, ' ', DEFAULT_CALLSTACK_DEPTH);
+    cs->spacesStr[DEFAULT_CALLSTACK_DEPTH] = '\0';
+    cs->stack = (CallRecord *)calloc(DEFAULT_CALLSTACK_DEPTH, sizeof(CallRecord)); // 分配 CallRecord 默认空间
+    cs->allocatedLength = DEFAULT_CALLSTACK_DEPTH;
+    cs->index = cs->lastPrintedIndex = cs->lastHitIndex = -1;
+    cs->numWatchHits = 0;
+    pthread_setspecific(threadKey, cs); // 保存数据
+  }
+  return cs;
+}
+```
+
+**第三步，因为要记录深度，而一个方法的调用里面会有更多的方法调用，所以我们可以在方法的调用里增加两个方法 pushCallRecord 和 popCallRecord，分别记录方法调用的开始时间和结束时间，这样才能够在开始时对深度加1，在结束时减1**。代码如下：
+
+```
+// 开始时
+static inline void pushCallRecord(id obj, uintptr_t lr, SEL _cmd, ThreadCallStack *cs) {
+  int nextIndex = (++cs->index); // 增加深度
+  if (nextIndex >= cs->allocatedLength) {
+    cs->allocatedLength += CALLSTACK_DEPTH_INCREMENT;
+    cs->stack = (CallRecord *)realloc(cs->stack, cs->allocatedLength * sizeof(CallRecord));
+    cs->spacesStr = (char *)realloc(cs->spacesStr, cs->allocatedLength + 1);
+    memset(cs->spacesStr, ' ', cs->allocatedLength);
+    cs->spacesStr[cs->allocatedLength] = '\0';
+  }
+  CallRecord *newRecord = &cs->stack[nextIndex];
+  newRecord->obj = obj;
+  newRecord->_cmd = _cmd;
+  newRecord->lr = lr;
+  newRecord->isWatchHit = 0;
+}
+// 结束时
+static inline CallRecord * popCallRecord(ThreadCallStack *cs) {
+  return &cs->stack[cs->index--]; // 减少深度
+}
+```
+
+耗时监控的完整代码，请查看[戴铭老师的开源项目](https://github.com/ming1016/GCDFetchFeed)。在需要检测耗时时间的位置调用 [SMCallTrace start]，结束时调用 stop 和 save 就可以打印出方法的调用层级和耗时了。还可以设置最大深度和最小耗时检测，来过滤不需要看到的信息。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -15,7 +15,7 @@ SDWebImage是一个支持从远程服务器下载并缓存图片功能的开源�
 * (11)支持WebP图片；
 * (12)使用了GCD和ARC。
 
-## SDWebImage加载图片的原理
+## SDWebImage加载图片的大致原理
 
 * (1)当需要获取网络图片时，SDWebImage并非直接通过URL请求远程图片资源，而是检查**内存图片缓存**(ImageCache)中是否存在与该URL匹配的图片，如果存在，直接返回image；否则，执行下一步操作。
 * (2)当内存中没有缓存图片时，SDWebImage接下来会检查沙盒中是否存在与URL匹配的图片。如果存在，则将沙盒中的图片存储到图片缓存(ImageCache)中，然后再按照第1步再次进行判断。
@@ -36,6 +36,33 @@ SDWebImage是一个支持从远程服务器下载并缓存图片功能的开源�
 ## 解决图片错位问题
 
 解决图片错位问题，需要判定cell对应的图片地址是否发生改变。具体做法是给每一个imageView都绑定一个下载地址。如果外界传入的下载地址改变，则让imageView绑定的地址变成新的地址，原来的下载操作取消，开始新的下载操作。那么如何给imageView绑定下载地址呢？可以利用Runtime(运行时)，在分类中动态地为 imageView 添加一个属性(urlString)。
+
+
+## SDWebImage的加载及缓存图片的机制详解
+
+* (1)UIImageView+WebCache: setImageWithURL: placeholderImage: options:先显示 placeholderImage ，同时由 SDWebImageManager 根据 URL 在本地缓存中查找对应的图片。
+* (2)SDWebImageManager: downloadWithURL: delegate: options: userInfo:。SDWebImageManager是将UIImageView+WebCache同SDImageCache连接起来的类，SDImageCache: queryDiskCacheForKey: delegate: userInfo: 用来查找图片是否已经存储在缓存中(根据CacheKey查找)。
+* (3)如果内存中已经缓存了该图片，SDWebImageManager会回调 SDImageCacheDelegate: imageCache: didFindImage: forKey: userInfo:方法。
+* (4)而UIImageView+WebCache则回调SDWebImageManagerDelegate: webImageManager: didFinishWithImage: 来显示图片。
+* (5)如果内存中没有图片缓存，那么生成 NSInvocationOperation 添加到队列，从硬盘(磁盘包括硬盘和软盘)查找图片是否已被下载缓存。
+* (6)根据 URLKey 在硬盘缓存目录下尝试读取图片文件。这一步是在 NSOperation 进行的操作，所以回主线程进行结果回调。
+* (7)notifyDelegate:
+* (8)如果从硬盘中读取到了图片，那么就将图片添加到内存缓存中(如果空闲内存过小，会先清空内存缓存)。SDImageCacheDelegate 回调 imageCache: didFindImage: forKey: userInfo: 进而回调展示图片。
+* (9)如果从硬盘缓存目录没有读取到图片，说明内存缓存和硬盘缓存都不存在该图片，那么就需要从远程服务器下载图片，此时会回调 imageCache: didNotFindImageForKey: userInfo:。
+* (10)共享或重新生成一个下载器 SDWebImageDownloader开始下载图片。
+* (11)图片下载由 NSURLConnection 来做，实现相关 delegate来判断图片是否处于下载中、下载完成或者下载失败等各种状态。
+* (12)connection: didReceiveData: 利用 ImageIO做了按图片下载进度加载效果。
+* (13)connectionDidFinishLoading: 数据下载完成后交给 SDWebImageDecoder 来进行图片解码处理。
+* (14)图片解码处理在一个 NSOperationQueue里完成，不会阻塞主线程。如果需要对下载的图片进行二次处理，最好也在这里完成，效率会高很多。
+* (15)在主线程 notifyDelegateOnMainThreadWithInfo: 宣告解码完成，imageDecoder: didFinishDecodingImage: userInfo: 回调给 SDWebImageDownloader。
+* (16)imageDownloader: didFinishWithImage: 回调给 SDWebImageManager告知图片下载完成。 
+* (17)通知所有的 downloadDelegates 下载完成，回调给需要的地方展示图片。
+* (18)将图片保存到 SDImageCache中，内存缓存和硬盘缓存同时保存。
+* (19)写文件到硬盘在单独 NSInvocationOperation中完成，避免阻塞主线程。
+* (20)如果是在iOS上运行， SDImageCache 在初始化的时候会注册 notification到 UIApplicationDidReceiveMemoryWarningNotification 以及 UIApplicationWillTerminateNotification，在内存警告的时候清理内存图片缓存，应用结束的时候清理过期图片。
+* (21)SDWebImagePrefetcher 可以预先下载图片，方便后续使用。
+
+
 
 
 <br />

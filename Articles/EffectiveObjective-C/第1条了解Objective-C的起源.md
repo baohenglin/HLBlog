@@ -31,5 +31,17 @@ NSString *anotherString = someString;
 
 只有一个NSString实例，然而有两个变量指向此实例。两个变量都是 NSString * 型，这说明当前“栈帧”（stack frame）里分配了两块内存，每块内存的大小都能容下一枚指针（在32位架构的计算机上是4字节，64位计算机上是8个字节）。这两块内存里的值都一样，就是 NSString 实例的内存地址。
 
+分配在堆中的内存必须直接管理，而分配在栈上用于保存变量的内存则会在其栈帧弹出时自动清理。在Objective-C代码中，有时会遇到定义里不含 * 的变量，它们可能会使用“栈空间”（stack space）。这些变量保存的不是 Objective-C对象。比如 CoreGraphics框架中的 CGRect就是个例子：CGRect frame; CGRect是C结构体，其定义是：
+
+```
+struct CGRect {
+  CGPoint origin;
+  CGSize size;
+};
+typedef struct CGRect CGRect;
+```
+
+整个系统框架都在使用这种结构体，因为如果改用 Objective-C 对象来做的话，性能会受影响。与创建结构体相比，创建对象还需要额外开销，例如分配及释放堆内存等。如果只需保存 int、float、double、char等“非对象类型”（nonobject type），那么通常使用 CGRect这种结构体就可以了。
+
 
 

@@ -47,7 +47,21 @@ NSString *anotherString = someString;
 ![变量内存布局图.png](https://upload-images.jianshu.io/upload_images/4164292-2e6e87b90679fe3f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
-分配在堆中的内存必须直接管理，而分配在栈上用于保存变量的内存则会在其栈帧弹出时自动清理。在Objective-C代码中，有时会遇到定义里不含 * 的变量，它们可能会使用“栈空间”（stack space）。这些变量保存的不是 Objective-C对象。比如 CoreGraphics框架中的 CGRect就是个例子：CGRect frame; CGRect是C结构体，其定义是：
+分配在堆中的内存必须直接管理，而分配在栈上用于保存变量的内存则会在其栈帧弹出时自动清理。
+
+Objective-C 将堆内存管理抽象出来了。不需要用 malloc 及 free 来分配或释放对象所占内存。 Objective-C 运行期环境把这部分工作抽象为一套内存管理架构，名叫“引用计数”(参见第29条)。
+
+在Objective-C代码中，有时会遇到定义里不含 * 的变量，它们可能会使用“栈空间”（stack space）。这些变量保存的不是 Objective-C 对象。比如 CoreGraphics 框架中的 CGRect 就是个例子：
+
+```
+CGRect frame;
+frame.origin.x = 0.0f;
+frame.origin.y = 10.0f;
+frame.size.width = 100.0f;
+frame.size.height = 150.0f;
+```
+
+CGRect 是 C 结构体，其定义是：
 
 ```
 struct CGRect {
@@ -57,7 +71,7 @@ struct CGRect {
 typedef struct CGRect CGRect;
 ```
 
-整个系统框架都在使用这种结构体，因为如果改用 Objective-C 对象来做的话，性能会受影响。与创建结构体相比，创建对象还需要额外开销，例如分配及释放堆内存等。如果只需保存 int、float、double、char等“非对象类型”（nonobject type），那么通常使用 CGRect这种结构体就可以了。
+整个系统框架都在使用这种结构体，**因为如果改用 Objective-C 对象来做的话，性能会受影响。与创建结构体相比，创建对象还需要额外开销，例如分配及释放堆内存等。如果只需保存 int、float、double、char等“非对象类型”（nonobject type），那么通常使用 CGRect 这种结构体就可以了**。
 
 
 

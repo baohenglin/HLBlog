@@ -26,21 +26,26 @@ Objective-C 是 C 的“超集”（superset），所以 C 语言中的所有功
 NSString * someString = @"The string";
 ```
 
-这种语法基本上是照搬 C 语言的，它声明了一个名为 someString 的变量，其类型是 NSString* 。也就是说，此变量为指向 NSString的指针。所有 Objective-C语言的对象都必须这样声明，因为对象所占内存总是分配在“堆空间”（heap space）中，而绝不会分配在“栈”（stack）上。不能在栈中分配 Objective-C 对象：
+这种语法基本上是照搬 C 语言的，它声明了一个名为 someString 的变量，其类型是 NSString* 。也就是说，此变量为指向 NSString的指针。**所有 Objective-C语言的对象都必须这样声明，因为对象所占内存总是分配在“堆空间”（heap space）中，而绝不会分配在“栈”（stack）上**。不能在栈中分配 Objective-C 对象：
 
 ```
 NSString stackString;
 //error：interface type cannot be statically allocated
 ```
 
-someString变量指向分配在堆里的某块内存，其中含有一个NSString对象。也就是说，如果再创建一个变量，令其指向同一地址，那么并不拷贝该对象，只是这两个变量会同时指向此对象。
+**someString 变量指向分配在堆(heap)里的某块内存，其中含有一个 NSString 对象。也就是说，如果再创建一个变量，令其指向同一地址，那么并不拷贝该对象，只是这两个变量会同时指向此对象**：
 
 ```
 NSString *someString = @"The string";
 NSString *anotherString = someString;
 ```
 
-只有一个NSString实例，然而有两个变量指向此实例。两个变量都是 NSString * 型，这说明当前“栈帧”（stack frame）里分配了两块内存，每块内存的大小都能容下一枚指针（在32位架构的计算机上是4字节，64位计算机上是8个字节）。这两块内存里的值都一样，就是 NSString 实例的内存地址。
+**只有一个 NSString 实例，然而有两个变量指向此实例。两个变量都是 NSString * 型，这说明当前“栈帧”（stack frame）里分配了两块内存，每块内存的大小都能容下一枚指针（在32位架构的计算机上是4字节，64位计算机上是8个字节）。这两块内存里的值都一样，就是 NSString 实例的内存地址**。
+
+下图 1-1 描述了此时的内存布局。存放在 NSString 实例中的数据含有代表字符串实际内容的字节。
+
+![变量内存布局图.png](https://upload-images.jianshu.io/upload_images/4164292-2e6e87b90679fe3f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
 
 分配在堆中的内存必须直接管理，而分配在栈上用于保存变量的内存则会在其栈帧弹出时自动清理。在Objective-C代码中，有时会遇到定义里不含 * 的变量，它们可能会使用“栈空间”（stack space）。这些变量保存的不是 Objective-C对象。比如 CoreGraphics框架中的 CGRect就是个例子：CGRect frame; CGRect是C结构体，其定义是：
 

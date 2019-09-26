@@ -18,15 +18,20 @@ obj -> perform(parameter1, parameter2);
 
 关键区别在于：使用消息结构的语言，其运行时所应执行的代码由运行环境决定；而使用函数调用的语言，则由编译器决定。如果范例代码中调用的函数是多态的，那么在运行时就要按照“虚方法表”(virtual table)来查出到底应该执行哪个函数实现。而采用消息结构的语言，不论是否多态，总是在运行时才会去查找所要执行的方法。实际上，编译器甚至不关心接收消息的对象是何种类型。接收消息的对象问题也要在运行时处理，其过程叫做“动态绑定”（dynamic binding），第11条会详细论述其细节。
 
-Objective-C的重要工作都由“运行期组件”（runtime component）而非编译器来完成。使用 Objective-C的面向对象特性所需的全部数据结构及函数都在运行期组件里面。举例来说，运行期组件中的含有全部内存管理方法。运行期组件本质上就是一种与开发者所编代码相链接的“动态库”（dynamic library），其代码能把开发者编写的所有程序粘合起来。
+Objective-C的重要工作都由“运行期组件”（runtime component）而非编译器来完成。使用 Objective-C的面向对象特性所需的全部数据结构及函数都在运行期组件里面。举例来说，运行期组件中的含有全部内存管理方法。运行期组件本质上就是一种与开发者所编代码相链接的“动态库”（dynamic library），其代码能把开发者编写的所有程序粘合起来。这样的话，只需更新运行期组件，即可提升应用程序性能。而那种许多工作都在“编译期”(compile time)完成的语言，若想获得类似的性能提升，则要重新编译应用程序代码。
 
-Objective-C是 C 的“超集”（superset），所以C语言中的所有功能在编写Objective-C代码时依然适用。Objective-C语言中的指针是用来指示对象的。想要声明一个变量，令其指代某个对象，可用如下语法：
+Objective-C 是 C 的“超集”（superset），所以 C 语言中的所有功能在编写 Objective-C 代码时依然适用。因此，必须同时掌握 C 与 Objective-C 这两门语言的核心概念，方能写出高效的 Objective-C 代码来。其中尤为重要的是要理解 C 语言的内存模型(memory model)，这有助于理解 Objective-C的内存模型及其“引用计数”(reference counting)机制的工作原理。若要理解内存模型，则需明白：Objective-C 语言中的指针是用来指示对象的。想要声明一个变量，令其指代某个对象，可用如下语法：
 
 ```
 NSString * someString = @"The string";
 ```
 
-它声明了一个名为 someString 的变量，其类型是 NSString* 。也就是说，此变量为指向 NSString的指针。所有 Objective-C语言的对象都必须这样声明，因为对象所占内存总是分配在“堆空间”（heap space）中，而绝不会分配在“栈”（stack）上。
+这种语法基本上是照搬 C 语言的，它声明了一个名为 someString 的变量，其类型是 NSString* 。也就是说，此变量为指向 NSString的指针。所有 Objective-C语言的对象都必须这样声明，因为对象所占内存总是分配在“堆空间”（heap space）中，而绝不会分配在“栈”（stack）上。不能在栈中分配 Objective-C 对象：
+
+```
+NSString stackString;
+//error：interface type cannot be statically allocated
+```
 
 someString变量指向分配在堆里的某块内存，其中含有一个NSString对象。也就是说，如果再创建一个变量，令其指向同一地址，那么并不拷贝该对象，只是这两个变量会同时指向此对象。
 

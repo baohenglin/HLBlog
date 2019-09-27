@@ -124,7 +124,28 @@ class SomeCppClass;
 
 改写后的 EOCClass 类，其头文件里没有 C++代码了，使用头文件的人甚至意识不到其底层实现代码中混有 C++成分。某些系统库用到了这种模式，比如网页浏览器框架 WebKit，其大部分代码都以 C++ 编写，然而对外展示出来的却是一套整洁的 Objective-C 接口。CoreAnimation 里面也用到了此模式，它的许多后端代码都用 C++ 写成，但对外公布的却是一套纯 Objective-C 接口。
 
+“class-continuation分类”还有一种合理的用法，就是将 public 接口中声明为“只读”的属性扩展为“可读写”，以便在类的内部设置其值。我们通常不直接访问实例变量，而是通过设置访问方法来做（参见第7条），因为这样能够触发“键值观察”（Key-Value Observing，KVO）通知，其他对象有可能监听此事件。出现在“class-continuation分类”或其他分类中的属性必须同类接口里的属性具备相同的特质（attribute），不过，其“只读”状态可以扩展为“可读写”。例如，有个描述个人信息的类，其公共接口如下：
 
+```
+#import <Foundation/Foundation.h>
+
+@interface EOCPerson : NSObject
+@property (nonatomic, copy, readonly) NSString *firstName;
+@property (nonatomic, copy, readonly) NSString *lastName;
+- (id)initWithFirstName:(NSString *)firstName lastName:(NSString *)lastName;
+@end
+```
+
+我们一般会在“class-continuation分类”中把这两个属性扩展为“可读写”：
+
+```
+@interface EOCPerson ()
+@property (nonatomic, copy, readonly, readwrite) NSString *firstName;
+@property (nonatomic, copy, readonly, readwrite) NSString *lastName;
+@end
+```
+
+现在 EOCPerson 的实现代码可以随意调用“setFirstName:”或“setLastName:”这两个设置方法，也可以用“点语法”来设置属性。这样做很有用，既能令外界无法修改对象，又能在其内部按照需要管理其数据。这样，封装在类中的数据就由实例本身来控制，而外部代码则无法修改其值。第18条曾详述这一话题。请注意，若观察者（observer）正读取属性值而内部代码又在写入该属性时，则有可能引发“竞争条件”（race condition）。合理使用同步机制（参见第41条）能缓解此问题。
 
 
 

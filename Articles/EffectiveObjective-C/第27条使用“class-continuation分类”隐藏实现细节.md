@@ -17,7 +17,7 @@
 @end
 ```
 
-为什么需要有这种分类呢？**因为其中可以定义方法和实例变量**。为什么能在其中定义方法和实例变量呢？只因有“稳固的 ABI”这一机制（第6条详解了此机制），使得我们无需知道对象大小即可使用它。由于类的使用者不一定需要知道实例变量的内存布局，所以，它们也就未必非得定义在公共接口中了。基于上述原因，我们可以像在类的实现文件里那样，于“class-continuation分类”中给类新增实例变量。只需在适当位置上多写几个括号，然后把实例变量放进去。如下所示：
+为什么需要有这种分类呢？**因为其中可以定义方法和实例变量**(应用场景1)。为什么能在其中定义方法和实例变量呢？只因有“稳固的 ABI”这一机制（第6条详解了此机制），使得我们无需知道对象大小即可使用它。由于类的使用者不一定需要知道实例变量的内存布局，所以，它们也就未必非得定义在公共接口中了。基于上述原因，我们可以像在类的实现文件里那样，于“class-continuation分类”中给类新增实例变量。只需在适当位置上多写几个括号，然后把实例变量放进去。如下所示：
 
 ```
 @interface EOCPerson () {
@@ -124,7 +124,7 @@ class SomeCppClass;
 
 改写后的 EOCClass 类，其头文件里没有 C++代码了，使用头文件的人甚至意识不到其底层实现代码中混有 C++成分。某些系统库用到了这种模式，比如网页浏览器框架 WebKit，其大部分代码都以 C++ 编写，然而对外展示出来的却是一套整洁的 Objective-C 接口。CoreAnimation 里面也用到了此模式，它的许多后端代码都用 C++ 写成，但对外公布的却是一套纯 Objective-C 接口。
 
-“class-continuation分类”还有一种合理的用法，就是将 public 接口中声明为“只读”的属性扩展为“可读写”，以便在类的内部设置其值。我们通常不直接访问实例变量，而是通过设置访问方法来做（参见第7条），因为这样能够触发“键值观察”（Key-Value Observing，KVO）通知，其他对象有可能监听此事件。出现在“class-continuation分类”或其他分类中的属性必须同类接口里的属性具备相同的特质（attribute），不过，其“只读”状态可以扩展为“可读写”。例如，有个描述个人信息的类，其公共接口如下：
+“class-continuation分类”还有一种合理的用法，就是**将 public 接口中声明为“只读”的属性扩展为“可读写”**(应用场景2)，以便在类的内部设置其值。我们通常不直接访问实例变量，而是通过设置访问方法来做（参见第7条），因为这样能够触发“键值观察”（Key-Value Observing，KVO）通知，其他对象有可能监听此事件。出现在“class-continuation分类”或其他分类中的属性必须同类接口里的属性具备相同的特质（attribute），不过，其“只读”状态可以扩展为“可读写”。例如，有个描述个人信息的类，其公共接口如下：
 
 ```
 #import <Foundation/Foundation.h>
@@ -146,6 +146,58 @@ class SomeCppClass;
 ```
 
 现在 EOCPerson 的实现代码可以随意调用“setFirstName:”或“setLastName:”这两个设置方法，也可以用“点语法”来设置属性。这样做很有用，既能令外界无法修改对象，又能在其内部按照需要管理其数据。这样，封装在类中的数据就由实例本身来控制，而外部代码则无法修改其值。第18条曾详述这一话题。请注意，若观察者（observer）正读取属性值而内部代码又在写入该属性时，则有可能引发“竞争条件”（race condition）。合理使用同步机制（参见第41条）能缓解此问题。
+
+**只会在类的实现代码中用到的私有方法也可以声明在“class-continuation分类”中**(应用场景3)。这么做比较合适，因为它描述了那些只在类实现代码中才会使用的方法。这些方法可以这样写：
+
+```
+@interface EOCPerson ()
+- (void)p_privateMethod;
+@end
+```
+
+此处根据第20条所述的建议为方法名加了前缀，以体现其私有方法。新版编译器不强制要求开发者在使用方法之前必须先声明。然而像上面这样在“class-continuation分类”中声明一下通常还是有好处的，因为这样做可以把类里所含的相关方法统一描述于此。笔者在编写类的实现代码之前，经常喜欢像这样先把方法原型写出来，然后再逐个实现。要想使类的代码更易读懂，可以试试这个好办法。
+
+最后还要讲一种用法：**若对象所遵从的协议只应视为私有，则可在“class-continuation分类”中声明**(应用场景4)。有时由于对象所遵从的某个协议在私有 API 中，所以我们可能不太想在公共接口中泄漏这一信息。比如，EOCPerson遵从了名为EOCSecretDelegate的协议。如果声明在公共接口里，那么要像下面这样来写：
+
+```
+#import <Foundation/Foundation.h>
+#import "EOCSecretDelegate.h"
+@interface EOCPerson : NSObject<EOCSecretDelegate>
+@property (nonatomic, copy, readonly) NSString *firstName;
+@property (nonatomic, copy, readonly) NSString *lastName;
+- (id)initWithFirstName:(NSString *)firstName lastName:(NSString *)lastName;
+@end
+```
+你可能会说，只需要向前声明EOCSecretDelegate协议就可以不引入它了（或者说，不引入定义该协议的头文件了）。用下面这行向前声明语句来取代 #import 指令：
+
+```
+@protocol EOCSecretDelegate;
+```
+
+但是这样一来，只要引入 EOCPerson头文件的地方，编译器都会给出下列警告信息：
+
+```
+warning:cannot find protocol definition for 'EOCSecretDelegate'
+```
+
+由于编译器看不到协议的定义，所以无法得知其中所含的方法，于是就会像这样警告开发者。然而，这毕竟是个私有的内部协议，你甚至连名字都不想让别人知道。此时还得请“class-continuation分类”来帮忙。不要在公共接口中声明 EOCPerson类遵从了 EOCSecretDelegate协议，而是改到“class-continuation分类”里面声明：
+
+```
+#import "EOCPerson.h"
+#import "EOCSecretDelegate.h"
+
+@interface EOCPerson () <EOCSecretDelegate>
+@end
+
+@implementation EOCPerson
+/* …… */
+@end
+```
+
+公共接口内所有提到 EOCSecretDelegate 的地方都可删去。这个私有协议现在已经不为外界所知了。使用 EOCPerson 的人若不深入探索一番，则很难发现其身影。
+
+
+
 
 
 

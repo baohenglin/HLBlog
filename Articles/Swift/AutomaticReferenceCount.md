@@ -80,6 +80,10 @@ Note that the message "John Appleseed is being initialized" is printed at the po
 
 应当注意到当你调用 Person 类的构造器的时候，"John Appleseed is being initialized" 会被打印出来。由此可以确定构造器被执行。
 
+Because the new Person instance has been assigned to the reference1 variable, there is now a strong reference from reference1 to the new Person instance. Because there is at least one strong reference, ARC makes sure that this Person is kept in memory and is not deallocated.
+
+由于 Person 类的新实例被赋值给了 reference1 变量，所以 reference1 到 Person 类的新实例之间建立了一个强引用。正是因为这一个强引用，ARC 会保证 Person 实例被保持在内存中不被销毁。
+
 
 
 

@@ -40,6 +40,46 @@ Here’s an example of how Automatic Reference Counting works. This example star
 
 下面的例子展示了自动引用计数的工作机制。例子以一个简单的 Person 类开始，并定义了一个叫 name 的常量属性：
 
+```
+class Person {
+    let name: String
+    init(name: String) {
+        self.name = name
+        print("\(name) is being initialized")
+    }
+    deinit {
+        print("\(name) is being deinitialized")
+    }
+}
+```
+
+The Person class has an initializer that sets the instance’s name property and prints a message to indicate that initialization is underway. The Person class also has a deinitializer that prints a message when an instance of the class is deallocated.
+
+Person 类有一个构造器，此构造器为实例的 name 属性赋值，并打印一条消息以表明初始化过程生效。Person 类也拥有一个析构器，这个析构器会在实例被销毁时打印一条消息。
+
+The next code snippet defines three variables of type Person?, which are used to set up multiple references to a new Person instance in subsequent code snippets. Because these variables are of an optional type (Person?, not Person), they are automatically initialized with a value of nil, and do not currently reference a Person instance.
+
+接下来的代码片段定义了三个类型为 Person? 的变量，用来按照代码片段中的顺序，为新的 Person 实例建立多个引用。由于这些变量是被定义为可选类型（Person?，而不是 Person），它们的值会被自动初始化为 nil，目前还不会引用到 Person 类的实例。
+
+```
+var reference1: Person?
+var reference2: Person?
+var reference3: Person?
+```
+
+You can now create a new Person instance and assign it to one of these three variables:
+
+现在你可以创建 Person 类的新实例，并且将它赋值给三个变量中的一个：
+
+```
+reference1 = Person(name: "John Appleseed")
+// Prints "John Appleseed is being initialized"
+```
+
+Note that the message "John Appleseed is being initialized" is printed at the point that you call the Person class’s initializer. This confirms that initialization has taken place.
+
+应当注意到当你调用 Person 类的构造器的时候，"John Appleseed is being initialized" 会被打印出来。由此可以确定构造器被执行。
+
 
 
 

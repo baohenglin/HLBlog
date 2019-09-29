@@ -12,7 +12,7 @@ Reference counting applies only to instances of classes. Structures and enumerat
 
 引用计数仅仅应用于类的实例。结构体和枚举类型是值类型，不是引用类型，也不是通过引用的方式存储和传递。
 
-## How ARC Works
+## How ARC Works（自动引用计数的工作机制）
 
 Every time you create a new instance of a class, ARC allocates a chunk of memory to store information about that instance. This memory holds information about the type of the instance, together with the values of any stored properties associated with that instance.
 
@@ -33,6 +33,12 @@ To make sure that instances don’t disappear while they are still needed, ARC t
 To make this possible, whenever you assign a class instance to a property, constant, or variable, that property, constant, or variable makes a strong reference to the instance. The reference is called a “strong” reference because it keeps a firm hold on that instance, and does not allow it to be deallocated for as long as that strong reference remains.
 
 为了使上述成为可能，无论你将实例赋值给属性、常量或变量，它们都会创建此实例的强引用。之所以称之为“强”引用，是因为它会将实例牢牢地保持住，只要强引用还在，实例是不允许被销毁的。
+
+## ARC in Action（自动引用计数实践）
+
+Here’s an example of how Automatic Reference Counting works. This example starts with a simple class called Person, which defines a stored constant property called name:
+
+下面的例子展示了自动引用计数的工作机制。例子以一个简单的 Person 类开始，并定义了一个叫 name 的常量属性：
 
 
 

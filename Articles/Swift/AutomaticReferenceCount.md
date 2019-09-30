@@ -115,6 +115,11 @@ reference3 = nil
 // Prints "John Appleseed is being deinitialized"
 ```
 
+## Strong Reference Cycles Between Class Instances  类实例之间的循环强引用
+
+In the examples above, ARC is able to track the number of references to the new Person instance you create and to deallocate that Person instance when it’s no longer needed.
+
+在上面的例子中，ARC 会跟踪你所新创建的 Person 实例的引用数量，并且会在 Person 实例不再被需要时销毁它。
 
 
 

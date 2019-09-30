@@ -84,6 +84,19 @@ Because the new Person instance has been assigned to the reference1 variable, th
 
 由于 Person 类的新实例被赋值给了 reference1 变量，所以 reference1 到 Person 类的新实例之间建立了一个强引用。正是因为这一个强引用，ARC 会保证 Person 实例被保持在内存中不被销毁。
 
+If you assign the same Person instance to two more variables, two more strong references to that instance are established:
+
+如果你将同一个 Person 实例也赋值给其他两个变量，该实例又会多出两个强引用:
+
+```
+reference2 = reference1
+reference3 = reference1
+```
+
+There are now three strong references to this single Person instance.
+
+现在这一个 Person 实例已经有三个强引用了。
+
 
 
 

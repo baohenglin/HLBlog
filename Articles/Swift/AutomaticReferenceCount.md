@@ -97,6 +97,26 @@ There are now three strong references to this single Person instance.
 
 现在这一个 Person 实例已经有三个强引用了。
 
+If you break two of these strong references (including the original reference) by assigning nil to two of the variables, a single strong reference remains, and the Person instance is not deallocated:
+
+如果你通过给其中两个变量赋值 nil 的方式断开两个强引用（包括最先的那个强引用），只留下一个强引用，Person 实例不会被销毁：
+
+```
+reference1 = nil
+reference2 = nil
+```
+
+ARC does not deallocate the Person instance until the third and final strong reference is broken, at which point it’s clear that you are no longer using the Person instance:
+
+在你清楚地表明不再使用这个 Person 实例时，即第三个也就是最后一个强引用被断开时，ARC 会销毁它：
+
+```
+reference3 = nil
+// Prints "John Appleseed is being deinitialized"
+```
+
+
+
 
 
 

@@ -16,9 +16,9 @@ Vue.js的目标是通过尽可能简单的API实现响应的数据绑定和组�
 
 在兼容性方面，Vue.js不支持 IE8及其以下版本，因为 Vue.js使用了 IE8不能模拟的 ECMAScript5特性。Vue.js支持所有兼容 ECMAScript 5的浏览器。
 
-**NPM**
+**npm**
 
-在用Vue.js构建大型应用时推荐使用NPM安装，NPM 能很好地和诸如 Wevpack 或 Browserify 模块打包器配合使用。Vue.js也提供配套工具来开发单文件组件。
+在用Vue.js构建大型应用时推荐使用NPM安装，npm 能很好地和诸如 Wevpack 或 Browserify 模块打包器配合使用。Vue.js也提供配套工具来开发单文件组件。
 
 ```
 //最新稳定版

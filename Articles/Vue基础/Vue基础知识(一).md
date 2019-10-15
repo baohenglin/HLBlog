@@ -24,3 +24,16 @@ Vue.js的目标是通过尽可能简单的API实现响应的数据绑定和组�
 //最新稳定版
 npm install vue
 ```
+
+## Vue模板语法
+
+```
+v-on:click
+```
+
+v-on:click可简写为@click。v-on指令用于监听 DOM 事件。
+
+```
+v-bind
+```
+v-bind可简写为“:”。v-bind指令用于响应式地更新 HTML特性。

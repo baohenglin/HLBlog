@@ -37,3 +37,9 @@ v-on:click可简写为@click。v-on指令用于监听 DOM 事件。
 v-bind
 ```
 v-bind可简写为“:”。v-bind指令用于响应式地更新 HTML特性。
+
+## v-model和 :model的区别
+
+v-model是vue.js中内置的双向数据绑定指令，用于表单控件以外的标签是不起作用的(即只对表单控件标签的数据双向绑定有效)。
+
+:model相当于v-bind:model的缩写，v-bind动态绑定指令，默认情况下标签自带属性的值是固定的，可以使用v-bind:'需要绑定的值'='表达式'，（如：  :disabled等）。

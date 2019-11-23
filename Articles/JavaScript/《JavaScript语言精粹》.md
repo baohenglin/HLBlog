@@ -84,4 +84,40 @@ if 语句根据表达式的值改变程序流程。表达式的值为真时执�
 
 其他所有的值都被当做真，包括 true、字符串“false”，以及所有的对象。
 
+for in 语句会枚举一个对象的所有属性名（或键名）。在每次循环中，object的下一个属性名字符串被赋值给 variable。通常你需要检测 object.hasOwnProperty(variable)来确定这个属性名是该对象的成员还是来自原型链。
+
+```
+for (myvar in obj) {
+  if (obj.hasOwnProperty(myvar)) {
+    ...
+  }
+}
+```
+
+```
+try {
+
+} catch(varName) {
+
+}
+```
+
+try 语句执行一个代码块，并捕获该代码块抛出的任何异常。catch从句定义一个新的变量 variable 来接收抛出的异常对象。
+
+```
+throw expression;
+```
+
+throw 语句抛出一个异常。如果 throw 语句在一个 try 代码块中，那么控制流会跳转到 catch从句中。如果 throw 语句在函数中，则该函数调用被放弃，控制流跳转到调用该函数的 try 语句的 catch 从句中。throw 语句中的表达式通常是一个对象字面量，它包含一个 name属性和一个 message 属性。异常捕获器可以使用这些信息去决定该做什么。
+
+```
+return expression;
+```
+return 语句会导致从函数中提前返回。它也可以指定要被返回的值。如果没有指定返回表达式，那么返回值是 undefined。
+
+```
+break ;
+```
+
+break 语句会使程序退出一个循环语句或 switch 语句。它可以指定一个可选的标签，那退出的就是带该标签的语句。
 

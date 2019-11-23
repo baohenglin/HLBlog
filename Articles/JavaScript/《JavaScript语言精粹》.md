@@ -181,9 +181,53 @@ document.write(myObject.value); //3
 
 方法可以使用 this 访问自己所属的对象，所以它能从对象中取值或对对象进行修改。this到对象的绑定发生在调用的时候。这个“超级”延迟绑定(very late binding)使得函数可以对 this 高度复用。通过 this 可取得它们所属对象的上下文的方法称为公共方法（public method）。
 
+## 函数调用模式
 
+当一个函数并非一个对象属性时，那么它就是被当做一个函数来调用的：
 
+```
+var sum = add(3, 4);
+```
 
+以此模式调用函数时，this被绑定到全局对象。这是语言设计上的一个错误。倘若语言设计正确，那么当内部函数被调用时，this 应该仍然绑定到外部函数的 this 变量。这个设计错误的后果就是方法不能利用内部函数来帮助它工作，因为内部函数的 this 被绑定了错误的值，所以不能共享该方法对对象的访问权。幸运的是，有一个很容易的解决方案：如果该方法定义一个变量并给它赋值为 this，那么内部函数就可以通过那个变量访问到 this。按照约定，把那个变量命名为 that：
+
+```
+//给 myObject 增加一个 double 方法。
+myObject.double = function () {
+  var that = this;
+  var helper = function () {
+    that.value = add(that.value, that.value);
+  }
+  helper(); //以函数的形式调用 helper
+};
+// 以方法的形式调用 double。
+myObject.double();
+document.write(myObject.value); //6
+```
+
+## 构造器调用模式
+
+JavaScript 是一门基于原型继承的语言。这意味着对象可以直接从其他对象继承属性。该语言是无类型的。这偏离了当今编程语言的主流风格。当今大多数语言都是基于类的语言。尽管原型继承极富表现力，但它并未被广泛理解。JavaScript本身对它原型的本质也缺乏信心，所以它提供了一套和基于类的语言类似的对象构建语法。有类型化语言编程经验的程序员很少有愿意接受原型继承的，并且认为借鉴类型化语言的语法模糊了这门语言真实的原型本质。真是两边不讨好。
+
+如果在一个函数前面带上 new 来调用，那么背地里将会创建一个连接到该函数的 prototype 成员的新对象，同时 this 会被绑定到那个新对象上。
+
+```
+//创建一个名为 Quo 的构造器函数，它构造一个带有 status 属性的对象。
+var Quo = function (string) {
+  this.status = stirng;
+};
+// 给 Quo 的所有实例提供一个名为 get_status 的公共方法。
+Quo.prototype.get_status = function () {
+  return this.status;
+};
+// 构造一个 Quo 实例。
+var myQuo = new Quo("confused");
+document.write(myQuo.get_status());
+```
+
+一个函数，如果创建的目的就是希望结合 new 前缀来调用，那它就被称为构造器函数。按照约定，它们保存在以大写格式命名的变量里。如果调用构造器函数时没有在前面加上 new，可能会发生非常糟糕的事情，既没有编译时警告，也没有运行时警告，所以大写约定非常重要。
+
+不推荐使用这种形式的构造器函数。
 
 
 

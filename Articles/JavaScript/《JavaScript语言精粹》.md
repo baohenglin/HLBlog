@@ -6,6 +6,31 @@ JavaScript是一门重要的语言，因为它是 Web 浏览器的语言。它�
 
 #### 2019.11.23 周六 多云
 
+## 标识符
+
+标识符由一个字母开头，其后可选择性地加上一个或多个字母、数字或下划线。标识符不能使用下面这些保留字：
+
+```
+abstract  boolean break byte  case
+catch char  class const continue
+debugger  default delete  do  double
+else  enum  export  extends false
+final finally float for function
+goto  if  implements  import  in
+instanceof  int interface long  native
+new null  package private protected 
+public  return  short static  super 
+switch  synchronized  this  throw throws
+transient true  try typeof  var
+volatile  void  while with
+```
+
+JavaScript 不允许使用保留字来命名变量或参数。此外，JavaScript 不允许在对象字面量中，或者用点运算符提取对象属性时，使用保留字作为对象的属性名。
+
+标识符被用于语句、变量、参数、属性名、运算符和标记。
+
+## 数字
+
 JavaScript只有一个数字类型。它在内部被表示为64位的浮点数，和 Java的 double 数字类型一样。与其他大多数编程语言不同的是，它没有分离出整数类型，所以1和1.0的值相同。这提供了很大的方便，因为它完全避免了短整型的溢出问题。
 
 如何一个数字字面量有指数部分，那么这个字面量的值等于e之前的数字与10的e之后数字的次方相乘。所以200 和 2e2是相同的数字。

@@ -229,7 +229,23 @@ document.write(myQuo.get_status());
 
 不推荐使用这种形式的构造器函数。
 
+## Apply调用模式
 
+因为 JavaScript 是一门函数式的面向对象编程语言，所以函数可以拥有方法。apply方法让我们构建一个参数组传递给调用函数。它也允许我们选择 this 的值。apply方法接收两个参数，第1个是要绑定给 this 的值，第2个就是一个参数数组。
+
+```
+// 构造一个包含两个数字的数组，并将它们相加。
+var array = [3, 4];
+var sum = add.apply(null, array); // sum值为7。
+// 构造一个包含 status 成员的对象。
+var statusObject = {
+  status: 'A-OK'
+};
+// statusObject 并没有继承自 Quo.prototype，但我们可以在 statusObject 上调
+// 用 get_status 方法，尽管 statusObject 并没有一个名为 get_status 的方法。
+
+var status = Quo.prototype.get_status.apply(statusObject);
+```
 
 
 

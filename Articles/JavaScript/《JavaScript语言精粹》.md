@@ -246,6 +246,7 @@ var statusObject = {
 
 var status = Quo.prototype.get_status.apply(statusObject);
 ```
+#### 2019.11.25
 
 ## 参数
 
@@ -268,7 +269,7 @@ document.write(sum(4, 8, 15, 16, 23, 42));// 108
 
 因为语言的一个设计错误，arguments 并不是一个真正的数组。它只是一个“类似数组(array-like)”的对象。arguments 拥有一个 length 属性，但它没有任何数组的方法。
 
-
+P45
 
 
 

@@ -251,22 +251,43 @@ dispatch_async(dispatch_get_global_queue(0, 0), ^{
 
 &emsp;&emsp;安装包（ipa）主要由可执行文件、资源文件等组成。
 
-#### 官方 App Thinning
+#### 瘦身优化方法：
+
+* 使用官方 App Thinning 技术
 
 App Thinning 是由苹果公司推出的一项可以改善 App 下载进程的新技术，主要是为了解决用户下载 App 耗费过高流量的问题，同时还可以节省用户 iOS 设备的存储空间。
 
 现在的 iOS 设备屏幕尺寸、分辨率越来越多样化，这样就需要更多资源来匹配不同的尺寸和分辨率。同时，App 也会有 32 位、64位不同芯片架构的优化版本。如果这些都在一个包里，那么用户下载包的大小势必会变大。App Thinning 会专门针对不同的设备来选择只适用于当前设备的内容以供下载。比如，iPhone6 只会下载 @2x 分辨率的图片，iPhone 6Plus 就只会下载 @3x 分辨率的图片资源。
 
+使用 App Thinning 后，用户下载时就只会下载一个适合自己设备的芯片指令集架构文件。App Thinning 有三种方式，包括：App Slicing、Bitcode、On-Demand Resources。
 
+* App Slicing：会在你向 iTunes Connect 上传 App 后，对 App 进行切割，创建不同的变体，这样就可以适用到不同的设备。
+* Bitcode：针对特定设备进行包大小优化，优化不明显。
+* On-Demand Resources：主要是为游戏多关卡场景服务的。它会根据用户的关卡进度下载随后几个关卡的资源，并且已经过关的资源也会被删掉，这样就可以减少初装 App 的包大小。
 
-#### 瘦身优化方法：
+**那么，如何在项目里使用 App Thinning呢？**
+
+只需要通过 Xcode 新建一个以 Asset Catalog 为模板的文件(Xcode -> iOS -> Asset Catalog)，然后再按照 Asset Catalog的模板添加图片资源即可。添加的 2x 分辨率的图片和 3x 分辨率的图片，会在上传到 App Store 后被创建成不同的变体以减少 App 安装包的大小。而芯片指令集架构文件只需要按照默认的设置， App Store 就会根据设备创建不同的变体，每个变体里只有当前设备需要的那个芯片指令集架构文件。
+
 
 * 资源文件方面
 
+图片资源的优化，主要体现在删除无用图片和图片资源压缩这两方面。
+
 &emsp;&emsp; ✅对资源文件（比如图片、音频、视频），采取无损压缩；
 
-&emsp;&emsp; ✅去除没有用到的资源（[第三方检测工具](https://github.com/tinymind/LSUnusedResources)）；
+&emsp;&emsp; ✅删除无用的资源（[第三方检测工具](https://github.com/tinymind/LSUnusedResources)）；
 
+那么我们如何找到并删除那些无用图片资源呢？步骤如下：
+
+* (1)通过 find 命令获取 App 安装包中的所有资源文件，比如 find /Users/daiming/Project/ -name。
+* (2)设置用到的资源的类型，比如 jpg、gif、png、webp。
+* (3)使用正则匹配在源码中找出使用到的资源名，比如 pattern = @"@"(.+?)""。
+* (4)使用 find 命令找到的所有资源文件，再去掉代码中用到的资源文件，剩下的就是无用资源了。
+* (5)对于按照规则设置的资源名，我们需要在匹配使用资源的正则表达式里添加相应的规则，比如@"image_%d"。
+* (6)确认无用资源后，就可以对这些无用资源执行删除操作了。这个删除操作，可以使用 NSFileManager 系统类提供的功能来完成。
+
+如果不想自己重新写一个工具的话，可以选择使用开源工具 [LSUnusedResources](https://github.com/tinymind/LSUnusedResources)
 
 
 * 可执行文件方面

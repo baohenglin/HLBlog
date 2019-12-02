@@ -291,7 +291,9 @@ App Thinning 是由苹果公司推出的一项可以改善 App 下载进程的�
 * (5)对于按照规则设置的资源名，我们需要在匹配使用资源的正则表达式里添加相应的规则，比如@"image_%d"。
 * (6)确认无用资源后，就可以对这些无用资源执行删除操作了。这个删除操作，可以使用 NSFileManager 系统类提供的功能来完成。
 
-如果不想自己重新写一个工具的话，可以选择使用开源工具 [LSUnusedResources](https://github.com/tinymind/LSUnusedResources)
+此外还可以选择使用开源工具 [LSUnusedResources](https://github.com/tinymind/LSUnusedResources)来检测无用资源。
+
+
 
 
 * 可执行文件方面

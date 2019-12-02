@@ -293,6 +293,30 @@ App Thinning 是由苹果公司推出的一项可以改善 App 下载进程的�
 
 此外还可以选择使用开源工具 [LSUnusedResources](https://github.com/tinymind/LSUnusedResources)来检测无用资源。
 
+**那么具体如何把图片转成 WebP呢？** 可以使用 Google 公司提供的图片压缩工具 [cwebp](https://developers.google.com/speed/webp/docs/precompiled)。使用 cwebp时，需要根据图片情况设置对应的参数。cwebp语法如下：
+
+```
+cwebp [options] input_file -o output_file.webp
+```
+
+比如你要选择无损压缩模式的话，可以使用如下命令：
+
+```
+cwebp -lossless original.png -o new.webp
+```
+
+其中，-lossless表示要对输入的 png 图像进行无损编码，转成 WebP 图片。不使用 -lossless，则表示有损压缩。
+
+图片色值在不同情况下，可以选择用 -q参数来进行设置，在不损失图片质量的情况下进行最大化压缩：
+
+* 小于 256 色适合无损压缩，压缩率高，参数使用 -lossless -q 100;
+* 大于 256 色使用 75% 有损压缩，参数使用 -q 75；
+* 远大于 256 色使用 75% 以下压缩率，参数 -q 50 -m 6。
+
+除了 Google公司开发的 cwebp工具外，我们还可以选择腾讯公司的[iSparta](http://isparta.github.io)。
+
+图片压缩完成后，我们还需要在显示图片时使用 libwebp进行解析。 [libwebp iOS工程应用范例](https://github.com/carsonmcdonald/WebP-iOS-example)
+
 
 
 

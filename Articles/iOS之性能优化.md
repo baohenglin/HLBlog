@@ -317,16 +317,40 @@ cwebp -lossless original.png -o new.webp
 
 图片压缩完成后，我们还需要在显示图片时使用 libwebp进行解析。 [libwebp iOS工程应用范例](https://github.com/carsonmcdonald/WebP-iOS-example)
 
+需要注意的是，WebP 在 CPU 消耗和解码时间上会比 PNG 高两倍。所以需要在性能和体积上做取舍。
+
+**建议如果图片大小超过了 100KB，你可以考虑使用 WebP；而小于 100KB 时，你可以使用网页工具 [TinyPng](https://tinypng.com) 或者 GUI 工具[ImageOptim](https://imageoptim.com/mac)进行图片压缩。**这两个工具的压缩率没有 WebP 那么高，不会改变图片压缩方式，所以解析时对性能损耗也不会增加。
 
 
-
-* 可执行文件方面
+* 可执行文件方面(代码层面)
 
 &emsp;&emsp; ✅ 编译器优化。（1）开启编译优化。比如将Strip Linked Product、Make Strings Read-Only、Symbols Hidden by Default设置为YES；（2）去掉异常支持。比如将Enable C++ Exceptions、Enable Objective-C Exceptions设置为NO， Other C Flags添加-fno-exceptions；（3）避免编译多个架构。可以放弃对armv7，armv7s架构的支持，因为iPhone5s之后的所有设备都是arm64架构的，这样动态库和二进制可执行文件体积会减少很多。
 
-&emsp;&emsp; ✅ 利用[AppCode](https://www.jetbrains.com/objc/)检测未使用的代码：菜单栏 -> Code -> Inspect Code
+&emsp;&emsp; ✅ 利用[AppCode](https://www.jetbrains.com/objc/)检测无用的代码并删除：菜单栏 -> Code -> Inspect Code
 
-&emsp;&emsp; ✅ 生成LinkMap文件，可以查看可执行文件的具体组成。在Target->Build Settings->Linking中将Write Link Map File设置为YES；也可以借助第三方工具分析LinkMap文件，比如[第三方分析工具LinkMap](https://github.com/huanxsd/LinkMap) 。
+通常情况下，对可执行文件进行瘦身，就是找到并删除无用代码的过程。而查找无用代码时，我们可以按照找无用图片的思路，即：
+
+* (1)首先，找出方法和类的全集；
+* (2)然后，找到使用过的方法和类；
+* (3)接着，取二者的差集得到无用代码
+* (4)最后，由人工确认无用代码可删除后，进行删除即可。
+
+
+
+**我们可以通过分析 LinkMap 来获得所有的代码类和方法的信息**。
+
+在Target->Build Settings->Linking中将Write Link Map File设置为YES，然后指定 Path to Link Map File 的路径就可以得到每次编译后的 LinkMap 文件了。此外也可以借助第三方工具分析LinkMap文件，比如[第三方分析工具LinkMap](https://github.com/huanxsd/LinkMap) 。
+
+LinkMap 文件分为三部分：Object File、Section 和 Symbols。其中 Object File 包含了代码工程的所有文件； Section 描述了代码段在生成的 Mach-O 里偏移位置和大小；Symbols 会列出每个方法、类、block，以及它们的大小。
+
+通过 LinkMap，你不仅可以统计出所有的方法和类，还能够清晰地看到代码所占包大小的具体分布，进而有针对性地进行代码优化。
+
+得到了代码的全集信息以后，我们还需要找到已使用的方法和类，这样才能获取到差集，找出无用代码。所以接下来，来看看如何通过 Mach-O 取到使用过的方法和类。
+
+其实，iOS 的方法都会通过 objc_msgSend 来调用。而 objc_msgSend 在 Mach-O 文件里是通过 _ _objc_selrefs 这个 section 来获取 selector 这个参数的。所以，_ _objc_selrefs 里的方法一定是被调用了的。_ _objc_classrefs 里是被调用过的类，__objc_superrefs 是调用过 super 的类。通过 
+_ _objc_classrefs 和 _ _objc_superrefs，我们就可以找出使用过的类和子类。
+
+
 <br>
 <br>
 <br>

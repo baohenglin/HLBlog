@@ -347,8 +347,12 @@ LinkMap 文件分为三部分：Object File、Section 和 Symbols。其中 Objec
 
 得到了代码的全集信息以后，我们还需要找到已使用的方法和类，这样才能获取到差集，找出无用代码。所以接下来，来看看如何通过 Mach-O 取到使用过的方法和类。
 
-其实，iOS 的方法都会通过 objc_msgSend 来调用。而 objc_msgSend 在 Mach-O 文件里是通过 _ _objc_selrefs 这个 section 来获取 selector 这个参数的。所以，_ _objc_selrefs 里的方法一定是被调用了的。_ _objc_classrefs 里是被调用过的类，__objc_superrefs 是调用过 super 的类。通过 
-_ _objc_classrefs 和 _ _objc_superrefs，我们就可以找出使用过的类和子类。
+其实，iOS 的方法都会通过 objc_msgSend 来调用。而 objc_msgSend 在 Mach-O 文件里是通过 __ objc_selrefs 这个 section 来获取 selector 这个参数的。所以，__ objc_selrefs 里的方法一定是被调用了的。__ objc_classrefs 里是被调用过的类，__ objc_superrefs 是调用过 super 的类。通过 
+__ objc_classrefs 和 __ objc_superrefs，我们就可以找出使用过的类和子类。
+
+那么，Mach-O文件的 __ objc_selrefs、__ objc_classrefs 和 __ objc_superrefs怎么查看呢？我们可以通过 [MachOView](https://sourceforge.net/projects/machoview/) 这个开源软件来查看 Mach-O 文件里的信息。
+
+
 
 
 <br>

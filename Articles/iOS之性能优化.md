@@ -326,8 +326,6 @@ cwebp -lossless original.png -o new.webp
 
 &emsp;&emsp; ✅ 编译器优化。（1）开启编译优化。比如将Strip Linked Product、Make Strings Read-Only、Symbols Hidden by Default设置为YES；（2）去掉异常支持。比如将Enable C++ Exceptions、Enable Objective-C Exceptions设置为NO， Other C Flags添加-fno-exceptions；（3）避免编译多个架构。可以放弃对armv7，armv7s架构的支持，因为iPhone5s之后的所有设备都是arm64架构的，这样动态库和二进制可执行文件体积会减少很多。
 
-&emsp;&emsp; ✅ 利用[AppCode](https://www.jetbrains.com/objc/)检测无用的代码并删除：菜单栏 -> Code -> Inspect Code
-
 通常情况下，对可执行文件进行瘦身，就是找到并删除无用代码的过程。而查找无用代码时，我们可以按照找无用图片的思路，即：
 
 * (1)首先，找出方法和类的全集；
@@ -337,7 +335,7 @@ cwebp -lossless original.png -o new.webp
 
 
 
-**我们可以通过分析 LinkMap 来获得所有的代码类和方法的信息**。
+&emsp;&emsp; ✅通过分析 [LinkMap]((https://github.com/huanxsd/LinkMap)) 来获得所有的代码类和方法的信息。
 
 在Target->Build Settings->Linking中将Write Link Map File设置为YES，然后指定 Path to Link Map File 的路径就可以得到每次编译后的 LinkMap 文件了。此外也可以借助第三方工具分析LinkMap文件，比如[第三方分析工具LinkMap](https://github.com/huanxsd/LinkMap) 。
 
@@ -353,6 +351,8 @@ __ objc_classrefs 和 __ objc_superrefs，我们就可以找出使用过的类�
 那么，Mach-O文件的 __ objc_selrefs、__ objc_classrefs 和 __ objc_superrefs怎么查看呢？我们可以通过 [MachOView](https://sourceforge.net/projects/machoview/) 这个开源软件来查看 Mach-O 文件里的信息。
 
 但是，这种查看方法并不完美，还存在一些问题。为什么这么说呢？因为 Objective-C 是一门动态语言，方法调用可以写成在运行时动态调用，这样就无法做到收集所有调用的方法和类。所以，通过此方法找出的无用方法和类只能作为参考，还需要二次确认。
+
+&emsp;&emsp; ✅ 利用[AppCode](https://www.jetbrains.com/objc/)检测无用的代码并删除。
 
 那么有什么好的工具能够快速准确地找出无用的代码吗？如果工程代码量不是很大时，建议直接使用 AppCode 来进行分析。直接在 AppCode里选择 菜单栏 -> Code -> Inspect Code 进行静态分析。静态分析完毕后，便可以在 Unused code 里看到所有无用的代码。
 
@@ -378,6 +378,60 @@ Unused macro 无用的宏
 Unused global declaration 是无用全局声明
 ```
 
+使用 AppCode 静态检测无用代码也存在一些问题：
+
+* JSONModel 里定义了未使用的协议会被判定为无用协议；
+* 如果子类使用了父类的方法，那么父类的这个方法会被判定为未使用；
+* 通过点语法使用的属性，该属性会被认为没有使用；
+* 使用 performSelector 方式调用的方法也被判定为无用方法，比如 self performSelector:@selector(refreshData);
+* 运行时声明类的情况检查不出来。比如通过 NSClassFromString 方式调用的类会被查出为没有使用的类，比如 layerClass = NSClassFromString(@“SMFloatLayer”)。
+* 以 [[self class] accessToken] 这样不指定类名的方式使用的类，会被认为该类没有被使用。像 UITableView 的自定义的 Cell 使用 registerClass，这样的情况也会认为这个 Cell 没有被使用。
+
+因此使用 AppCode检查出来的无用代码，仍然需要人工确认安全才能删除。
+
+&emsp;&emsp; ✅ 运行时检查类是否真正被使用过。
+
+有些代码在执行静态检查时会被用到，但是线上可能连这些老功能的入口都没有了，这些无用功能相关的代码也是可以删除的。那么如何检测这些无用的代码呢？
+
+通过 ObjC 的 runtime 源码，我们可以找到怎么判断一个类是否初始化过的函数，如下所示：
+
+```
+#define RW_INITIALIZED (1<<29)
+bool isInitialized() {
+   return getMeta()->data()->flags & RW_INITIALIZED;
+}
+```
+
+isInitialized 的结果会保存到元类的 class_rw_t 结构体的 flags 信息里，flags 的 1<<29 位记录的就是这个类是否初始化了的信息。而 flags 的其他位记录的信息，你可以参看 objc runtime 的源码，如下：
+
+```
+
+// 类的方法列表已修复
+#define RW_METHODIZED         (1<<30)
+
+// 类已经初始化了
+#define RW_INITIALIZED        (1<<29)
+
+// 类在初始化过程中
+#define RW_INITIALIZING       (1<<28)
+
+// class_rw_t->ro 是 class_ro_t 的堆副本
+#define RW_COPIED_RO          (1<<27)
+
+// 类分配了内存，但没有注册
+#define RW_CONSTRUCTING       (1<<26)
+
+// 类分配了内存也注册了
+#define RW_CONSTRUCTED        (1<<25)
+
+// GC：class有不安全的finalize方法
+#define RW_FINALIZE_ON_MAIN_THREAD (1<<24)
+
+// 类的 +load 被调用了
+#define RW_LOADED             (1<<23)
+```
+
+flags 采用位方式记录布尔值的方式，易于扩展、所用存储空间小、检索性能也好。
 
 <br>
 <br>

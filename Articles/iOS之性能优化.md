@@ -352,6 +352,8 @@ __ objc_classrefs 和 __ objc_superrefs，我们就可以找出使用过的类�
 
 那么，Mach-O文件的 __ objc_selrefs、__ objc_classrefs 和 __ objc_superrefs怎么查看呢？我们可以通过 [MachOView](https://sourceforge.net/projects/machoview/) 这个开源软件来查看 Mach-O 文件里的信息。
 
+但是，这种查看方法并不完美，还存在一些问题。为什么这么说呢？因为 Objective-C 是一门动态语言，方法调用可以写成在运行时动态调用，这样就无法做到收集所有调用的方法和类。所以，通过此方法找出的无用方法和类只能作为参考，还需要二次确认。
+
 
 
 

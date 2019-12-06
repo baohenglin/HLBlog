@@ -324,7 +324,7 @@ cwebp -lossless original.png -o new.webp
 
 * 可执行文件方面(代码层面)
 
-&emsp;&emsp; ✅ 编译器优化。（1）开启编译优化。比如将Strip Linked Product、Make Strings Read-Only、Symbols Hidden by Default设置为YES；（2）去掉异常支持。比如将Enable C++ Exceptions、Enable Objective-C Exceptions设置为NO， Other C Flags添加-fno-exceptions；（3）避免编译多个架构。可以放弃对armv7，armv7s架构的支持，因为iPhone5s之后的所有设备都是arm64架构的，这样动态库和二进制可执行文件体积会减少很多。
+&emsp;&emsp; ✅1.编译器优化。（1）开启编译优化。比如将Strip Linked Product、Make Strings Read-Only、Symbols Hidden by Default设置为YES；（2）去掉异常支持。比如将Enable C++ Exceptions、Enable Objective-C Exceptions设置为NO， Other C Flags添加-fno-exceptions；（3）避免编译多个架构。可以放弃对armv7，armv7s架构的支持，因为iPhone5s之后的所有设备都是arm64架构的，这样动态库和二进制可执行文件体积会减少很多。
 
 通常情况下，对可执行文件进行瘦身，就是找到并删除无用代码的过程。而查找无用代码时，我们可以按照找无用图片的思路，即：
 
@@ -335,7 +335,7 @@ cwebp -lossless original.png -o new.webp
 
 
 
-&emsp;&emsp; ✅通过分析 [LinkMap]((https://github.com/huanxsd/LinkMap)) 来获得所有的代码类和方法的信息。
+&emsp;&emsp; ✅2.通过分析 [LinkMap]((https://github.com/huanxsd/LinkMap)) 来获得所有的代码类和方法的信息。
 
 在Target->Build Settings->Linking中将Write Link Map File设置为YES，然后指定 Path to Link Map File 的路径就可以得到每次编译后的 LinkMap 文件了。此外也可以借助第三方工具分析LinkMap文件，比如[第三方分析工具LinkMap](https://github.com/huanxsd/LinkMap) 。
 
@@ -352,7 +352,7 @@ __ objc_classrefs 和 __ objc_superrefs，我们就可以找出使用过的类�
 
 但是，这种查看方法并不完美，还存在一些问题。为什么这么说呢？因为 Objective-C 是一门动态语言，方法调用可以写成在运行时动态调用，这样就无法做到收集所有调用的方法和类。所以，通过此方法找出的无用方法和类只能作为参考，还需要二次确认。
 
-&emsp;&emsp; ✅ 利用[AppCode](https://www.jetbrains.com/objc/)检测无用的代码并删除。
+&emsp;&emsp; ✅3.利用[AppCode](https://www.jetbrains.com/objc/)检测无用的代码并删除。
 
 那么有什么好的工具能够快速准确地找出无用的代码吗？如果工程代码量不是很大时，建议直接使用 AppCode 来进行分析。直接在 AppCode里选择 菜单栏 -> Code -> Inspect Code 进行静态分析。静态分析完毕后，便可以在 Unused code 里看到所有无用的代码。
 
@@ -389,7 +389,7 @@ Unused global declaration 是无用全局声明
 
 因此使用 AppCode检查出来的无用代码，仍然需要人工确认安全才能删除。
 
-&emsp;&emsp; ✅ 运行时检查类是否真正被使用过。
+&emsp;&emsp; ✅4.运行时检查类是否真正被使用过。
 
 有些代码在执行静态检查时会被用到，但是线上可能连这些老功能的入口都没有了，这些无用功能相关的代码也是可以删除的。那么如何检测这些无用的代码呢？
 

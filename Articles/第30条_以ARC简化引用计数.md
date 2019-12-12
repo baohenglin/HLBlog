@@ -2,7 +2,7 @@
 
 要点：
 
-* ARC管理对象生命期的办法基本上就是：在合适的地方插入“retain”和“release”操作。在ARC环境下，变量的内存管理语义可以通过修饰符指明，而原来则需要手工执行‘保留’及‘释放’操作。
+* ARC管理对象生命期的办法基本上就是：在合适的地方自动插入“retain”和“release”操作。在ARC环境下，变量的内存管理语义可以通过修饰符指明，而原来则需要手工执行‘保留’及‘释放’操作。
 * 调用上述四种方法（alloc、new、copy、mutableCopy）的那段代码要负责释放方法所返回的对象。
 * ARC只负责管理Objective-C对象的内存。尤其要注意：CoreFoundation对象不归ARC管理，开发者必须适时调用CFRetain/CFRelease。
 

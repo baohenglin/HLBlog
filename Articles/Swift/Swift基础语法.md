@@ -33,3 +33,40 @@ I said "I have \(apples) apples."
 And then I said "I have \(apples + oranges) pieces of fruit."
 """
 ```
+
+**使用方括号 [] 来创建数组和字典，并使用下标或者键（key）来访问元素**。最后一个元素后面允许有个逗号。
+
+```
+var shoppingList = ["catfish", "water", "tulips", "blue paint"]
+shoppingList[1] = "bottle of water"
+
+var occupations = [
+    "Malcolm": "Captain",
+    "Kaylee": "Mechanic",
+]
+occupations["Jayne"] = "Public Relations"
+```
+
+数组在添加元素时会自动变大。
+
+```
+shoppingList.append("blue paint")
+```
+
+**使用初始化语法来创建一个空数组或者空字典**。
+
+```
+let emptyArray = [String]()
+let emptyDictionary = [String: Float]()
+```
+
+如果类型信息可以被推断出来，你可以用 [] 和 [:] 来创建空数组和空字典。比如，在给变量赋新值或者给函数传参数的时候。
+
+```
+shoppingList = []
+occupations = [:]
+```
+
+
+
+

@@ -8,7 +8,7 @@ myVariable = 50
 
 编译器会自动推断出 myVariable 是一个整数类型，因为它的初始值是整数。如果初始值没有提供足够的信息（或者没有初始值），那么就需要在变量后面声明类型，用冒号分割。
 
-**值永远不会被隐式转化为其他类型。如果需要把一个值转换成其他类型，请显示转换**。
+**1.1 值永远不会被隐式转化为其他类型。如果需要把一个值转换成其他类型，请显示转换**。
 
 ```
 let label = "The width is"
@@ -25,7 +25,7 @@ let appleSummary = "I have \(apples) apples."
 let fruitSummary = "I have \(apples + oranges) pieces of fruit."
 ```
 
-**使用三个双引号（"""）来包含多行字符串内容**。每行行首的缩进会被去除，直到和结尾引号的缩进相匹配。
+**1.2 使用三个双引号（"""）来包含多行字符串内容**。每行行首的缩进会被去除，直到和结尾引号的缩进相匹配。
 
 ```
 let quotation = """
@@ -34,7 +34,7 @@ And then I said "I have \(apples + oranges) pieces of fruit."
 """
 ```
 
-**使用方括号 [] 来创建数组和字典，并使用下标或者键（key）来访问元素**。最后一个元素后面允许有个逗号。
+**1.3 使用方括号 [] 来创建数组和字典，并使用下标或者键（key）来访问元素**。最后一个元素后面允许有个逗号。
 
 ```
 var shoppingList = ["catfish", "water", "tulips", "blue paint"]
@@ -53,7 +53,7 @@ occupations["Jayne"] = "Public Relations"
 shoppingList.append("blue paint")
 ```
 
-**使用初始化语法来创建一个空数组或者空字典**。
+**1.4 使用初始化语法来创建一个空数组或者空字典**。
 
 ```
 let emptyArray = [String]()

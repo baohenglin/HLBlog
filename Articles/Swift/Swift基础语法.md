@@ -327,7 +327,7 @@ shape.numberOfSides = 7
 var shapeDescription = shape.simpleDescription()
 ```
 
-**构造器**
+**4.3 构造器(构造函数) init**
 
 构造函数来初始化类实例。使用 init 来创建一个构造器。
 
@@ -347,5 +347,41 @@ class NamedShape {
 ```
 
 注意 self 被用来区别实例变量 name 和构造器的参数 name。当你创建实例的时候，像传入函数参数一样给类传入构造器的参数。每个属性都需要赋值。无论是通过声明（比如 numberOfSides）还是通过构造器（比如 name）。
+
+**4.4 析构函数 deinit**
+
+如果需要在对象释放之前进行一些清理工作，使用 deinit 创建一个析构函数。
+
+**4.5 子类**
+
+子类的定义方法是在它们的类名后面加上父类的名字，用冒号分割。创建类的时候并不需要一个标准的根类，所以你可以根据需要添加或者忽略父类。
+
+**子类如果要重写父类的方法的话，需要用 override 标记**。如果没有添加 override 就重写父类方法的话编译器会报错。编译器同样会检测 override 标记的方法是否确实在父类中。
+
+```
+class Square: NamedShape {
+    var sideLength: Double
+
+    init(sideLength: Double, name: String) {
+        self.sideLength = sideLength
+        super.init(name: name)
+        numberOfSides = 4
+    }
+
+    func area() ->  Double {
+        return sideLength * sideLength
+    }
+    // override 表示重写父类的 simpleDescription 方法
+    override func simpleDescription() -> String {
+        return "A square with sides of length \(sideLength)."
+    }
+}
+let test = Square(sideLength: 5.2, name: "my test square")
+test.area()
+test.simpleDescription()
+```
+
+
+
 
 

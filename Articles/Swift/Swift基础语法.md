@@ -304,5 +304,48 @@ let sortedNumbers = numbers.sorted { $0 > $1 }
 print(sortedNumbers)
 ```
 
+## 4 对象和类
+
+**4.1 使用 class 和类名来创建一个类**
+
+使用 class 和类名来创建一个类。类中属性的声明和常量、变量声明一样，唯一的区别就是它们的上下文是类。同样，方法和函数声明也一样。
+
+```
+class Shape {
+    var numberOfSides = 0
+    func simpleDescription() -> String {
+        return "A shape with \(numberOfSides) sides."
+    }
+}
+```
+
+**4.2 要创建一个类的实例，在类名后面加上括号。使用点语法来访问实例的属性和方法。**
+
+```
+var shape = Shape()
+shape.numberOfSides = 7
+var shapeDescription = shape.simpleDescription()
+```
+
+**构造器**
+
+构造函数来初始化类实例。使用 init 来创建一个构造器。
+
+```
+class NamedShape {
+    var numberOfSides: Int = 0
+    var name: String
+
+    init(name: String) {
+        self.name = name
+    }
+
+    func simpleDescription() -> String {
+        return "A shape with \(numberOfSides) sides."
+    }
+}
+```
+
+注意 self 被用来区别实例变量 name 和构造器的参数 name。当你创建实例的时候，像传入函数参数一样给类传入构造器的参数。每个属性都需要赋值。无论是通过声明（比如 numberOfSides）还是通过构造器（比如 name）。
 
 

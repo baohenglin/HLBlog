@@ -67,9 +67,9 @@ shoppingList = []
 occupations = [:]
 ```
 
-## 控制流
+## 2 控制流
 
-使用 if 和 switch 来进行条件操作，使用 for-in、 while 和 repeat-while 来进行循环。包裹条件和循环变量的括号可以省略，但是语句体的大括号是必须的。
+**2.1使用 if 和 switch 来进行条件操作，使用 for-in、 while 和 repeat-while 来进行循环**。包裹条件和循环变量的括号可以省略，但是语句体的大括号是必须的。
 
 ```
 let individualScores = [75, 43, 103, 87, 12]
@@ -109,6 +109,25 @@ let fullName: String = "John Appleseed"
 let informalGreeting = "Hi \(nickName ?? fullName)"
 ```
 
+**2.2 switch 支持任意类型的数据以及各种比较操作——不仅仅是整数以及测试相等**
+
+```
+let vegetable = "red pepper"
+switch vegetable {
+case "celery":
+    print("Add some raisins and make ants on a log.")
+case "cucumber", "watercress":
+    print("That would make a good tea sandwich.")
+case let x where x.hasSuffix("pepper"):
+    print("Is it a spicy \(x)?")
+default:
+    print("Everything tastes good in soup.")
+}
+```
+
+let 在上述例子的等式中是如何使用的，它将匹配等式的值赋给常量 x。
+
+运行 switch 中匹配到的 case 语句之后，程序会退出 switch 语句，并不会继续向下运行，所以不需要在每个子句结尾写 break。
 
 
 

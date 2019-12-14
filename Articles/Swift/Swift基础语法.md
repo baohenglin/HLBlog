@@ -176,7 +176,31 @@ for i in 0..<4 {
     total += i
 }
 print(total)
+//0..<4表示 0 <= x < 4
+//0...4表示 0 <= x <= 4
 ```
 
 需要注意的是：使用 ..< 创建的范围不包含上界，如果想包含的话需要使用 ...。
+
+## 3.函数和闭包
+
+**3.1 函数**
+
+使用 func 来声明一个函数，使用名字和参数来调用函数。使用 -> 来指定函数返回值的类型。
+
+```
+func greet(person: String, day: String) -> String {
+    return "Hello \(person), today is \(day)."
+}
+greet(person:"Bob", day: "Tuesday")
+```
+
+默认情况下，函数使用它们的参数名称作为它们参数的标签，在参数名称前可以自定义参数标签，或者使用 _ 表示不使用参数标签。
+
+```
+func greet(_ person: String, on day: String) -> String {
+    return "Hello \(person), today is \(day)."
+}
+greet("John", on: "Wednesday")
+```
 

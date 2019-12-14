@@ -204,3 +204,29 @@ func greet(_ person: String, on day: String) -> String {
 greet("John", on: "Wednesday")
 ```
 
+**3.2 使用元组来生成复合值**
+
+使用元组来生成复合值，比如让一个函数返回多个值。该元组的元素可以用名称或数字来获取。
+
+```
+func calculateStatistics(scores: [Int]) -> (min: Int, max: Int, sum: Int) {
+    var min = scores[0]
+    var max = scores[0]
+    var sum = 0
+
+    for score in scores {
+        if score > max {
+            max = score
+        } else if score < min {
+            min = score
+        }
+        sum += score
+    }
+
+    return (min, max, sum)
+}
+let statistics = calculateStatistics(scores:[5, 3, 100, 3, 9])
+print(statistics.sum)
+print(statistics.2)
+```
+

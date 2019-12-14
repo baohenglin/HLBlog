@@ -84,6 +84,31 @@ for score in individualScores {
 print(teamScore)
 ```
 
+**在 if 语句中，条件必须是一个布尔表达式。** 这意味着像 if score { ... } 这样的代码将报错，而不会隐形地与 0 做对比。
+
+可以一起使用 if 和 let 一起来处理值缺失的情况。这些值可由可选值来代表。一个可选的值是一个具体的值或者是 nil 以表示值缺失。在类型后面加一个问号（?）来标记这个变量的值是可选的。
+
+```
+var optionalString: String? = "Hello"
+print(optionalString == nil)
+
+var optionalName: String? = "John Appleseed"
+var greeting = "Hello!"
+if let name = optionalName {
+    greeting = "Hello, \(name)"
+}
+```
+
+如果变量的可选值是 nil，条件会判断为 false，大括号中的代码会被跳过。如果不是 nil，会将值解包并赋给 let 后面的常量，这样代码块中就可以使用这个值了。
+
+另一种处理可选值的方法是**通过使用 ?? 操作符** 来提供一个默认值。如果可选值缺失的话，可以使用默认值来代替。
+
+```
+let nickName: String? = nil
+let fullName: String = "John Appleseed"
+let informalGreeting = "Hi \(nickName ?? fullName)"
+```
+
 
 
 

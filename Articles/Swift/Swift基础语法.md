@@ -230,3 +230,34 @@ print(statistics.sum)
 print(statistics.2)
 ```
 
+**3.3 函数可以嵌套**
+
+函数可以嵌套。被嵌套的函数可以访问外侧函数的变量，你可以使用嵌套函数来重构一个太长或者太复杂的函数。
+
+```
+func returnFifteen() -> Int {
+    var y = 10
+    func add() {
+        y += 5
+    }
+    add()
+    return y
+}
+returnFifteen()
+```
+
+**3.4 函数是第一等类型，这意味着函数可以作为另一个函数的返回值。**
+
+```
+func makeIncrementer() -> ((Int) -> Int) {
+    func addOne(number: Int) -> Int {
+        return 1 + number
+    }
+    return addOne
+}
+var increment = makeIncrementer()
+print(increment(7))
+// 8
+```
+
+

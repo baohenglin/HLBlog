@@ -87,7 +87,7 @@
 ## *🌐其他*
 主题|文章|备注
 |:---|:---|:---|
-|求职简历|[《如何写一份有效的技术简历？》]()<br>|
+|求职简历|[《如何写一份有效的技术简历？》](https://github.com/baohenglin/HLBlog/blob/master/Articles/ProfessionalSkills/%E5%A6%82%E4%BD%95%E5%86%99%E4%B8%80%E4%BB%BD%E6%9C%89%E6%95%88%E7%9A%84%E7%AE%80%E5%8E%86.md)<br>|
 |获取知识|[《如何正确高效的使用Google搜索引擎？》]()<br>|
 
 <!--## *🖥️后台*

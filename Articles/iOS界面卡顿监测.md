@@ -25,7 +25,7 @@
 目前想到的大致可行的方案有以下四种：
 
 * (1)基于 RunLoop 的监控方案；
-* (2)基于线程的 ping 监控方案（本文暂不讨论，可参考[PMainThreadWatcher](https://github.com/music4kid/PMainThreadWatcher)）；
+* (2)基于线程的 ping 监控方案（可参考[PMainThreadWatcher](https://github.com/music4kid/PMainThreadWatcher)）；
 * (3)基于 FPS 的监控方案；
 * (4)hook msgSend 方案；
 

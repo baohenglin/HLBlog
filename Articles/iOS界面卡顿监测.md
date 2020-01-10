@@ -10,11 +10,11 @@
 
 * 复杂UI、图文混排的绘制量过大；
 * 在主线程上做网络同步请求；
-* 在主线程做大量的IO操作；
-* 运算量过大，CPU持续高占用；
+* 在主线程做大量的 IO 操作；
+* 运算量过大，CPU 持续高占用；
 * 死锁和主子线程抢锁。
 
-一般通过Instrument工具设置16ms的采样率可以检测出大部分这种耗时的任务，但是有以下几个缺点：
+一般通过 Instrument 工具设置 16ms 的采样率可以检测出大部分这种耗时的任务，但是有以下几个缺点：
 
 * (1)Instrument profile 一次重新编译，时间较长。
 * (2)只能针对特定的操作场景进行检测，要预先知道卡顿产生的场景。
@@ -22,13 +22,25 @@
 
 我们的目标方案是能够自动实时监控卡顿且能立即输出并上报导致该卡顿的函数调用栈。显然 Instrument 不符。
 
-目前想到的大致可行的方案有以下三个：
+目前想到的大致可行的方案有以下四种：
 
-* (1)基于RunLoop的监控方案
-* (2)基于线程的监控方案（本文暂不讨论，可参考[PMainThreadWatcher](https://github.com/music4kid/PMainThreadWatcher)）
-* (3)基于FPS的监控方案
+* (1)基于 RunLoop 的监控方案；
+* (2)基于线程的 ping 监控方案（本文暂不讨论，可参考[PMainThreadWatcher](https://github.com/music4kid/PMainThreadWatcher)）；
+* (3)基于 FPS 的监控方案；
+* (4)hook msgSend 方案；
 
-## RunLoop方案来监控卡顿
+四种方案性能对比：
+
+||RunLoop|ping|FPS|hook msgSend|
+|-|-|-|-|-|
+|损耗|||||
+|精度|||||
+|反馈|||||
+|成本|||||
+
+
+
+## RunLoop 方案来监控卡顿
 
 那么如何监控卡顿呢？是要监控FPS吗？监控FPS来判断卡顿是否准确呢？
 

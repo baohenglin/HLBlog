@@ -31,3 +31,13 @@ baohenglin site:https://github.com/baohenglin
 ```
 
 搜搜结果为特定站点“https://github.com/baohenglin” 中包含“baohenglin”的所有结果。
+
+* (5)**查找链接到某个站点的页面**
+
+```
+link:https://github.com/baohenglin
+```
+
+
+
+

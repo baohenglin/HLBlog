@@ -38,6 +38,11 @@ baohenglin site:https://github.com/baohenglin
 link:https://github.com/baohenglin
 ```
 
+* (6)**使用星号(the asterisk wildcard)通配符**
+
+当您在Google搜索上的搜索字词中使用星号时，它将留下一个占位符，以后可能会被搜索引擎自动填充。 如果您不知道所有单词，这是查找歌曲歌词的绝妙方法。
+
+
 
 
 

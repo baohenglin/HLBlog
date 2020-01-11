@@ -21,3 +21,13 @@ Mustang -cars
 ```
 这告诉搜索引擎搜索野马，但删除其中包含“汽车”一词的所有结果。 在查找有关某物的信息而不获取有关某物的信息时，这会非常有用。
 
+* (4)**使用冒号搜索特定站点**
+
+如果需要在特定站点上查找特定内容，则可以使用此快捷方式。比如：
+
+```
+// 搜索内容 + site: + 网站地址
+baohenglin site:https://github.com/baohenglin
+```
+
+搜搜结果为特定站点“https://github.com/baohenglin”中包含“baohenglin”的所有结果。

@@ -52,7 +52,7 @@ FPS是一秒显示的帧数，也就是一秒内画面变化的数量。如果�
 
 RunLoop这个对象在iOS里由CFRunLoop实现。简单来说，RunLoop是用来监听输入源，进行调度处理的。输入源可以是输入设备、网络、周期性或延迟时间、异步回调。RunLoop会接收两种类型的输入源：一种是来自另一个线程或者来自不同应用的异步消息；另一种是来自预定时间或者重复间隔的同步事件。
 
-RunLoop的作用是当有事件要去处理时保持线程忙，当没有事件要处理时让线程进入休眠。所以，了解**RunLoop原理不仅可以运用到监控卡顿上，还可以提高用户的交互体验。通过将那些繁重而不紧急会大量占用CPU的任务（比如图片加载），放到空闲的RunLoop模式里执行，就可以避免在UITrackingRunLoopMode这个RunLoop模式里执行**。UITrackingRunLoopMode是用户进行滑动操作时切换到的RunLoop模式，避免在这个RunLoop模式执行繁重的CPU任务，可以提高用户体验。
+RunLoop的作用是当有事件要去处理时保持线程忙，当没有事件要处理时让线程进入休眠。所以，了解**RunLoop原理不仅可以运用到监控卡顿上，还可以提高用户的交互体验。通过将那些繁重而不紧急会大量占用CPU的任务（比如图片加载），放到空闲的RunLoop模式里执行，就可以避免在UITrackingRunLoopMode这个RunLoop模式里执行。UITrackingRunLoopMode是用户进行滑动操作时切换到的RunLoop模式，避免在这个RunLoop模式执行繁重的CPU任务，可以提高用户体验**。
 
 ## RunLoop原理
 

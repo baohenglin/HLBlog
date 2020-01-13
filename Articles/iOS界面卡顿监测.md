@@ -358,7 +358,9 @@ NSLog(@"---------卡顿信息\n%@\n--------------",report);
 
 ![卡顿次数实时数据.png](https://upload-images.jianshu.io/upload_images/4164292-00bb31df1f7fa323.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-数据分析：当RunLoop的kCFRunLoopBeforeWaiting和kCFRunLoopAfterWaiting这两个状态当中的任何一个状态持续时间超过20ms时，都会打印一次连续卡顿的次数；当连续卡顿的次数累积达到3次时，将被视为一次有效卡顿，并输出卡顿的详细信息。
+**数据分析：**
+
+当RunLoop的kCFRunLoopBeforeWaiting和kCFRunLoopAfterWaiting这两个状态当中的任何一个状态持续时间超过20ms时，都会打印一次连续卡顿的次数；当连续卡顿的次数累积达到3次时，将被视为一次有效卡顿，并输出卡顿的详细信息。
 
 通过PLCrashReporter捕获到的卡顿详细信息，如下所示：
 

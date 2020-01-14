@@ -41,3 +41,18 @@ static const NSTimeInterval kAnimationDuration = 0.3;
 }
 @end
 ```
+
+**变量一定要同时用 static与const来声明。如果试图修改由 const 修饰符所声明的变量，那么编译器就会报错。而 static 修饰符则意味着该变量仅在定义此变量的编译单元中可见**。编译器每收到一个编译单元，就会输出一份“目标文件”(object file)。在 Objective-C 的语境下，“编译单元”一词通常指每个类的实现文件（以.m为后缀名）。因此，在上述范例代码中声明的 kAnimationDuration 变量，其作用域仅限于由 EOCAnimatedView.m 所生成的目标文件中。假如声明此变量时不加 static，则编译器会为它创建一个“外部符号”(external symbol)。此时若是另一个编译单元中也声明了同名变量，那么编译器就抛出一条错误消息：
+
+```
+duplicate symbol _kAnimationDuration in:
+  EOCAnimatedView.o
+  EOCOtherView.o
+```
+
+实际上，如果一个变量既声明为 static，又声明为 const，那么编译器根本不会创建符号，而是会像 #define 预处理指令一样，把所有遇到的变量都替换为常值。不过还是要记住：用这种方式定义的常量**带有类型信息**。
+
+
+
+
+

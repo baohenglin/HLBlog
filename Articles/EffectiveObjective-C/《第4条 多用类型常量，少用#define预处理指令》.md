@@ -16,3 +16,4 @@ static const NSTimeInterval kAnimationDuration = 0.3;
 
 用此方式定义的常量包含类型信息，其好处是清楚地描述了常量的含义。由此可知该常量类型为 NSTimeInterval，这有助于为其编写开发文档。如果要定义许多常量，那么这种方式能令稍后阅读代码的开发者更易理解其意图。
 
+还要注意常量名称。**常用的命名法是：若常量局限于某“编译单元”(translation unit)，也就是“实现文件”(implementation)之内，则在前面加字幕 k；若常量在类之外可见，则通常以类名为前缀。**第19条详解了命名习惯（naming convention）。

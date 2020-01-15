@@ -118,7 +118,7 @@ extern const NSTimeInterval EOCAnimatedViewAnimationDuration;
 const NSTimeInterval EOCAnimatedViewAnimationDuration = 0.3;
 ```
 
-**这样定义常量要优于使用 #define 预处理指令，因为编译器会确保常量值不变。一旦在 EOCAnimatedView.m中定义好，即可随处使用。而采用预处理指令所定义的常量可能会无意中遭人修改，从而导致应用程序各个部分所使用的值互不相同**。
+**这样定义常量要优于使用 #define 预处理指令，因为编译器会确保常量值不变。一旦在 EOCAnimatedView.m中定义好，即可全局使用。而采用预处理指令所定义的常量可能会无意中遭人修改，从而导致应用程序各个部分所使用的值互不相同**。
 
 总之，勿使用预处理指令定义常量，而应该借助编译器来确保常量正确，比如可以在实现文件中使用 static const 来声明常量，也可以声明一些全局变量。
 

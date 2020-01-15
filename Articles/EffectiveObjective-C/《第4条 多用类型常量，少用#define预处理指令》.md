@@ -14,7 +14,7 @@
 
 上述预处理指令会把源代码中的 ANIMATION_DURATION 字符串替换为 0.3。不过，这样定义出来的常量没有类型信息。预处理过程会把碰到的所有 ANIMATION_DURATION 一律替换成 0.3，这样的话，假设此指令声明在某个头文件中，那么所有引入这个头文件的代码，其 ANIMATION_DURATION 都会被替换。
 
-要想解决此问题，应该设法利用编译器的某些特性才对。有个办法比用预处理指令来定义常量更好。比如，下面这行代码就定义了一个类型为 NSTimeInterval 的常量：
+要想解决此问题，应该设法利用**编译器的某些特性**才对。有个办法比用预处理指令来定义常量更好。比如，下面这行代码就定义了一个类型为 NSTimeInterval 的常量：
 
 ```
 static const NSTimeInterval kAnimationDuration = 0.3;

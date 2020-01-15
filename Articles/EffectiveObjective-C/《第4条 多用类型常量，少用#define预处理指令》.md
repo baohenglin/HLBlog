@@ -60,7 +60,49 @@ duplicate symbol _kAnimationDuration in:
 
 有时候需要对外公开某个常量。比如可能要在类代码中调用 NSNotificationCenter 以通知他人。用一个对象来派发通知，令其他欲接收通知的对象向该对象注册，这样就能实现此功能了。派发通知时，需要使用字符串来表示此项通知的名称，而这个名字就可以声明为一个外界可见的常量变量(constant variable)。这样的话，注册者无须知道实际字符串值，只需以常值变量来注册自己想要接收的通知即可。
 
-为避免名称冲突，最好是用与之相关的类名做前缀。系统框架中一般都这样做。例如 UIKit就按照这种方式来声明用作通知名称的全局常量。其中有类似 UIApplicationDidEnterBackgroundNotification 与 UIApplicationWillEnterForegroundNotification这样的常量名。
+此类常量需放在“全局符号表”(global symbol table)中，以便可以在定义该常量的编译单元之外使用。因此，其定义方式与上例演示的 static const 有所不同。应该这样来定义：
+
+```
+// In the header file
+extern NSString *const EOCStringConstant;
+
+// In the implementation file
+NSString *const EOCStringConstant = @"VALUE";
+```
+
+这个常量在头文件中“声明”，且在实现文件中“定义”。注意 const 修饰符在常量类型中的位置。常量定义应从右至左解读，所以在本例中，EOCStringConstant就是“一个常量，而这个常量是指针，指向 NSString 对象”。
+
+编译器看到头文件中的 extern 关键字，就能明白如何在引入头文件的代码中处理该常量了。这个关键字是要告诉编译器，在全局符号表中将会有一个名叫 EOCStringConstant 的符号。也就是说，编译器无须查看其定义，即允许代码使用此常量。因为它知道，当链接成二进制文件之后，肯定能找到这个常量。
+
+此类常量必须要定义，而且只能定义一次。通常将其定义在与声明该常量的头文件相关的实现文件里。由实现文件生成目标文件时，编译器会在“数据段”(data section)区域为字符串分配存储空间。链接器会把此目标文件与其他目标文件相链接，以生成最终的二进制文件。凡是用到 EOCStringConstant 这个全局符号的地方，链接器都能将其解析。
+
+**因为符号要放在全局符号表里，所以命名常量时需谨慎**。例如，某应用程序中有个处理登录操作的类，在登录完成后会发出通知。派发通知所用的代码如下：
+
+```
+// EOCLoginManager.h
+#import <Foundation/Foundation.h>
+extern NSString *const EOCLoginManagerDidLoginNotification;
+
+@interface EOCLoginManager : NSObject
+- (void)login;
+@end
+
+
+// EOCLoginManager.m
+#import "EOCLoginManager.h"
+NSString *const EOCLoginManagerDidLoginNotification = @"EOCLoginManagerDidLoginNotification";
+
+@implementation EOCLoginManager
+- (void)login {
+  //Perform login asynchronously, then call 'p_didLogin'.
+}
+- (void)p_didLogin {
+  [[NSNotificationCenter defaultCenter]postNotificationName:EOCLoginManagerDidLoginNotification object:nil];
+}
+@end
+```
+
+注意常量的名字。为避免名称冲突，最好是用与之相关的类名做前缀。系统框架中一般都这样做。例如 UIKit就按照这种方式来声明用作通知名称的全局常量。其中有类似 UIApplicationDidEnterBackgroundNotification 与 UIApplicationWillEnterForegroundNotification这样的常量名。
 
 其他类型的常量也是如此。假如要把前例中 EOCAnimatedView 类里的动画播放时长对外公布，那么可以这样声明：
 

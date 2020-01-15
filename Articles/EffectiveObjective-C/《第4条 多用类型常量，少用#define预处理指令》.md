@@ -52,6 +52,22 @@ duplicate symbol _kAnimationDuration in:
 
 实际上，如果一个变量既声明为 static，又声明为 const，那么编译器根本不会创建符号，而是会像 #define 预处理指令一样，把所有遇到的变量都替换为常值。不过还是要记住：用这种方式定义的常量**带有类型信息**。
 
+为避免名称冲突，最好是用与之相关的类名做前缀。系统框架中一般都这样做。例如 UIKit就按照这种方式来声明用作通知名称的全局常量。其中有类似 UIApplicationDidEnterBackgroundNotification 与 UIApplicationWillEnterForegroundNotification这样的常量名。
+
+其他类型的常量也是如此。假如要把前例中 EOCAnimatedView 类里的动画播放时长对外公布，那么可以这样声明：
+
+```
+// EOCAnimatedView.h
+extern const NSTimeInterval EOCAnimatedViewAnimationDuration;
+
+// EOCAnimatedView.m
+const NSTimeInterval EOCAnimatedViewAnimationDuration = 0.3;
+```
+
+
+
+
+
 
 
 

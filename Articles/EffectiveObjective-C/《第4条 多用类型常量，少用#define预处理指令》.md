@@ -24,9 +24,9 @@ static const NSTimeInterval kAnimationDuration = 0.3;
 
 还要注意常量名称。**常用的命名法是：若常量局限于某“编译单元”(translation unit)，也就是“实现文件”(implementation)之内，则在前面加字母 k；若常量在类之外可见，则通常以类名为前缀**。第19条详解了命名习惯（naming convention）。
 
-定义常量的位置很重要。我们总喜欢在头文件里声明预处理指令，这样做真的很糟糕，当常量名称有可能互相冲突时更是如此。例如，ANIMATION_DURATION 这个常量名就不该用在头文件中，因为所有引入了这份头文件的其他文件中都会出现这个名字。其实就连用 static const 定义的那个常量也不应该出现在头文件里。因为 Objective-C 没有“名称空间”(namespace)这一概念，所以那样做等于声明了一个名叫 kAnimationDuration 的全局变量。此名称应该加上前缀，以表明其所属的类，例如可改为 EOCViewClassAnimationDuration。本书第19条中深入讲解了一套清晰的命名方案。
+定义常量的位置很重要。我们总喜欢在头文件(.h)里声明预处理指令，这样做真的很糟糕，当常量名称有可能互相冲突时更是如此。例如，ANIMATION_DURATION 这个常量名就不该用在头文件中，因为所有引入了这份头文件的其他文件中都会出现这个名字。其实就连用 static const 定义的那个常量也不应该出现在头文件里。因为 Objective-C 没有“名称空间”(namespace)这一概念，所以那样做等于声明了一个名叫 kAnimationDuration 的全局变量。此名称应该加上前缀，以表明其所属的类，例如可改为 EOCViewClassAnimationDuration。本书第19条中深入讲解了一套清晰的命名方案。
 
-**若不打算公开某个常量，则应将其定义在使用该常量的实现文件里**。比方说，要开发一个使用 UIKit 框架的 iOS 应用程序，其 UIView 子类中含有表示动画播放时间的常量，那么可以这样写：
+**若不打算公开某个常量，则应将其定义在使用该常量的实现文件(.m)里**。比方说，要开发一个使用 UIKit 框架的 iOS 应用程序，其 UIView 子类中含有表示动画播放时间的常量，那么可以这样写：
 
 ```
 // EOCAnimatedView.h

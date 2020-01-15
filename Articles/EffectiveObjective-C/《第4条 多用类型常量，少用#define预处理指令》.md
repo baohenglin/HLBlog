@@ -16,10 +16,6 @@
 
 要想解决此问题，应该设法利用**编译器的某些特性**才对。有个办法比用预处理指令来定义常量更好。比如，下面这行代码就定义了一个类型为 NSTimeInterval 的常量：
 
-<<<
-**static const NSTimeInterval kAnimationDuration = 0.3;**
-<<<
-
 ```
 static const NSTimeInterval kAnimationDuration = 0.3;
 ```

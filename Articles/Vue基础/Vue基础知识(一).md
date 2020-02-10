@@ -110,16 +110,18 @@ v-on指令用于监听 DOM 事件。
 ```
 <input type="button" value="按钮" v-on:click="show">
 ...
+// ES5写法
 methods: {
     show: function() {
         alert('Hello');
     }
 }
-//methods: {
-//    show() {
-//        alert('Hello');
-//    }
-//}
+// ES6写法（推荐此写法）
+methods: {
+    show() {
+        alert('Hello');
+    }
+}
 ```
 
 "v-on:click='show'"可简写为"@click='show'"。

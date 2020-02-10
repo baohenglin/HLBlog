@@ -134,24 +134,17 @@ methods: {
 var vm = new Vue({
     el: '#app',
     data: {
-        msg:'武汉加油！中国加油！！！'
+        msg:'武汉加油！中国加油！！！',
+        intervalId: null // 在 data中定义定时器id
     },
     methods: {
         run() {
-            // ES6之前的写法（不推荐）
-            var _this = this;
-            setInterval(function(){
-                // 获取字符串第一个字符
-                var start = _this.msg.substring(0, 1)
-                // 获取字符串非第一个字符的子串
-                var end = _this.msg.substring(1)
-                // 重新拼接得到新的字符串，并赋值给 _this.msg
-                _this.msg = end + start
-                
-            }, 500)
+            //判断是否已经开启了定时器
+            if(this.intervalId != null) return;
            
-            //ES6写法（推荐）：改造为箭头函数来解决 “this 指向”的问题。箭头函数的形式可以确保箭头函数内部的 this 永远指向箭头函数外部的 this。
-            setInterval( () => {
+            // ES6写法（推荐）：箭头函数来解决 “this 指向”的问题。箭头函数的形式可以确保箭头函数内部的 this 永远指向箭头函数外部的 this。
+            // 不推荐使用 var _this = this; 这种方式。
+            this.intervalId = setInterval( () => {
                 // 获取字符串第一个字符
                 var start = _this.msg.substring(0, 1)
                 // 获取字符串非第一个字符的子串
@@ -160,6 +153,11 @@ var vm = new Vue({
                 _this.msg = end + start
                 
             }, 500)
+        },
+        stop() {
+            clearInterval(this.intervalId); // 清除定时器
+            // 清除了定时器之后，需要把 this.intervalId 置为 null。
+            this.intervalId = null;
         }
     }
 })

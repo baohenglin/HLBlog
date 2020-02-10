@@ -126,6 +126,46 @@ methods: {
 
 "v-on:click='show'"可简写为"@click='show'"。
 
+### 跑马灯示例
+
+```
+<script>
+//【注意】在Vue实例对象中，如果想要获取 data 中的数据或者想要调用 methods 中的方法，必须通过 this.数据属性名/this.方法名 来进行访问。这里的this就表示我们 new 的 Vue 实例对象。
+var vm = new Vue({
+    el: '#app',
+    data: {
+        msg:'武汉加油！中国加油！！！'
+    },
+    methods: {
+        run() {
+            // ES6之前的写法（不推荐）
+            var _this = this;
+            setInterval(function(){
+                // 获取字符串第一个字符
+                var start = _this.msg.substring(0, 1)
+                // 获取字符串非第一个字符的子串
+                var end = _this.msg.substring(1)
+                // 重新拼接得到新的字符串，并赋值给 _this.msg
+                _this.msg = end + start
+                
+            }, 500)
+           
+            //ES6写法（推荐）：改造为箭头函数来解决 “this 指向”的问题。箭头函数的形式可以确保箭头函数内部的 this 永远指向箭头函数外部的 this。
+            setInterval( () => {
+                // 获取字符串第一个字符
+                var start = _this.msg.substring(0, 1)
+                // 获取字符串非第一个字符的子串
+                var end = _this.msg.substring(1)
+                // 重新拼接得到新的字符串，并赋值给 _this.msg
+                _this.msg = end + start
+                
+            }, 500)
+        }
+    }
+})
+</script>
+```
+
 ## v-model和 :model的区别
 
 v-model是vue.js中内置的双向数据绑定指令，用于表单控件以外的标签是不起作用的(即只对表单控件标签的数据双向绑定有效)。

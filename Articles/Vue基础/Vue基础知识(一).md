@@ -1,7 +1,7 @@
 ## 要点
 
-* 1. Vue 的基本语法和概念
-* 2. 打包工具 Webpack、Gulp
+* Vue 的基本语法和概念
+* 打包工具 Webpack、Gulp
 
 ## Vue.js简介
 

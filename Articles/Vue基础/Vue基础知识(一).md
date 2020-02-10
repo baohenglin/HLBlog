@@ -164,6 +164,24 @@ var vm = new Vue({
 </script>
 ```
 
+### 事件修饰符
+
+* .stop 阻止冒泡
+* .prevent 阻止默认事件
+* .capture 添加事件监听器时使用事件捕获模式
+* .self 只当事件在该元素本身（比如不是子元素）触发时触发回调
+* .once 事件只触发一次
+
+```
+<div class="inner" @click="div1Handler">
+  <!--使用 stop 阻止冒泡-->
+  <input type="button" value="点击按钮" @click.stop="btnHandler"></input>
+  
+  <!--使用 prevent 阻止默认行为-->
+  <a href="http://www.baidu.com" @click.prevent="linkClick">跳到百度</a>
+</div>
+```
+
 ## v-model和 :model的区别
 
 v-model是vue.js中内置的双向数据绑定指令，用于表单控件以外的标签是不起作用的(即只对表单控件标签的数据双向绑定有效)。

@@ -174,13 +174,33 @@ var vm = new Vue({
 
 ```
 <div class="inner" @click="div1Handler">
-  <!--使用 stop 阻止冒泡-->
+  <!--使用 .stop 阻止冒泡-->
   <input type="button" value="点击按钮" @click.stop="btnHandler"></input>
   
-  <!--使用 prevent 阻止默认行为-->
+  <!--使用 .prevent 阻止默认行为-->
   <a href="http://www.baidu.com" @click.prevent="linkClick">跳到百度</a>
+  
+  <!--使用 .capture 实现捕获触发事件的机制：先触发 div 的点击事件再触发 input 的点击事件-->
+  <input type="button" value="点击按钮" @click.capture="btnHandler"></input>
 </div>
 ```
+
+```
+// 使用 .self 实现只有点击当前元素时，才会触发事件处理函数。
+// 使用 .self 事件修饰符：只有点击 div 时才会触发其点击事件。
+<div class="inner" @click="div1Handler">
+  <input type="button" value="点击按钮" @click="btnHandler"></input>
+</div>
+```
+
+```
+// 使用 .once 只触发一次事件处理函数。
+<div class="inner" @click="div1Handler">
+  <a href="http://www.baidu.com" @click.prevent.once="linkClick">跳到百度</a>
+</div>
+```
+
+** .self 和 .stop 的区别：**.self只阻止当前元素的事件冒泡，不能阻止其他元素的事件的冒泡；.stop 阻止所有元素事件冒泡。
 
 ## v-model和 :model的区别
 

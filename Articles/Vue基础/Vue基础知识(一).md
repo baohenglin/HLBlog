@@ -50,9 +50,42 @@ npm install vue
 
 ## Vue模板语法
 
+### 插值表达式 {{}}
+
+```
+// 插值表达式 "{{ }}"
+<p>{{ msg }}</p>
+```
+
+### v-cloak 
+
+v-cloak 可以**解决插值表达式在慢网速时闪烁的问题**。
+
+```
+<head>
+<style>
+  [v-cloak] {
+    display:none;
+  }
+</style>
+</head>
+
+<body>
+<p v-cloak>{{ msg }}</p>
+</body>
+```
+
 ```
 v-on:click
 ```
+
+### v-text
+
+```
+<h4 v-text="msg"></h4>
+```
+
+**v-text与插值表达式的区别**： (1)v-text默认不存在像插值表达式那样的闪烁问题；(2)v-text会覆盖元素中原本的内容，但是插值表达式只会替换自己的这个占位符，不会把整个元素的内容清空。
 
 v-on:click可简写为@click。v-on指令用于监听 DOM 事件。
 

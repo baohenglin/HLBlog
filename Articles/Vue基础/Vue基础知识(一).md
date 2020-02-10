@@ -93,12 +93,34 @@ v-on:click
 <div v-html="<h1>最大的标题</h1>"></div>
 ```
 
-v-on:click可简写为@click。v-on指令用于监听 DOM 事件。
+### v-bind: 指令
+
+"v-bind:"是 Vue 中，提供的用于绑定属性的指令。也就是说v-bind指令可以响应式地更新 HTML 属性。
 
 ```
-v-bind
+v-bind:title="myTitle + '123'"
+//等同于 :title="myTitle + '123'"
 ```
-v-bind可简写为“:”。v-bind指令用于响应式地更新 HTML特性。
+**v-bind可简写为“:”**。
+
+### v-on: 指令用于绑定点击事件
+
+```
+<input type="button" value="按钮" v-on:click="show">
+...
+methods: {
+    show: function() {
+        alert('Hello');
+    }
+}
+//methods: {
+//    show() {
+//        alert('Hello');
+//    }
+//}
+```
+
+"v-on:click"可简写为"@click"。v-on指令用于监听 DOM 事件。
 
 ## v-model和 :model的区别
 

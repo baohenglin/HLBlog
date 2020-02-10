@@ -103,7 +103,9 @@ v-bind:title="myTitle + '123'"
 ```
 **v-bind可简写为“:”**。
 
-### v-on: 指令用于绑定点击事件
+### v-on: 指令用于绑定某些事件(click事件、mouseover事件)
+
+v-on指令用于监听 DOM 事件。
 
 ```
 <input type="button" value="按钮" v-on:click="show">
@@ -120,7 +122,7 @@ methods: {
 //}
 ```
 
-"v-on:click"可简写为"@click"。v-on指令用于监听 DOM 事件。
+"v-on:click='show'"可简写为"@click='show'"。
 
 ## v-model和 :model的区别
 

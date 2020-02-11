@@ -17,6 +17,9 @@
 |SpringCloud|[《SpringCloud 教程》](https://www.bilibili.com/video/av49106064/?spm_id_from=333.788.b_636f6d6d656e74.122)<br>|
 |SpringData|[《SpringData 教程》](https://www.bilibili.com/video/av58110650/?spm_id_from=333.788.b_636f6d6d656e74.123)<br>|
 |MyBatis|[《MyBatis 教程-尚硅谷》](https://www.bilibili.com/video/av50003691/?spm_id_from=333.788.b_636f6d6d656e74.114)<br>|
+|JDBC|[《JDBC 教程》](https://www.bilibili.com/video/av67955358?from=search&seid=10204444697768335413)<br>|
+|Tomcat|[《Tomcat 教程》](https://www.bilibili.com/video/av22230799?from=search&seid=4389610206869396994)<br>[《Tomcat核心原理解析》](https://www.bilibili.com/video/av67233983?from=search&seid=4389610206869396994)<br>|
+|Servlet|[《Servlet 教程》](https://www.bilibili.com/video/av33969622?from=search&seid=17456005872578435328)<br>[《Servlet实战教程》](https://www.bilibili.com/video/av14548473?from=search&seid=17456005872578435328)<br>|
 |JPA|[《JPA 教程》](https://www.bilibili.com/video/av58112424/?spm_id_from=333.788.b_636f6d6d656e74.107)<br>|
 |JUC|[《JUC 教程》](https://www.bilibili.com/video/av58122884/?spm_id_from=333.788.b_636f6d6d656e74.108)<br>|
 |NIO|[《NIO 教程》](https://www.bilibili.com/video/av58122578/?spm_id_from=333.788.b_636f6d6d656e74.109)<br>|
@@ -31,5 +34,12 @@
 |Linux|[《Linux 教程》](https://www.bilibili.com/video/av56460973/?spm_id_from=333.788.b_636f6d6d656e74.144)<br>|
 |Java面试题|[《Java 面试1》](https://www.bilibili.com/video/av37602130/?spm_id_from=333.788.b_636f6d6d656e74.126)<br>[《Java面试2》](https://www.bilibili.com/video/av48988279/?spm_id_from=333.788.b_636f6d6d656e74.127)<br>|
 |求职技能|[《IT行业求职技能》](https://www.bilibili.com/video/av53800224/?spm_id_from=333.788.b_636f6d6d656e74.124)<br>|
+
+
+
+
+
+
+
 
 

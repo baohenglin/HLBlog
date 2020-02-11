@@ -8,10 +8,17 @@
 |MySQL|[《MySQL 教程》](https://www.bilibili.com/video/av49181542/?spm_id_from=333.788.b_636f6d6d656e74.105)<br>|
 |Spring|[《黑马 Spring 教程》](https://www.bilibili.com/video/av40323796/?spm_id_from=333.788.b_636f6d6d656e74.112)<br>[《尚硅谷spring教程》](https://www.bilibili.com/video/av50002153/?spm_id_from=333.788.b_636f6d6d656e74.113)<br>|
 |SpringMVC|[《尚硅谷 SpringMVC 教程》](https://www.bilibili.com/video/av49996848/?spm_id_from=333.788.b_636f6d6d656e74.115)<br>|
+|SpringBoot|[《SpringBoot 教程》](https://www.bilibili.com/video/av38657363/?spm_id_from=333.788.b_636f6d6d656e74.121)<br>|
+|SpringCloud|[《SpringCloud 教程》](https://www.bilibili.com/video/av49106064/?spm_id_from=333.788.b_636f6d6d656e74.122)<br>|
+|SpringData|[《SpringData 教程》](https://www.bilibili.com/video/av58110650/?spm_id_from=333.788.b_636f6d6d656e74.123)<br>|
 |MyBatis|[《MyBatis 教程-尚硅谷》](https://www.bilibili.com/video/av50003691/?spm_id_from=333.788.b_636f6d6d656e74.114)<br>|
 |JPA|[《JPA 教程》](https://www.bilibili.com/video/av58112424/?spm_id_from=333.788.b_636f6d6d656e74.107)<br>|
 |JUC|[《JUC 教程》](https://www.bilibili.com/video/av58122884/?spm_id_from=333.788.b_636f6d6d656e74.108)<br>|
 |NIO|[《NIO 教程》](https://www.bilibili.com/video/av58122578/?spm_id_from=333.788.b_636f6d6d656e74.109)<br>|
 |SSM|[《SSM高级整合教程》](https://www.bilibili.com/video/av56363272/?spm_id_from=333.788.b_636f6d6d656e74.116)<br>|
+|算法|[《图解 Java 数据结构和算法》](https://www.bilibili.com/video/av54095344/?spm_id_from=333.788.b_636f6d6d656e74.125)<br>|
+|Java设计模式|[《图解 Java 设计模式》](https://www.bilibili.com/video/av58076246/?spm_id_from=333.788.b_636f6d6d656e74.120)<br>|
+|Java面试题|[《Java 面试1》](https://www.bilibili.com/video/av37602130/?spm_id_from=333.788.b_636f6d6d656e74.126)<br>[《Java面试2》](https://www.bilibili.com/video/av48988279/?spm_id_from=333.788.b_636f6d6d656e74.127)<br>|
+|求职技能|[《IT行业求职技能》](https://www.bilibili.com/video/av53800224/?spm_id_from=333.788.b_636f6d6d656e74.124)<br>|
 
 

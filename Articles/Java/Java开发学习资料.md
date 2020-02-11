@@ -6,6 +6,11 @@
 |Java|[《黑马 Java 基础教程-刘意》](https://www.bilibili.com/video/av33742840/?spm_id_from=333.788.b_636f6d6d656e74.103)<br>[《Java语言高级-Java8/9/10/11新特性》](https://www.bilibili.com/video/av51179510/?spm_id_from=333.788.b_636f6d6d656e74.110)<br>[《Java 基础教程-基于JDK11》](https://www.bilibili.com/video/av48370019/?spm_id_from=333.788.b_636f6d6d656e74.111)<br>|
 |JavaWeb|[《JavaWeb 教程-崔希凡》](https://www.bilibili.com/video/av37452727/?spm_id_from=333.788.b_636f6d6d656e74.104)<br>|
 |MySQL|[《MySQL 教程》](https://www.bilibili.com/video/av49181542/?spm_id_from=333.788.b_636f6d6d656e74.105)<br>|
+|Oracle|[《Oracle 教程》](https://www.bilibili.com/video/av49926566/?spm_id_from=333.788.b_636f6d6d656e74.136)<br>|
+|Redis|[《Redis 教程》](https://www.bilibili.com/video/av51139549/?spm_id_from=333.788.b_636f6d6d656e74.134)<br>|
+|MongoDB|[《MongoDB 教程》](https://www.bilibili.com/video/av49923533/?spm_id_from=333.788.b_636f6d6d656e74.135)<br>|
+|Kafka|[《Kafka 教程》](https://www.bilibili.com/video/av49920938/?spm_id_from=333.788.b_636f6d6d656e74.138)<br>|
+|ActiveMQ|[《ActiveMQ 教程》](https://www.bilibili.com/video/av56121132/?spm_id_from=333.788.b_636f6d6d656e74.137)<br>|
 |Spring|[《黑马 Spring 教程》](https://www.bilibili.com/video/av40323796/?spm_id_from=333.788.b_636f6d6d656e74.112)<br>[《尚硅谷spring教程》](https://www.bilibili.com/video/av50002153/?spm_id_from=333.788.b_636f6d6d656e74.113)<br>|
 |SpringMVC|[《尚硅谷 SpringMVC 教程》](https://www.bilibili.com/video/av49996848/?spm_id_from=333.788.b_636f6d6d656e74.115)<br>|
 |SpringBoot|[《SpringBoot 教程》](https://www.bilibili.com/video/av38657363/?spm_id_from=333.788.b_636f6d6d656e74.121)<br>|
@@ -16,8 +21,14 @@
 |JUC|[《JUC 教程》](https://www.bilibili.com/video/av58122884/?spm_id_from=333.788.b_636f6d6d656e74.108)<br>|
 |NIO|[《NIO 教程》](https://www.bilibili.com/video/av58122578/?spm_id_from=333.788.b_636f6d6d656e74.109)<br>|
 |SSM|[《SSM高级整合教程》](https://www.bilibili.com/video/av56363272/?spm_id_from=333.788.b_636f6d6d656e74.116)<br>|
+|Shiro|[《Shiro 教程》](https://www.bilibili.com/video/av49915884/?spm_id_from=333.788.b_636f6d6d656e74.139)<br>|
+|Zookeeper|[《Zookeeper 教程》](https://www.bilibili.com/video/av49270221/?spm_id_from=333.788.b_636f6d6d656e74.140)<br>|
+|Dubbo|[《Dubbo 教程》](https://www.bilibili.com/video/av49269938/?spm_id_from=333.788.b_636f6d6d656e74.141)<br>|
+|Docker|[《Docker 教程》](https://www.bilibili.com/video/av49095718/?spm_id_from=333.788.b_636f6d6d656e74.142)<br>|
 |算法|[《图解 Java 数据结构和算法》](https://www.bilibili.com/video/av54095344/?spm_id_from=333.788.b_636f6d6d656e74.125)<br>|
 |Java设计模式|[《图解 Java 设计模式》](https://www.bilibili.com/video/av58076246/?spm_id_from=333.788.b_636f6d6d656e74.120)<br>|
+|Git|[《Git&GitHub 教程》](https://www.bilibili.com/video/av49085612/?spm_id_from=333.788.b_636f6d6d656e74.143)<br>|
+|Linux|[《Linux 教程》](https://www.bilibili.com/video/av56460973/?spm_id_from=333.788.b_636f6d6d656e74.144)<br>|
 |Java面试题|[《Java 面试1》](https://www.bilibili.com/video/av37602130/?spm_id_from=333.788.b_636f6d6d656e74.126)<br>[《Java面试2》](https://www.bilibili.com/video/av48988279/?spm_id_from=333.788.b_636f6d6d656e74.127)<br>|
 |求职技能|[《IT行业求职技能》](https://www.bilibili.com/video/av53800224/?spm_id_from=333.788.b_636f6d6d656e74.124)<br>|
 

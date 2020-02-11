@@ -128,10 +128,13 @@ methods: {
 
 ### 跑马灯示例
 
+【注意】**在Vue实例对象中，如果想要获取 data 中的数据或者想要调用 methods 中的方法，必须通过 this.数据属性名/this.方法名 来进行访问。这里的this就表示我们 new 的 Vue 实例对象**。
+
 ```
 <script>
 //【注意】在Vue实例对象中，如果想要获取 data 中的数据或者想要调用 methods 中的方法，必须通过 this.数据属性名/this.方法名 来进行访问。这里的this就表示我们 new 的 Vue 实例对象。
 var vm = new Vue({
+    // el 指定要控制的区域
     el: '#app',
     data: {
         msg:'武汉加油！中国加油！！！',

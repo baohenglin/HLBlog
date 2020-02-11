@@ -3,8 +3,8 @@
 主题|文章|备注
 |:---|:---|:---|
 |IntelliJ IDEA|[《IntelliJ IDEA 教程1》](https://www.bilibili.com/video/av38808672/?spm_id_from=333.788.b_636f6d6d656e74.117)<br>[《IntelliJ IDEA 教程2》](https://www.bilibili.com/video/av36213051/?spm_id_from=333.788.b_636f6d6d656e74.118)<br>|
-|Java|[《黑马 Java 基础教程-刘意》](https://www.bilibili.com/video/av33742840/?spm_id_from=333.788.b_636f6d6d656e74.103)<br>[《Java语言高级-Java8/9/10/11新特性》](https://www.bilibili.com/video/av51179510/?spm_id_from=333.788.b_636f6d6d656e74.110)<br>[《Java 基础教程-基于JDK11》](https://www.bilibili.com/video/av48370019/?spm_id_from=333.788.b_636f6d6d656e74.111)<br>|
-|JavaWeb|[《JavaWeb 教程-崔希凡》](https://www.bilibili.com/video/av37452727/?spm_id_from=333.788.b_636f6d6d656e74.104)<br>|
+|Java|[《黑马 Java 基础教程-刘意》](https://www.bilibili.com/video/av33742840/?spm_id_from=333.788.b_636f6d6d656e74.103)<br>[《Java语言高级-Java8/9/10/11新特性》](https://www.bilibili.com/video/av51179510/?spm_id_from=333.788.b_636f6d6d656e74.110)<br>[《Java 基础教程-基于JDK11》](https://www.bilibili.com/video/av48370019/?spm_id_from=333.788.b_636f6d6d656e74.111)<br>[《Lucene 教程》](https://www.bilibili.com/video/av67100294?from=search&seid=15248120598004065090)<br>[《《Lucene&solr 教程》》](https://www.bilibili.com/video/av21961812?from=search&seid=15248120598004065090)<br>|
+|JavaWeb|[《JavaWeb 教程-崔希凡》](https://www.bilibili.com/video/av37452727/?spm_id_from=333.788.b_636f6d6d656e74.104)<br>[《EL&JSTL》](https://www.bilibili.com/video/av63494187?from=search&seid=16653355917131700198)<br>|
 |MySQL|[《MySQL 教程》](https://www.bilibili.com/video/av49181542/?spm_id_from=333.788.b_636f6d6d656e74.105)<br>|
 |Oracle|[《Oracle 教程》](https://www.bilibili.com/video/av49926566/?spm_id_from=333.788.b_636f6d6d656e74.136)<br>|
 |Redis|[《Redis 教程》](https://www.bilibili.com/video/av51139549/?spm_id_from=333.788.b_636f6d6d656e74.134)<br>|
@@ -20,6 +20,12 @@
 |JDBC|[《JDBC 教程》](https://www.bilibili.com/video/av67955358?from=search&seid=10204444697768335413)<br>|
 |Tomcat|[《Tomcat 教程》](https://www.bilibili.com/video/av22230799?from=search&seid=4389610206869396994)<br>[《Tomcat核心原理解析》](https://www.bilibili.com/video/av67233983?from=search&seid=4389610206869396994)<br>|
 |Servlet|[《Servlet 教程》](https://www.bilibili.com/video/av33969622?from=search&seid=17456005872578435328)<br>[《Servlet实战教程》](https://www.bilibili.com/video/av14548473?from=search&seid=17456005872578435328)<br>|
+|Maven|[《Maven 教程》](https://www.bilibili.com/video/av36557763?from=search&seid=7993530584446559374)<br>|
+|Struts2|[《Struts2 教程》](https://www.bilibili.com/video/av14543156?from=search&seid=3006043411378498278)<br>[《黑马 Struts 教程》](https://www.bilibili.com/video/av63472546?from=search&seid=3006043411378498278)<br>|
+|Hibernate|[《Hibernate 教程》](https://www.bilibili.com/video/av62765071?from=search&seid=4793022494819506821)<br>[《黑马 Hibernate 教程》](https://www.bilibili.com/video/av14538659?from=search&seid=4793022494819506821)<br>|
+|Nginx|[《Nginx 教程》](https://www.bilibili.com/video/av68136734?from=search&seid=3817871969240537049)<br>|
+|ElasticSearch|[《ElasticSearch 实战教程》](https://www.bilibili.com/video/av35882450?from=search&seid=10216030164683781260)<br>[《ElasticSearch 教程》](https://www.bilibili.com/video/av54124452?from=search&seid=10216030164683781260)<br>|
+|JSP|[《JSP 教程》](https://www.bilibili.com/video/av14753783?from=search&seid=17215005692187724887)<br>|
 |JPA|[《JPA 教程》](https://www.bilibili.com/video/av58112424/?spm_id_from=333.788.b_636f6d6d656e74.107)<br>|
 |JUC|[《JUC 教程》](https://www.bilibili.com/video/av58122884/?spm_id_from=333.788.b_636f6d6d656e74.108)<br>|
 |NIO|[《NIO 教程》](https://www.bilibili.com/video/av58122578/?spm_id_from=333.788.b_636f6d6d656e74.109)<br>|
@@ -34,6 +40,7 @@
 |Linux|[《Linux 教程》](https://www.bilibili.com/video/av56460973/?spm_id_from=333.788.b_636f6d6d656e74.144)<br>|
 |Java面试题|[《Java 面试1》](https://www.bilibili.com/video/av37602130/?spm_id_from=333.788.b_636f6d6d656e74.126)<br>[《Java面试2》](https://www.bilibili.com/video/av48988279/?spm_id_from=333.788.b_636f6d6d656e74.127)<br>|
 |求职技能|[《IT行业求职技能》](https://www.bilibili.com/video/av53800224/?spm_id_from=333.788.b_636f6d6d656e74.124)<br>|
+
 
 
 

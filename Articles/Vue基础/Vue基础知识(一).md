@@ -217,6 +217,48 @@ v-model是vue.js中内置的双向数据绑定指令，用于表单元素以外�
 #### 1. 使用class样式
 
 * (1)数组
+
+```
+<head>
+  <script src="./lib/vue-2.4.0.js"></script>
+  <style>
+      .red {
+          color: red;
+      }
+
+      .thin {
+          font-weight: 200;
+      }
+
+      .italic {
+          font-style: italic;
+      }
+
+      .active {
+          letter-spacing: 0.5em; // 设置字符间距
+      }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+      //<h1 class="red thin">这是一个很大很大的H1，大到你无法想象</h1>
+      <!--第一种使用方式：直接传递一个数组。注意：这里的 class 需要使用 v-bind 做数据绑定。 -->
+      <h1 :class="['red', 'thin']">这是一个很大很大的H1，大到你无法想象</h1>
+  </div>
+  <script>
+      var vm = new Vue({
+          el: '#app',
+          data: {
+          
+          },
+          methods: {
+          
+          }
+      });
+  </script>
+</body>
+```
 * (2)数组中使用三元表达式
 * (3)数组中嵌套对象
 * (4)直接使用对象

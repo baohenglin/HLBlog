@@ -314,6 +314,98 @@ data: {
 }
 ```
 
+### v-for 指令
+
+* (1)循环普通数组
+
+
+```
+<div>
+   <p v-for="(item, i) in list">索引值：{{i}} --- 每一项的值：{{item}}</p>
+</div>
+
+data: {
+    list: [1, 2, 3, 4, 5, 6]
+}
+```
+
+* (2)循环对象数组
+
+```
+<div>
+   <p v-for="(item, i) in list">索引值：{{i}} --- id值：{{item.id}} --- name值：{{item.name}}</p>
+</div>
+
+data: {
+    list: [
+       {id:1, name: 'hl01'},
+       {id:2, name: 'hl02'},
+       {id:3, name: 'hl03'},
+       {id:4, name: 'hl04'},
+    ]
+}
+```
+
+* (3)循环对象
+
+```
+<div>
+   <p v-for="(value, key, index) in userList">value值：{{ value }} --- key值：{{ key }} ---索引值：{{ index }}</p>
+</div>
+
+data: {
+    userList: {
+      id: 1,
+      name: 'fqy',
+      gender: '男'
+    }
+}
+```
+
+* (3)迭代数字
+
+如果使用 v-for 迭代数字的话，count从 1 开始。
+
+```
+<div>
+   <p v-for="count in 10">这是第 {{ count }}次循环</p>
+</div>
+```
+
+#### v-for 指令使用注意事项
+
+**在V2.20+的版本里，当在组件中使用 v-for 时，必须指定 key值**。
+
+当 Vue.js 用v-for正在更新已渲染过的元素列表时，它默认用“就地重用”策略，如果数据项的顺序被改变， Vue将不是移动 DOM 元素来匹配数据项的顺序，而是简单复用此处每个元素，并且确保它在特定索引下显示已被渲染过的每个元素。
+
+为了给 Vue 一个提示，以便它能够跟踪每个节点的身份，从而重用和重新排序现有元素，你需要为每项提供一个唯一key 属性。
+
+* (1) v-for 循环的时候，key 属性只能使用 number 或者 string 类型的值；
+* (2) key 在使用的时候，必须使用 v-bind 属性绑定的形式，指定 key 的值；
+* (3) 在组件中或者某些特殊情况下，使用 v-for 循环时，必须指定 唯一的 string/number 类型的 :key 值。
+
+```
+<div id="app">
+   <p v-for="item in list" :key="item.id">
+   <input type="checkbox">
+   {{item.id}} --- {{item.name}}
+   </p>
+</div>
+
+data: {
+    list: [
+        {id: 1, name: '李斯'},
+        {id: 2, name: '嬴政'},
+        {id: 3, name: '赵高'},
+        {id: 4, name: '韩非'},
+        {id: 5, name: '荀子'},
+    ]
+}
+```
+
+
+
+
 
 
 

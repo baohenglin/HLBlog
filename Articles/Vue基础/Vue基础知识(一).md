@@ -208,6 +208,13 @@ v-model 指令用于双向数据绑定（v-model 是唯一一个实现双向数�
 
 **v-model和 :model的区别**
 
-v-model是vue.js中内置的双向数据绑定指令，用于表单控件以外的标签是不起作用的(即**只对表单控件标签的数据双向绑定有效**)。表单元素包括 input(radio、text、address、email……)，select，checkbox，textarea等。
+v-model是vue.js中内置的双向数据绑定指令，用于表单元素以外的标签是不起作用的(即**只对表单元素的数据双向绑定有效**)。表单元素包括 input(radio、text、address、email……)，select，checkbox，textarea等。
 
-:model相当于v-bind:model的缩写，v-bind动态绑定指令，默认情况下标签自带属性的值是固定的，可以使用 v-bind:'需要绑定的值'='表达式'，（如：  :disabled等）。
+:model相当于v-bind:model的缩写，v-bind动态绑定属性指令。默认情况下标签自带属性的值是固定的，可以使用 v-bind:'需要绑定的值'='表达式'，（如：  :disabled等）。
+
+### 在 Vue 中使用样式
+
+* 使用class样式
+* 使用内联样式
+
+

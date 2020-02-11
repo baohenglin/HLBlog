@@ -281,6 +281,41 @@ v-model是vue.js中内置的双向数据绑定指令，用于表单元素以外�
 #### 2. 使用内联样式
 
 * (1)直接在元素上通过 :style 的形式，书写样式对象
+
+```
+<h1 :style="{ color: 'red', 'font-weight':200}">这是一个很大很大的H1，大到你无法想象</h1>
+```
+
 * (2)将样式对象，定义到 data 中，并直接引用到 :style 中。
+
+```
+<h1 :style="styleObj1">这是一个很大很大的H1，大到你无法想象</h1>
+<script>
+      var vm = new Vue({
+          el: '#app',
+          data: {
+              flag: true,
+              styleObj1: { color: 'red', 'font-weight':200}
+          },
+          methods: {
+          
+          }
+      });
+  </script>
+```
+
+* (3)在 :style 中通过数组，引用多个 data上的样式对象。
+
+```
+<h1 :style=[h1styleObj1, h1styleObj2]>这是一个很大很大的H1，大到你无法想象</h1>
+data: {
+    h1styleObj1: { color: 'red', 'font-size': '40px', 'font-weight': '200'},
+    h1styleObj2: { fontStyle: 'italic'}
+}
+```
+
+
+
+
 
 

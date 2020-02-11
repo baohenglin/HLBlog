@@ -244,13 +244,13 @@ v-model是vue.js中内置的双向数据绑定指令，用于表单元素以外�
   <div id="app">
       //<h1 class="red thin">这是一个很大很大的H1，大到你无法想象</h1>
       <!--第一种使用方式：直接传递一个数组。注意：这里的 class 需要使用 v-bind 做数据绑定。 -->
-      <h1 :class="['red', 'thin']">这是一个很大很大的H1，大到你无法想象</h1>
+      <h1 :class="['thin', 'italic']">这是一个很大很大的H1，大到你无法想象</h1>
   </div>
   <script>
       var vm = new Vue({
           el: '#app',
           data: {
-          
+              flag: true
           },
           methods: {
           
@@ -260,8 +260,23 @@ v-model是vue.js中内置的双向数据绑定指令，用于表单元素以外�
 </body>
 ```
 * (2)数组中使用三元表达式
+
+```
+<h1 :class="['thin', 'italic', flag?'active':'']">这是一个很大很大的H1，大到你无法想象</h1>
+```
 * (3)数组中嵌套对象
+
+```
+// 在数组中使用 对象来代替三元表达式，提高代码的可读性。
+<h1 :class="['thin', 'italic', {'active':flag}]">这是一个很大很大的H1，大到你无法想象</h1>
+```
+
 * (4)直接使用对象
+
+```
+//在为 class 使用 v-bind 绑定对象时，对象的属性是类名，其中对象的属性可带引号，也可以不带引号。属性的 value 是一个标识符。
+<h1 :class="{ red: true, thin: true, italic: false, active: false}">这是一个很大很大的H1，大到你无法想象</h1>
+```
 
 #### 2. 使用内联样式
 

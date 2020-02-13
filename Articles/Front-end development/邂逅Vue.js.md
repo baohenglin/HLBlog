@@ -6,7 +6,7 @@
 * Vue 基础语法
 * 组件化开发
 * Vue CLI 详解
-* vue-router 详解
+* Vue-router 详解
 * Vuex 详解
 * 网络封装
 * 项目实战

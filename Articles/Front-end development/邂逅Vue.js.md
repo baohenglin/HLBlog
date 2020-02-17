@@ -42,5 +42,27 @@ Vue 是一套用于构建用户界面的渐进式框架。那么如何理解“�
 * VM层： VueModel层，即视图模型层。具体代码中指的是我们创建的 Vue 实例对象。它是 View层和 Model 层之间的调度者。VueModel 层的主要作用是一方面它实现了 Data Binding，也就是数据绑定，将 Model 的改变实时地反映到View中。另一方面它实现了 DOM listener，也就是 DOM 监听，当 DOM 发生一些事件（比如点击、滚动、touch等）时，可以监听到，并在需要的情况下改变对应的 Data。
 
 
+### 创建 Vue实例传入的 optios
+
+* (1)el:
+
+  ✅类型： **string | HTMLElement**
+  
+  ✅作用：**挂载将要管理的 DOM。即决定之后 Vue 实例会管理哪一个 DOM**。
+  
+* (2)data:
+
+  ✅类型：**Object | Function(组件当中data必须是一个函数)**
+  
+  ✅作用：**Vue实例对应的数据对象**。
+  
+* methods:
+
+  ✅类型：**{[key:string]:Function}**
+  
+  ✅作用：**定义属于Vue的一些方法，以供其他地方调用，也可以在指令中使用**
+
+
+
 
 

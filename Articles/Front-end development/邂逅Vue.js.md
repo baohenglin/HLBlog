@@ -145,7 +145,26 @@ v-cloak 可以**解决插值表达式在慢网速时闪动的问题**。
 
 作用：**用于动态绑定属性（比如a元素的href属性；img元素的src属性）**
 
-缩写：**:**
+v-bind缩写(语法糖)：**:**
+
+```
+<img v-bind:src="imgURL" alt="">     //等同于 <img :src="imgURL" alt="">
+<a v-bind:href="aHref">百度一下</a>   //等同于 <a :href="aHref">百度一下</a>  
+v-bind:title="myTitle + '加油'"      //等同于 :title="myTitle + '123'"
+
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: '中国加油',
+      imgURL: 'https://img.png',
+      aHref: 'http://www.baidu.com',
+      myTitle: '武汉'
+    }
+  })
+</script>
+```
+
 
 
 

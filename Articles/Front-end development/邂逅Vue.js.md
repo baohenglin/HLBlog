@@ -100,6 +100,17 @@ v-once指令：**该指令表示元素和组件只渲染一次，不会随着数
 <h2 v-once>{{message}}</h2>
 ```
 
+#### 3. v-html 指令
 
+```
+<h2 v-html="<a href='http://www.baidu.com'>百度一下</a>"></h2>
+```
 
+#### 4. v-text 指令
+
+v-text指令作用与 Mustache 比较相似，都是用于将数据显示在界面中。但是 v-text 与 Mustache相比不够灵活。
+
+```
+<h2 v-text="message"></h2>
+```
 

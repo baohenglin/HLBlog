@@ -65,9 +65,16 @@ Vue 是一套用于构建用户界面的渐进式框架。那么如何理解“�
 
 ### Vue 的生命周期函数（钩子函数）
 
-* beforeCreate 函数
-* created 函数
-* mounted 函数
+* beforeCreate 函数：组件实例刚被创建，组件属性计算之前，如 data 属性等
+* created 函数：组件实例创建完成，属性已绑定，但 DOM 还未生成， $el 属性还不存在。
+* beforeMount 函数：模板编译/挂载之前
+* mounted 函数：模板编译/挂载之后
+* beforeUpdate 函数：组件更新之前
+* updated 函数：组件更新之后
+* activated 函数：组件被被激活时调用，keep-alive
+* deactivated 函数：组件被移除时调用
+* beforeDestory 函数：组件销毁前调用
+* destoryed 函数：组件销毁后调用
 
 
 

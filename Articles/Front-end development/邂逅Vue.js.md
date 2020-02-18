@@ -108,9 +108,20 @@ v-once指令：**该指令表示元素和组件只渲染一次，不会随着数
 
 #### 4. v-text 指令
 
-v-text指令作用与 Mustache 比较相似，都是用于将数据显示在界面中。但是 v-text 与 Mustache相比不够灵活。
+v-text指令作用与 Mustache 比较相似，都是用于将数据显示在界面中。但是 v-text 与 Mustache相比不够灵活，会将原有的内容替换掉。
 
 ```
 <h2 v-text="message"></h2>
 ```
+
+#### 5. v-pre 指令
+
+```
+<h2>{{message}}</h2>        //会解析 message
+<h2 v-pre>{{message}}</h2>  //不会解析 message，原封不动的展示 ‘{{message}}’
+```
+
+
+
+
 

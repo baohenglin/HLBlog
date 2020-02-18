@@ -87,6 +87,7 @@ Vue 是一套用于构建用户界面的渐进式框架。那么如何理解“�
 <h2>{{firstName + '' + lastName}}</h2>
 <h2>{{firstName + '' + lastName}}</h2>
 <h2>{{firstName}} {{lastName}}</h2>
+<h2>{{counter * 2}}</h2>
 ```
 
 

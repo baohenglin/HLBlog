@@ -123,6 +123,21 @@ v-text指令作用与 Mustache 比较相似，都是用于将数据显示在界�
 
 #### 6. v-cloak 指令
 
+v-cloak 可以**解决插值表达式在慢网速时闪动的问题**。
+
+```
+<head>
+<style>
+  [v-cloak] {
+    display:none;
+  }
+</style>
+</head>
+
+<body>
+<p v-cloak>{{ msg }}</p>
+</body>
+```
 
 
 

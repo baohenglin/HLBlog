@@ -165,6 +165,9 @@ v-bind:title="myTitle + '加油'"      //等同于 :title="myTitle + '123'"
 </script>
 ```
 
+**v-bind 动态绑定 class 对象语法**
+
+
 
 
 

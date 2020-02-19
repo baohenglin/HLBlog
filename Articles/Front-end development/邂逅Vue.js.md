@@ -169,7 +169,9 @@ v-bind:title="myTitle + '加油'"      //等同于 :title="myTitle + '123'"
 
 ```
 <div>
+  // 用法1：直接通过 {} 绑定一个类
   <h2 class="title" v-bind:class="{active: isActive, line: isLine}">{{message}}</h2>
+  // 用法2：如果过于复杂，可以放在 getClasses 方法中 或者computed 计算属性中。
   <h2 class="title" v-bind:class="getClasses()">{{message}}</h2>
   <button v-on:click="btnClick">按钮</button>
 </div>

@@ -167,7 +167,31 @@ v-bind:title="myTitle + '加油'"      //等同于 :title="myTitle + '123'"
 
 **v-bind 动态绑定 class 对象语法**
 
+```
+<div>
+  <h2 class="title" v-bind:class="getClasses()">{{message}}</h2>
+</div>
 
+<script src="../js/vue.js"></script>
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: '中国加油',
+      imgURL: 'https://img.png',
+      aHref: 'http://www.baidu.com',
+      myTitle: '武汉',
+      isActive: true,
+      isLine: true
+    },
+    methods: {
+      getClasses: function () {
+        return {active: this.isActive, line: this.isLine};
+      }
+    }
+  })
+</script>
+```
 
 
 

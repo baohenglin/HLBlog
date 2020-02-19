@@ -208,6 +208,16 @@ v-bind:title="myTitle + '加油'"      //等同于 :title="myTitle + '123'"
   <h2 class="title" v-bind:class="[active, line]">{{message}}</h2>
   <button v-on:click="btnClick">按钮</button>
 </div>
+
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      active: '中国加油',
+      line: '武汉加油'
+    }
+  })
+</script>
 ```
 
 

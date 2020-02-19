@@ -169,7 +169,9 @@ v-bind:title="myTitle + '加油'"      //等同于 :title="myTitle + '123'"
 
 ```
 <div>
+  <h2 class="title" v-bind:class="{active: isActive, line: isLine}">{{message}}</h2>
   <h2 class="title" v-bind:class="getClasses()">{{message}}</h2>
+  <button v-on:click="btnClick">按钮</button>
 </div>
 
 <script src="../js/vue.js"></script>
@@ -185,6 +187,9 @@ v-bind:title="myTitle + '加油'"      //等同于 :title="myTitle + '123'"
       isLine: true
     },
     methods: {
+      btnClick: function () {
+        this.isActive = !this.isActive;
+      },
       getClasses: function () {
         return {active: this.isActive, line: this.isLine};
       }

@@ -200,6 +200,15 @@ v-bind:title="myTitle + '加油'"      //等同于 :title="myTitle + '123'"
 </script>
 ```
 
+**v-bind 动态绑定 class 数组语法（动态绑定一个数组）**
+
+```
+<div>
+  // 这种写法用的很少
+  <h2 class="title" v-bind:class="[active, line]">{{message}}</h2>
+  <button v-on:click="btnClick">按钮</button>
+</div>
+```
 
 
 

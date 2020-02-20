@@ -220,9 +220,20 @@ v-bind:title="myTitle + '加油'"      //等同于 :title="myTitle + '123'"
 </script>
 ```
 
-**v-bind 绑定 style**
+**v-bind 动态绑定 style 样式（组件化开发中使用）**
 
 我们可以利用 v-bind:style 来绑定一些 CSS 内联样式。在写 CSS 属性名的时候，比如 font-size，我们可以使用驼峰式(fontSize)，也可以使用短横线式，使用短横线式，必须使用单引号括起来('font-size')。
+
+* 对象语法
+* 数组语法
+
+
+
+
+
+
+
+
 
 
 

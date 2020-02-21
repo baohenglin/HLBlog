@@ -265,6 +265,57 @@ v-bind:title="myTitle + '加油'"      //等同于 :title="myTitle + '123'"
 </script>
 ```
 
+### Vue 的计算属性（很重要）
+
+```
+<div>
+<h2>{{getFullName()}}</h2>
+// 计算属性 不用加小括号
+<h2>{{fullName}}</h2>
+</div>
+
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      firstName: 'bao',
+      lastName: 'henglin'
+      
+    },
+    methods: {
+        getFullName() {
+          return this.firstName + ' ' + this.lastName;
+        }
+    },
+    // 计算属性
+    computed: {
+      fullName: function () {
+        return this.firstName + ' ' + this.lastName;
+      }
+    }
+  })
+</script>
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

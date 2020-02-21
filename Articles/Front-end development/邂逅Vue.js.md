@@ -225,6 +225,28 @@ v-bind:title="myTitle + '加油'"      //等同于 :title="myTitle + '123'"
 我们可以利用 v-bind:style 来绑定一些 CSS 内联样式。在写 CSS 属性名的时候，比如 font-size，我们可以使用驼峰式(fontSize)，也可以使用短横线式，使用短横线式，必须使用单引号括起来('font-size')。
 
 * 对象语法
+
+```
+<div>
+// <h2 :style="{key(属性名): value(属性值)}">{{message}}</h2>
+// 属性值 50px 必须加上单引号，否则会当成一个变量去解析。
+<h2 :style="{fontSize: '50px', color: finalColor}">{{message}}</h2>
+<h2 :style="{fontSize: finalFontSize + 'px', color: finalColor}">{{message}}</h2>
+</div>
+
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      active: '中国加油',
+      line: '武汉加油',
+      finalFontSize: 100,
+      finalColor: 'red'
+    }
+  })
+</script>
+```
+
 * 数组语法
 
 

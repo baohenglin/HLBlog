@@ -238,8 +238,7 @@ v-bind:title="myTitle + '加油'"      //等同于 :title="myTitle + '123'"
   const app = new Vue({
     el: '#app',
     data: {
-      active: '中国加油',
-      line: '武汉加油',
+      message: '中国加油',
       finalFontSize: 100,
       finalColor: 'red'
     }
@@ -248,6 +247,23 @@ v-bind:title="myTitle + '加油'"      //等同于 :title="myTitle + '123'"
 ```
 
 * 数组语法
+
+```
+<div>
+<h2 :style="[baseStyle1, baseStyle2]">{{message}}</h2>
+</div>
+
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: '中国加油',
+      baseStyle1: {backgroudColor: 'red'},
+      baseStyle2: {fontSize: '100px'}
+    }
+  })
+</script>
+```
 
 
 

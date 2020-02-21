@@ -246,7 +246,7 @@ v-bind:title="myTitle + '加油'"      //等同于 :title="myTitle + '123'"
 </script>
 ```
 
-* 数组语法
+* 数组语法 (用的比较少)
 
 ```
 <div>

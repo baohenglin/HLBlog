@@ -270,7 +270,7 @@ v-bind:title="myTitle + '加油'"      //等同于 :title="myTitle + '123'"
 **计算属性 computed 和 methods 的区别**：计算属性computed 只会调用一次，因为 computed会缓存；methods 中的方法被调用几次就会实际调用几次，没有缓存。所以 使用 computed 的性能更高。
 
 ```
-<div>
+<div id="app">
 <h2>{{getFullName()}}</h2>
 // 计算属性 不用加小括号
 <h2>{{fullName}}</h2>
@@ -298,6 +298,44 @@ v-bind:title="myTitle + '加油'"      //等同于 :title="myTitle + '123'"
   })
 </script>
 ```
+
+**计算属性示例：计算总价格**
+
+```
+<div id="app">
+<h2>{{fullName}}</h2>
+</div>
+
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      books: [
+        {id: '1000', name: 'Unix编程艺术', price: '110'},
+        {id: '1001', name: '代码大全', price: '90'},
+        {id: '1002', name: '深入理解计算机原理', price: '150'},
+        {id: '1003', name: '现代操作系统', price: '100'},
+      ]
+    },
+    methods: {
+        getFullName() {
+          
+        }
+    },
+    // 计算属性
+    computed: {
+      totalPrice: function () {
+        let result = 0;
+        for(let i = 0; i < this.books.lenght; i++) {
+        
+        }
+      }
+    }
+  })
+</script>
+```
+
+
 
 
 

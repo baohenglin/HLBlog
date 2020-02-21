@@ -267,6 +267,8 @@ v-bind:title="myTitle + '加油'"      //等同于 :title="myTitle + '123'"
 
 ### Vue 的计算属性（很重要）
 
+**计算属性 computed 和 methods 的区别**：计算属性computed 只会调用一次，因为 computed会缓存；methods 中的方法被调用几次就会实际调用几次，没有缓存。所以 使用 computed 的性能更高。
+
 ```
 <div>
 <h2>{{getFullName()}}</h2>

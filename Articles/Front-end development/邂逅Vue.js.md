@@ -13,14 +13,14 @@
 * 项目部署
 * Vue.js 原理
 
-### Vue 简介
+### 一 Vue 简介
 
 Vue 是一套用于构建用户界面的渐进式框架。那么如何理解“渐进式”呢？
 
 * 渐进式意味着可以将 Vue 作为应用的一部分嵌入其中，以带来更丰富的交互体验；
 * 如果希望将更多的业务逻辑使用 Vue 实现，那么可以将 Vue 的核心库以及其生态系统(Core + Vue-router + Vuex)集成到项目中以满足各种各样的需求。
 
-### Vue 特点
+### 二 Vue 特点
 
 * (1)解耦视图和数据
 * (2)可复用的组件
@@ -28,7 +28,7 @@ Vue 是一套用于构建用户界面的渐进式框架。那么如何理解“�
 * (4)状态管理
 * (5)虚拟 DOM
 
-### Vue 安装
+### 三 Vue 安装
 
 * (1)CDN 引入
 * (2)下载方式引入
@@ -37,14 +37,14 @@ Vue 是一套用于构建用户界面的渐进式框架。那么如何理解“�
 【注意】**ES6中使用 let 关键字定义变量，使用 const 关键字定义常量**
 
 
-### Vue 中的 MVVM
+### 四 Vue 中的 MVVM
 
 * M层： Model层,即数据层。具体代码中指的是 Vue 实例中 data 属性所对应的 Value值。可以是本地数据，也可以是请求自服务器的数据。
 * V层： View层，即视图层。在前端开发中，通常是指 DOM 层。其主要作用就是给用户展示各种信息。
 * VM层： VueModel层，即视图模型层。具体代码中指的是我们创建的 Vue 实例对象。它是 View层和 Model 层之间的调度者。VueModel 层的主要作用是一方面它实现了 Data Binding，也就是数据绑定，将 Model 的改变实时地反映到View中。另一方面它实现了 DOM listener，也就是 DOM 监听，当 DOM 发生一些事件（比如点击、滚动、touch等）时，可以监听到，并在需要的情况下改变对应的 Data。
 
 
-### 创建 Vue实例传入的 optios
+### 五 创建 Vue实例传入的 optios
 
 * (1)el:
 
@@ -67,7 +67,7 @@ Vue 是一套用于构建用户界面的渐进式框架。那么如何理解“�
 * (4)Vue 的生命周期函数。
 
 
-### Vue 的生命周期（钩子函数）
+### 六 Vue 的生命周期（钩子函数）
 
 * beforeCreate 函数：组件实例刚被创建，组件属性计算之前，如 data 属性等
 * created 函数：组件实例创建完成，属性已绑定，但 DOM 还未生成， $el 属性还不存在。
@@ -81,9 +81,9 @@ Vue 是一套用于构建用户界面的渐进式框架。那么如何理解“�
 * destoryed 函数：组件销毁后调用
 
 
-### Vue 基本语法
+### 七 Vue 基本语法
 
-#### 1. Mustache 语法（双大括号语法/插值操作）
+#### 7-1. Mustache 语法（双大括号语法/插值操作）
 
 【注意】标签之间的内容显示可以使用 Mustache 语法，但是标签内部不能使用 Mustache 语法。
 
@@ -96,7 +96,7 @@ Vue 是一套用于构建用户界面的渐进式框架。那么如何理解“�
 <h2>{{counter * 2}}</h2>
 ```
 
-#### 2. v-once 指令
+#### 7-2. v-once 指令
 
 v-once指令：**该指令表示元素和组件只渲染一次，不会随着数据的改变而改变**。该指令后面不需要跟任何表达式。
 
@@ -106,13 +106,13 @@ v-once指令：**该指令表示元素和组件只渲染一次，不会随着数
 <h2 v-once>{{message}}</h2>
 ```
 
-#### 3. v-html 指令
+#### 7-3. v-html 指令
 
 ```
 <h2 v-html="<a href='http://www.baidu.com'>百度一下</a>"></h2>
 ```
 
-#### 4. v-text 指令
+#### 7-4. v-text 指令
 
 v-text指令作用与 Mustache 比较相似，都是用于将数据显示在界面中。但是 v-text 与 Mustache相比不够灵活，会将原有的内容替换掉。
 
@@ -120,14 +120,14 @@ v-text指令作用与 Mustache 比较相似，都是用于将数据显示在界�
 <h2 v-text="message"></h2>
 ```
 
-#### 5. v-pre 指令
+#### 7-5. v-pre 指令
 
 ```
 <h2>{{message}}</h2>        //会解析 message
 <h2 v-pre>{{message}}</h2>  //不会解析 message，原封不动的展示 ‘{{message}}’
 ```
 
-#### 6. v-cloak 指令
+#### 7-6. v-cloak 指令
 
 v-cloak 可以**解决插值表达式在慢网速时闪动的问题**。
 
@@ -145,7 +145,7 @@ v-cloak 可以**解决插值表达式在慢网速时闪动的问题**。
 </body>
 ```
 
-#### 6. v-bind 指令：
+### 八 v-bind 指令：
 
 作用：**用于动态绑定属性（比如a元素的href属性；img元素的src属性）**
 
@@ -169,7 +169,9 @@ v-bind:title="myTitle + '加油'"      //等同于 :title="myTitle + '123'"
 </script>
 ```
 
-**v-bind 动态绑定 class 对象语法**
+**8-1 v-bind 动态绑定 class 属性**
+
+* class 对象语法
 
 ```
 <div>
@@ -204,7 +206,7 @@ v-bind:title="myTitle + '加油'"      //等同于 :title="myTitle + '123'"
 </script>
 ```
 
-**v-bind 动态绑定 class 数组语法（动态绑定一个数组）**
+* class 数组语法（动态绑定一个数组）
 
 ```
 <div>
@@ -224,7 +226,7 @@ v-bind:title="myTitle + '加油'"      //等同于 :title="myTitle + '123'"
 </script>
 ```
 
-**v-bind 动态绑定 style 样式（组件化开发中使用）**
+**8-2 v-bind 动态绑定 style 样式（组件化开发中使用）**
 
 我们可以利用 v-bind:style 来绑定一些 CSS 内联样式。在写 CSS 属性名的时候，比如 font-size，我们可以使用驼峰式(fontSize)，也可以使用短横线式，使用短横线式，必须使用单引号括起来('font-size')。
 
@@ -269,9 +271,9 @@ v-bind:title="myTitle + '加油'"      //等同于 :title="myTitle + '123'"
 </script>
 ```
 
-### Vue 的计算属性（很重要）
+### 九 Vue 的计算属性（很重要）
 
-**计算属性 computed 和 methods 的区别**：计算属性computed 只会调用一次，因为 computed会缓存；methods 中的方法被调用几次就会实际调用几次，没有缓存。所以 使用 computed 的性能更高。
+**9-1 计算属性 computed 和 methods 的区别**：计算属性computed 只会调用一次，因为 computed会缓存；methods 中的方法被调用几次就会实际调用几次，没有缓存。所以 使用 computed 的性能更高。
 
 ```
 <div id="app">
@@ -303,7 +305,7 @@ v-bind:title="myTitle + '加油'"      //等同于 :title="myTitle + '123'"
 </script>
 ```
 
-**计算属性应用场景：计算总价格**
+**9-2 计算属性应用场景：计算总价格**
 
 ```
 <div id="app">

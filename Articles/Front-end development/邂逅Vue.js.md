@@ -460,7 +460,7 @@ for(let i = 0; i<btns.lenght; i++) {
 
 **在ES6之前，因为使用var关键字定义的变量在 if和for中都是没有块级作用域的，所以我们必须借助闭包(function的作用域)来解决访问外部变量作用域的问题。而在ES6中，加入了 let，使用 let关键字定义的变量在if和for中是有块级作用域的**。
 
-**ES5中的var是没有块级作用的（比如if/for）;ES6中的let是有块级作用域的（比如if/for）**。
+**ES5中的var是没有块级作用域的（比如if/for）;ES6中的let是有块级作用域的（比如if/for）**。
 
 
 

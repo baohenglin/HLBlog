@@ -13,14 +13,14 @@
 * 项目部署
 * Vue.js 原理
 
-### 一 Vue 简介
+### 1 Vue 简介
 
 Vue 是一套用于构建用户界面的渐进式框架。那么如何理解“渐进式”呢？
 
 * 渐进式意味着可以将 Vue 作为应用的一部分嵌入其中，以带来更丰富的交互体验；
 * 如果希望将更多的业务逻辑使用 Vue 实现，那么可以将 Vue 的核心库以及其生态系统(Core + Vue-router + Vuex)集成到项目中以满足各种各样的需求。
 
-### 二 Vue 特点
+### 2 Vue 特点
 
 * (1)解耦视图和数据
 * (2)可复用的组件
@@ -28,7 +28,7 @@ Vue 是一套用于构建用户界面的渐进式框架。那么如何理解“�
 * (4)状态管理
 * (5)虚拟 DOM
 
-### 三 Vue 安装
+### 3 Vue 安装
 
 * (1)CDN 引入
 * (2)下载方式引入
@@ -37,14 +37,14 @@ Vue 是一套用于构建用户界面的渐进式框架。那么如何理解“�
 【注意】**ES6中使用 let 关键字定义变量，使用 const 关键字定义常量**
 
 
-### 四 Vue 中的 MVVM
+### 4 Vue 中的 MVVM
 
 * M层： Model层,即数据层。具体代码中指的是 Vue 实例中 data 属性所对应的 Value值。可以是本地数据，也可以是请求自服务器的数据。
 * V层： View层，即视图层。在前端开发中，通常是指 DOM 层。其主要作用就是给用户展示各种信息。
 * VM层： VueModel层，即视图模型层。具体代码中指的是我们创建的 Vue 实例对象。它是 View层和 Model 层之间的调度者。VueModel 层的主要作用是一方面它实现了 Data Binding，也就是数据绑定，将 Model 的改变实时地反映到View中。另一方面它实现了 DOM listener，也就是 DOM 监听，当 DOM 发生一些事件（比如点击、滚动、touch等）时，可以监听到，并在需要的情况下改变对应的 Data。
 
 
-### 五 创建 Vue实例传入的 optios
+### 5 创建 Vue实例传入的 optios
 
 * (1)el:
 
@@ -67,7 +67,7 @@ Vue 是一套用于构建用户界面的渐进式框架。那么如何理解“�
 * (4)Vue 的生命周期函数。
 
 
-### 六 Vue 的生命周期（钩子函数）
+### 6 Vue 的生命周期（钩子函数）
 
 * beforeCreate 函数：组件实例刚被创建，组件属性计算之前，如 data 属性等
 * created 函数：组件实例创建完成，属性已绑定，但 DOM 还未生成， $el 属性还不存在。
@@ -81,7 +81,7 @@ Vue 是一套用于构建用户界面的渐进式框架。那么如何理解“�
 * destoryed 函数：组件销毁后调用
 
 
-### 七 Vue 基本语法
+### 7 Vue 基本语法
 
 #### 7-1. Mustache 语法（双大括号语法/插值操作）
 
@@ -145,7 +145,7 @@ v-cloak 可以**解决插值表达式在慢网速时闪动的问题**。
 </body>
 ```
 
-### 八 v-bind 指令：
+### 8 v-bind 指令：
 
 作用：**用于动态绑定属性（比如a元素的href属性；img元素的src属性）**
 
@@ -271,7 +271,7 @@ v-bind:title="myTitle + '加油'"      //等同于 :title="myTitle + '123'"
 </script>
 ```
 
-### 九 Vue 的计算属性（很重要）
+### 9 Vue 的计算属性（很重要）
 
 #### 9-1 计算属性 computed 和 methods 的区别：
 
@@ -399,9 +399,68 @@ for (let book of this.books) {
 
 【注意】推荐使用方案3：计算属性方案。**由于计算属性存在缓存机制，所以当多次调用时，实际上计算属性computed 只会执行一次；而methods方法没有缓存机制。因此二者之中 使用 computed 的性能更高**。
 
-## 10 ES6语法
+## 10 ES6 部分语法
 
 ### 10-1 let/var
+
+变量作用域：变量在什么范围内可用。
+
+没有块级作用域引起的问题：
+
+```
+// if 块级
+var func;
+if(true) {
+   var name = 'bao';
+   func = function () {
+    console.log(name);
+   }
+   func();
+}
+
+name = 'he';//没有块级作用时，name在其他地方可以被修改，进而导致不可预测的问题。
+func();
+console.log(name);
+```
+
+```
+// for 块级：当打印时，i的值已经变成最后一次循环的值了。
+var btns = document.getElementsByTagName('button');
+for(var i = 0; i<btns.lenght; i++) {
+   btns[i].addEventListener('click', function () {
+    console.log('第' + i + '个btn点击');
+   });
+}
+```
+
+* ES5的闭包解决方案：
+
+```
+// 为什么闭包可以解决这个问题：**因为函数是有作用域的**。
+var btns = document.getElementsByTagName('button');
+for(var i = 0; i<btns.lenght; i++) {
+  (function (i) {
+    btns[i].addEventListener('click', function () {
+    console.log('第' + i + '个btn点击');
+   });
+  })(i)
+}
+```
+
+* ES6的 let 解决方案
+
+```
+const btns = document.getElementsByTagName('button');
+for(let i = 0; i<btns.lenght; i++) {
+   btns[i].addEventListener('click', function () {
+   console.log('第' + i + '个btn点击');
+}
+```
+
+**在ES6之前，因为 if和for都没有块级作用域的概念，所以我们必须借助闭包(function的作用域)来解决访问外部变量作用域的问题。在ES6中，加入了 let，使用 let关键字定义的变量是有if和for的块级作用域的**。
+
+**ES5中的var是没有块级作用的（比如if/for）;ES6中的let是有块级作用域的（比如if/for）**。
+
 
 
 

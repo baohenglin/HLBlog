@@ -424,6 +424,7 @@ console.log(name);
 ```
 
 ```
+// 错误的方式
 // for 块级：当打印时，i的值已经变成最后一次循环的值了。
 var btns = document.getElementsByTagName('button');
 for(var i = 0; i<btns.lenght; i++) {

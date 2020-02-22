@@ -299,7 +299,7 @@ v-bind:title="myTitle + '加油'"      //等同于 :title="myTitle + '123'"
 </script>
 ```
 
-**计算属性示例：计算总价格**
+**计算属性应用场景：计算总价格**
 
 ```
 <div id="app">
@@ -324,6 +324,7 @@ v-bind:title="myTitle + '加油'"      //等同于 :title="myTitle + '123'"
     computed: {
       totalPrice: function () {
         let result = 0;
+        //ES5 for循环语法：
         for(let i = 0; i < this.books.lenght; i++) {
            result += this.books[i].price;
         }
@@ -332,6 +333,22 @@ v-bind:title="myTitle + '加油'"      //等同于 :title="myTitle + '123'"
     }
   })
 </script>
+```
+
+ES6 for循环语法1：
+
+```
+for (let i in this.books) {
+  result += this.books[i].price;
+}
+```
+
+ES6 for循环语法2：(**推荐**)
+
+```
+for (let book of this.books) {
+  result += book.price;
+}
 ```
 
 

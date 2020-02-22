@@ -397,7 +397,7 @@ for (let book of this.books) {
 </script>
 ```
 
-【注意】推荐使用方案3：计算属性方案。**计算属性computed 实质上只会计算一次，因为 computed存在缓存机制；methods 中的方法被调用几次实质上就会执行几次，methods方法没有缓存机制。所以 使用 computed 的性能更高**。
+【注意】推荐使用方案3：计算属性方案。**由于计算属性存在缓存机制，所以当多次调用时，实际上计算属性computed 只会执行一次；而methods方法没有缓存机制。因此二者之中 使用 computed 的性能更高**。
 
 
 

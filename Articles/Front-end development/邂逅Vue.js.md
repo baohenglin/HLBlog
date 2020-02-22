@@ -303,7 +303,7 @@ v-bind:title="myTitle + '加油'"      //等同于 :title="myTitle + '123'"
 
 ```
 <div id="app">
-<h2>{{fullName}}</h2>
+<h2>{{totalPrice}}</h2>
 </div>
 
 <script>
@@ -318,17 +318,16 @@ v-bind:title="myTitle + '加油'"      //等同于 :title="myTitle + '123'"
       ]
     },
     methods: {
-        getFullName() {
-          
-        }
+ 
     },
     // 计算属性
     computed: {
       totalPrice: function () {
         let result = 0;
         for(let i = 0; i < this.books.lenght; i++) {
-        
+           result += this.books[i].price;
         }
+        return result;
       }
     }
   })

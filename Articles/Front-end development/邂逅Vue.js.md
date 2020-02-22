@@ -361,7 +361,13 @@ for (let book of this.books) {
 
 ### 9-3 计算属性的 setter 和 getter 方法
 
+```
 <div id="app">
+//方案1：Mustache语法
+<h2>{{firstName}} {{lastName}}<h2/>
+//方案2：通过定义methods方法
+<h2>{{getFullName()}}</h2>
+//方案3：计算属性
 <h2>{{fullName}}</h2>
 </div>
 
@@ -374,7 +380,9 @@ for (let book of this.books) {
       
     },
     methods: {
-      
+      getFullName() {
+        return this.firstName + ' ' + this.lastName;
+      }
     },
     // 计算属性的完整写法(setter方法 + getter方法)，但是计算属性是只读属性，一般情况下，不写 setter方法。
     computed: {
@@ -388,6 +396,8 @@ for (let book of this.books) {
   })
 </script>
 ```
+
+【注意】推荐使用方案3：计算属性方案。**计算属性computed 实质上只会计算一次，因为 computed存在缓存机制；methods 中的方法被调用几次实质上就会执行几次，methods方法没有缓存机制。所以 使用 computed 的性能更高**。
 
 
 

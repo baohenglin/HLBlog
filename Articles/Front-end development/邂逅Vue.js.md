@@ -627,6 +627,8 @@ methods: {
   <p v-else>不及格</p>
 </div>
 ```
+### 11-1 v-show
+
 
 
 

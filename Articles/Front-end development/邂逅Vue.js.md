@@ -529,7 +529,7 @@ const obj = {
 
 ## 11 Vue的事件监听 v-on指令
 
-当监听某个操作（比如点击、拖拽、键盘事件等）时，需要使用 v-on 指令来监听。
+当监听某个操作（比如点击、拖拽、键盘事件(keyup)等）时，需要使用 v-on 指令来监听。
 
 * v-on作用：绑定事件监听器。
 * v-on缩写(语法糖)：@
@@ -574,6 +574,55 @@ methods: {
 ```
 
 ### 11-2 v-on 修饰符
+
+* .stop修饰符：阻止冒泡问题
+
+```
+//冒泡问题
+<div id="app">
+  <div @click='divClick'>
+    <button @click.stop='btnClick'>按钮</button>
+  </div>
+</div>
+
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: '中国加油🇨🇳'
+    },
+    methods: {
+      divClick() {
+      
+      },
+      btnClick() {
+      
+      }
+    },
+    // 计算属性
+    computed: {
+      
+    }
+  })
+</script>
+```
+
+* .prevent 修饰符：阻止默认行为。
+* .native 修饰符：监听组件根元素的原生事件。
+* .once 修饰符：只触发一次回调。
+* .keyCode 修饰符：监听键盘上的某个键。
+
+```
+//监听键盘上的 enter 按键
+<input type='text' @keyup.enter='keyupClick'>
+```
+
+
+
+
+
+
+
 
 
 

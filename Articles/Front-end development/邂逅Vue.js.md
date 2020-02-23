@@ -489,6 +489,8 @@ obj.height = 1.90
 
 ### 10-3 ES6 对象的增强写法
 
+* （1）属性的增强写法：
+
 ```
 const name = 'bao',
 const age = '18',
@@ -509,7 +511,21 @@ const obj = {
 }
 ```
 
+* （2）函数的增强写法：
 
+```
+const obj = {
+  // ES5的写法
+  run: function () {
+  
+  }
+  //ES6函数的增强写法
+  run() {
+
+  }
+}
+
+```
 
 
 

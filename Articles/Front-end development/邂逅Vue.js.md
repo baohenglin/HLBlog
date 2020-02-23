@@ -462,7 +462,7 @@ for(let i = 0; i<btns.lenght; i++) {
 
 **ES5中的var是没有块级作用域的（比如if/for）;ES6中的let是有块级作用域的（比如if/for）**。
 
-### 10-2 const 关键字
+### 10-2 ES6 const 关键字
 
 **const 关键字的作用**：const 关键字在很多语言中已经存在。比如在 C、C++ 中，主要作用是**将变量修饰为常量**。在 JavaScript 也是如此，使用 const 关键字修饰的标识符是常量，不可以再次赋值。
 
@@ -487,7 +487,27 @@ obj.age = 23,
 obj.height = 1.90
 ```
 
+### 10-3 ES6 对象的增强写法
 
+```
+const name = 'bao',
+const age = '18',
+const height = 1.88
+
+//ES5的写法：
+const obj = {
+  name: name,
+  age: age,
+  height: height
+}
+
+//ES6的写法：
+const obj = {
+  name,
+  age,
+  height
+}
+```
 
 
 

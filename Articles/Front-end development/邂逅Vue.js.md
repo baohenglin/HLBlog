@@ -487,7 +487,7 @@ obj.age = 23,
 obj.height = 1.90
 ```
 
-### 10-3 ES6 对象的增强写法
+### 10-3 ES6 对象字面量的增强写法
 
 * （1）属性的增强写法：
 
@@ -527,7 +527,53 @@ const obj = {
 
 ```
 
+## 11 Vue的事件监听 v-on指令
 
+当监听某个操作（比如点击、拖拽、键盘事件等）时，需要使用 v-on 指令来监听。
+
+* v-on作用：绑定事件监听器。
+* v-on缩写(语法糖)：@
+* 预期：function | Inline Statement | Object
+* 参数：event
+
+### 11-1 v-on 传参问题分析
+
+```
+//情况1：方法不带参数时，调用方法不需要在方法后面加小括号
+<button @click='btn1Click()'>按钮1</button>
+<button @click='btn1Click'>按钮1</button>
+
+methods: {
+  btn1Click() {
+  
+  }
+}
+```
+
+```
+//情况2：方法本身需要一个参数，但是调用时并没有省略了小括号，此时 Vue 会默认将浏览器生成的event事件对象作为参数传递给方法的形参。
+<button @click='btn2Click'>按钮2</button>
+
+methods: {
+  btn2Click(parameter) {
+  
+  }
+}
+```
+
+```
+//情况3：方法定义时除了需要传 event对象 参数外，还需要传其他参数。
+// 如何手动获取到浏览器的event对象？使用“$event”来获取
+<button @click='btn3Click('abc', $event)'>按钮3</button>
+
+methods: {
+  btn2Click(parameter, event) {
+  
+  }
+}
+```
+
+### 11-2 v-on 修饰符
 
 
 

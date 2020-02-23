@@ -617,35 +617,16 @@ methods: {
 <input type='text' @keyup.enter='keyupClick'>
 ```
 
+## 11 Vue的条件判断 v-if & v-else-if & v-else
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```
+<div id='app'>
+  <p v-if="score>=90">优秀</p>
+  <p v-else-if="score>=80">良好</p>
+  <p v-else-if="score>=60">及格</p>
+  <p v-else>不及格</p>
+</div>
+```
 
 
 

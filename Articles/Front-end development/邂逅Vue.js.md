@@ -664,6 +664,8 @@ v-if和v-show的区别：**对于v-if来说，当条件为false时，压根不�
 <div id='app'>
   <ul>
     <li v-for="(value, key) in infor">{{value}}---{{key}}</li>
+    //遍历对象也可以获取 index
+    <li v-for="(value, key, index) in infor">{{value}}---{{key}}---{{index}}</li>
   </ul>
 </div>
 

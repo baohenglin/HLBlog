@@ -629,7 +629,7 @@ methods: {
 ```
 ### 11-1 v-show
 
-v-if和v-show的区别：**对于v-if来说，当条件为false时，压根不会有对应的元素在 DOM 中；对于 v-show 来说，当条件为 false 时，仅仅是将元素的 display 属性设置为 none 而已**。
+v-if和v-show的区别：**对于v-if来说，当条件为false时，压根不会有对应的元素在 DOM 中；对于 v-show 来说，当条件为 false 时，仅仅是将元素的 行内元素 display 属性设置为 none 而已，元素依然存在于 DOM 中**。
 
 那么开发中到底选择 v-if 还是 v-show 呢？**当需要在显示和隐藏之间频繁切换时，应该选择v-show；当只有一次切换时，选择 v-if**。
 

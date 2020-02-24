@@ -663,7 +663,7 @@ v-if和v-show的区别：**对于v-if来说，当条件为false时，压根不�
 ```
 <div id='app'>
   <ul>
-    <li v-for="(item, index) in infor">{{item.name}}</li>
+    <li v-for="(value, key) in infor">{{value}}---{{key}}</li>
   </ul>
 </div>
 

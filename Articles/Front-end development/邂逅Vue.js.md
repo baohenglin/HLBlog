@@ -627,11 +627,59 @@ methods: {
   <p v-else>不及格</p>
 </div>
 ```
-### 11-1 v-show
+### 11-1 v-show 指令
 
 v-if和v-show的区别：**对于v-if来说，当条件为false时，压根不会有对应的元素在 DOM 中；对于 v-show 来说，当条件为 false 时，仅仅是将元素的 行内样式 display 属性设置为 none 而已，元素依然存在于 DOM 中**。
 
 那么开发中到底选择 v-if 还是 v-show 呢？**当需要在显示和隐藏之间频繁切换时，应该选择v-show；当只有一次切换时，选择 v-if**。
+
+### 11-2 v-for 指令
+
+* 遍历数组
+
+```
+<div id='app'>
+  <ul>
+    <li v-for="(item, index) in booksArr">{{item.name}}</li>
+  </ul>
+</div>
+
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      booksArr: [
+        {id: '1000', name: 'Unix编程艺术', price: '110'},
+        {id: '1001', name: '代码大全', price: '90'},
+        {id: '1002', name: '深入理解计算机原理', price: '150'},
+        {id: '1003', name: '现代操作系统', price: '100'},
+      ]
+    }
+  })
+</script>
+```
+* 遍历对象
+
+```
+<div id='app'>
+  <ul>
+    <li v-for="(item, index) in infor">{{item.name}}</li>
+  </ul>
+</div>
+
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      infor: {
+        id: '1000', 
+        name: 'Unix编程艺术', 
+        price: '110'
+      },
+    }
+  })
+</script>
+```
 
 
 

@@ -38,6 +38,23 @@ Java分为三个体系：
 
 ![image.png](https://upload-images.jianshu.io/upload_images/4164292-26b27e00c2469a95.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
+## 位（bit）& 字节（Byte）
+
+**位**（bit）：一个数字0或者一个数字1代表一位。
+
+**字节**（Byte）：每8位（二进制位）表示一个字节。字节是计算机中**数据存储的最小存储单元**。也就是说计算机存储任何数据都是以字节的形式存储。
+
+```
+1 Byte = 8 bit
+1 KB = 1024 Byte
+1 MB = 1024 KB
+1 GB = 1024 MB
+1 TB = 1024 GB
+1 PB = 1024 TB
+1 EB = 1024 PB
+1 ZB = 1024 EB
+```
+
 ## Java 基础语法
 
 一个Java程序可以认为是一系列对象的集合，而这些对象通过调用彼此的方法来协同工作。下面简要介绍下类、对象、方法和实例变量的概念。

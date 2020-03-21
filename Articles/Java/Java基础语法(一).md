@@ -61,7 +61,9 @@ Java分为三个体系：
 
 ## Java 主要特性
 * **跨平台**：任何软件的运行都必须要运行在操作系统之上，而我们用java编写的程序能够运行在任何的操作系统上，这个特性称为Java语言的跨平台性。跨平台性是由JVM实现的，我们编写的程序运行在JVM上，而JVM运行在操作系统上。JVM（Java Virtual Machine），即Java虚拟机。JVM是Java程序的运行环境，我们编写的Java程序都运行在JVM上。
+
 ![image.png](https://upload-images.jianshu.io/upload_images/4164292-2a2c918c9aa3611c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
 * **Java语言是简单的**：Java语言的语法与C语言和C++语言很接近，使得大多数程序员很容易学习和使用。另一方面，Java丢弃了C++中很少使用的、很难理解的、令人迷惑的那些特性，如操作符重载、多继承、自动的强制类型转换。特别地，Java语言不使用指针，而是引用。并提供了自动的废料收集，使得程序员不必为内存管理而担忧。
 * **Java语言是面向对象的**：Java语言提供类、接口和继承等原语，为了简单起见，只支持类之间的单继承，但支持接口之间的多继承，并支持类与接口之间的实现机制（关键字为implements）。Java语言全面支持动态绑定，而C++语言只对虚函数使用动态绑定。总之，Java语言是一个纯的面向对象程序设计语言。
 * **Java语言是分布式的**：Java语言支持Internet应用的开发，在基本的Java应用编程接口中有一个网络应用编程接口（java net），它提供了用于网络应用编程的类库，包括URL、URLConnection、Socket、ServerSocket等。Java的RMI（远程方法激活）机制也是开发分布式应用的重要手段。
@@ -83,6 +85,10 @@ Java分为三个体系：
 **JVM**（Java Virtual Machine），即Java虚拟机。JVM是Java程序的运行环境，我们编写的Java程序都运行在JVM上。
 
 ![image.png](https://upload-images.jianshu.io/upload_images/4164292-f2af12bdc9131c38.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+## Java 程序开发步骤
+
+![image.png](https://upload-images.jianshu.io/upload_images/4164292-11be2e08a4b4d7ea.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ## Java 基础语法
 

@@ -8,7 +8,7 @@
 
 将二进制数字转化为十进制数字：
 
-![image.png](https://upload-images.jianshu.io/upload_images/4164292-26b27e00c2469a95.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](https://upload-images.jianshu.io/upload_images/4164292-429c3de1e316966c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ## 位（bit）& 字节（Byte）
 

@@ -28,6 +28,16 @@ Java分为三个体系：
 * **Java语言是多线程的**：在Java语言中，线程是一种特殊的对象，它必须由Thread类或其子（孙）类来创建。通常有两种方法来创建线程：其一，使用型构为Thread(Runnable)的构造子将一个实现了Runnable接口的对象包装成一个线程，其二，从Thread类派生出子类并重写run方法，使用该子类创建的对象即为线程。值得注意的是Thread类已经实现了Runnable接口，因此，任何一个线程均有它的run方法，而run方法中包含了线程所要运行的代码。线程的活动由一组方法来控制。Java语言支持多个线程的同时执行，并提供多线程之间的同步机制（关键字为synchronized）。
 * **Java语言是动态的**：Java语言的设计目标之一是适应于动态变化的环境。Java程序需要的类能够动态地被载入到运行环境，也可以通过网络来载入所需要的类。这也有利于软件的升级。另外，Java中的类有一个运行时刻的表示，能进行运行时刻的类型检查。
 
+## 二进制
+
+如何将十进制数字转换成二进制的数字？使用**辗转相除法**
+
+![image.png](https://upload-images.jianshu.io/upload_images/4164292-26b27e00c2469a95.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+将二进制数字转化为十进制数字：
+
+![image.png](https://upload-images.jianshu.io/upload_images/4164292-26b27e00c2469a95.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
 ## Java 基础语法
 
 一个Java程序可以认为是一系列对象的集合，而这些对象通过调用彼此的方法来协同工作。下面简要介绍下类、对象、方法和实例变量的概念。

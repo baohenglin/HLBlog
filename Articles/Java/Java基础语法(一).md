@@ -60,7 +60,7 @@ Java分为三个体系：
 2005年6月，JavaOne大会召开，SUN公司公开Java SE 6。此时，Java的各种版本已经更名以取消其中的数字"2"：J2EE更名为Java EE, J2SE更名为Java SE，J2ME更名为Java ME。
 
 ## Java 主要特性
-* **跨平台**：
+* **跨平台**：任何软件的运行都必须要运行在操作系统之上，而我们用java编写的程序能够运行在任何的操作系统上，这个特性称为Java语言的跨平台性。跨平台性是由JVM实现的，我们编写的程序运行在JVM上，而JVM运行在操作系统上。JVM（Java Virtual Machine），即Java虚拟机。JVM是Java程序的运行环境，我们编写的Java程序都运行在JVM上。
 ![image.png](https://upload-images.jianshu.io/upload_images/4164292-2a2c918c9aa3611c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 * **Java语言是简单的**：Java语言的语法与C语言和C++语言很接近，使得大多数程序员很容易学习和使用。另一方面，Java丢弃了C++中很少使用的、很难理解的、令人迷惑的那些特性，如操作符重载、多继承、自动的强制类型转换。特别地，Java语言不使用指针，而是引用。并提供了自动的废料收集，使得程序员不必为内存管理而担忧。
 * **Java语言是面向对象的**：Java语言提供类、接口和继承等原语，为了简单起见，只支持类之间的单继承，但支持接口之间的多继承，并支持类与接口之间的实现机制（关键字为implements）。Java语言全面支持动态绑定，而C++语言只对虚函数使用动态绑定。总之，Java语言是一个纯的面向对象程序设计语言。
@@ -73,6 +73,16 @@ Java分为三个体系：
 * **Java语言是高性能的**：与那些解释型的高级脚本语言相比，Java的确是高性能的。事实上，Java的运行速度随着JIT(Just-In-Time）编译器技术的发展越来越接近于C++。
 * **Java语言是多线程的**：在Java语言中，线程是一种特殊的对象，它必须由Thread类或其子（孙）类来创建。通常有两种方法来创建线程：其一，使用型构为Thread(Runnable)的构造子将一个实现了Runnable接口的对象包装成一个线程，其二，从Thread类派生出子类并重写run方法，使用该子类创建的对象即为线程。值得注意的是Thread类已经实现了Runnable接口，因此，任何一个线程均有它的run方法，而run方法中包含了线程所要运行的代码。线程的活动由一组方法来控制。Java语言支持多个线程的同时执行，并提供多线程之间的同步机制（关键字为synchronized）。
 * **Java语言是动态的**：Java语言的设计目标之一是适应于动态变化的环境。Java程序需要的类能够动态地被载入到运行环境，也可以通过网络来载入所需要的类。这也有利于软件的升级。另外，Java中的类有一个运行时刻的表示，能进行运行时刻的类型检查。
+
+## JRE、JDK和JVM
+
+**JDK**（Java Development Kit）：是 Java 程序开发工具包，包含 JRE 和开发人员使用的工具。如果我们想要开发一个全新的 Java 程序，那么必须安装 JDK。
+
+**JRE**（Java Runtime Environment）：是 **Java 程序的运行时环境，包含 JVM和运行时所需要的 核心类库**。如果我们想要运行一个已开发完成的 Java 程序，那么只需要安装 JRE 即可。
+
+**JVM**（Java Virtual Machine），即Java虚拟机。JVM是Java程序的运行环境，我们编写的Java程序都运行在JVM上。
+
+![image.png](https://upload-images.jianshu.io/upload_images/4164292-f2af12bdc9131c38.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ## Java 基础语法
 

@@ -45,7 +45,7 @@
 
 ## Java简介
 
-Java是一门面向对象编程语言，不仅吸收了C++语言的各种优点，还摒弃了C++里难以理解的多继承、指针等概念，因此Java语言具有功能强大和简单易用两个特征。Java语言作为静态面向对象编程语言的代表，极好地实现了面向对象理论，允许程序员以优雅的思维方式进行复杂的编程。
+Java是一门面向对象编程语言，不仅。吸收了C++语言的各种优点，还摒弃了C++里难以理解的多继承、指针等概念，因此Java语言具有功能强大和简单易用两个特征。Java语言作为静态面向对象编程语言的代表，极好地实现了面向对象理论，允许程序员以优雅的思维方式进行复杂的编程。
 
 Java具有简单性、面向对象、分布式、健壮性、安全性、平台独立与可移植性、多线程、动态性等特点。Java可以编写桌面应用程序、Web应用程序、分布式系统和嵌入式系统应用程序等。
 
@@ -364,5 +364,45 @@ public class Employee{
 int num = (int)100L;
 ```
 
+**注意事项**：
 
+* （1）不推荐使用强制类型转换，因为可能发生精度损失或者数据溢出。
+
+```
+int num2 = (int)6000000000;//数据溢出
+int num3 = (int)3.9;//精度损失。结果num=3,这并不是四舍五入，所有的小数都会被省去。
+```
+
+* （2）byte/short/char这三种类型都可以发生数学运算（例如加法“+”）
+
+```
+//ASCII码表 A -> 65  a -> 97  字符0 -> 48
+char char1 = 'A';//字符A在ASCII码表中对应数字65。
+System.out.println(char1 + 1);//结果是 66
+```
+
+* （3）byte/short/char这三种类型都可以发生数学运算，都会被首先提升成为int类型，然后再计算。
+
+```
+byte num4 = 40;
+byte num5 = 60;
+// byte + byte ---> int + int --->int
+int result1 = num4 + num5;
+System.out.println(result1);//结果是 100
+
+byte num6 = 70;
+// byte + short ---> int + int ---> int 
+short result2 = (short)(num4 + num6); //110
+```
+
+## ASCII编码表 & Unicode码表
+
+* ASCII码表（American Standard Code for Information Interchange）美国信息交换标准代码
+* Unicode码表，万国表，也就是数字和符号的对照关系，开头0-127部分和ASCII完全一样，但是从128开始包含更多字符。
+
+```
+'0' -> 48
+'A' -> 65
+'a' -> 97
+```
 

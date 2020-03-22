@@ -428,6 +428,87 @@ public int b; // will persist
 volatile修饰的成员变量在每次被线程访问时，都强迫从共享内存中重读该成员变量的值。而且，当成员变量发生变化时，强迫线程将变化值回写到共享内存。这样在任何时刻，两个不同的线程总是看到某个成员变量的同一个值。一个volatile对象引用可能是null。
 
 
+## 面向对象
+
+面向对象和面向过程的思想是不一样的。面向对象通过调用对象的行为来实现功能，而不是自己一步一步去实现。面向对象可以把复杂问题简单化。面向对象的三大特征：封装、继承和多态。
+
+### 类和对象
+
+类是一组相关属性和行为的集合，是抽象的。类由属性和行为组成。而对象是一类事物的实例，是具体的。
+
+类是对象的抽象，对象是类的实例。
+
+![image.png](https://upload-images.jianshu.io/upload_images/4164292-6396fc6977e5bec0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+### 类的定义
+
+类的定义格式：
+
+```
+public class ClassName {
+
+}
+```
+
+```
+//属性（成员变量）：姓名、年龄
+//行为（成员方法）：吃饭、睡觉、学习
+public class Student {
+   //成员变量  
+   String name;
+   int age;
+   //成员方法：不要写 static 关键字
+   public void eat() {
+      System.out.println("吃饭");
+   }
+   public void sleep() {
+      System.out.println("睡觉");
+   }
+   public void study() {
+      System.out.println("学习");
+   }
+}
+```
+
+### 导包
+
+导包也就是之处需要使用的类在什么位置。需要注意的是对于和当前类属于同一个包的情况，可以省略导包语句。
+
+```
+import 包名称.类名称;
+```
+
+### 创建类的对象
+
+```
+//类名称 对象名 = new 类名称
+Student stu = new Student();
+```
+### 对象的使用
+
+```
+使用成员变量：对象名.成员变量
+使用成员方法：对象名.成员方法
+```
+
+### 一个对象的内存分析图
+
+![image.png](https://upload-images.jianshu.io/upload_images/4164292-d55599975678a49f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+### 将对象作为方法的参数
+
+![image.png](https://upload-images.jianshu.io/upload_images/4164292-b82e5141d2d01721.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+
+
+
+
+
+
+
+
+
+
 
 
 

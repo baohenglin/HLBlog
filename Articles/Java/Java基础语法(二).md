@@ -418,9 +418,13 @@ int [] arr1 = {5, 15, 20};
 
 ![image.png](https://upload-images.jianshu.io/upload_images/4164292-8a2304de098f64c0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-### 数组内存分布图
+### 数组内存分析图
 
 ![image.png](https://upload-images.jianshu.io/upload_images/4164292-ee83e36f0c9d111a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+将 arrayA 赋值给 arrayB的内存分析图如下：
+
+![image.png](https://upload-images.jianshu.io/upload_images/4164292-86be1cfc947fe2a3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
 

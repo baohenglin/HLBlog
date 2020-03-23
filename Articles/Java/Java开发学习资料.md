@@ -36,9 +36,10 @@
 |Docker|[《Docker 教程》](https://www.bilibili.com/video/av49095718/?spm_id_from=333.788.b_636f6d6d656e74.142)<br>|
 |算法|[《图解 Java 数据结构和算法》](https://www.bilibili.com/video/av54095344/?spm_id_from=333.788.b_636f6d6d656e74.125)<br>|
 |Java设计模式|[《图解 Java 设计模式》](https://www.bilibili.com/video/av58076246/?spm_id_from=333.788.b_636f6d6d656e74.120)<br>|
+|Java架构|[《Java架构视频》提取码：607T](https://pan.baidu.com/s/1L5Mi4O6jmlU4Su-ByqODcA#list/path=%2F)<br>|
 |Git|[《Git&GitHub 教程》](https://www.bilibili.com/video/av49085612/?spm_id_from=333.788.b_636f6d6d656e74.143)<br>|
 |Linux|[《Linux 教程》](https://www.bilibili.com/video/av56460973/?spm_id_from=333.788.b_636f6d6d656e74.144)<br>|
-|Java面试题|[《Java 面试1》](https://www.bilibili.com/video/av37602130/?spm_id_from=333.788.b_636f6d6d656e74.126)<br>[《Java面试2》](https://www.bilibili.com/video/av48988279/?spm_id_from=333.788.b_636f6d6d656e74.127)<br>|
+|Java面试题|[《Java 面试1》](https://www.bilibili.com/video/av37602130/?spm_id_from=333.788.b_636f6d6d656e74.126)<br>[《Java面试2》](https://www.bilibili.com/video/av48988279/?spm_id_from=333.788.b_636f6d6d656e74.127)<br>[《Java面试题3》提取码：w0k8](https://pan.baidu.com/s/17DCEpSs4AX1zr5Z4pyCUFQ#list/path=%2Fsharelink3102756558-1049389422086090%2F2019%E5%B9%B4Java%E9%9D%A2%E8%AF%95%E9%A2%98&parentPath=%2Fsharelink3102756558-1049389422086090)<br>|
 |求职技能|[《IT行业求职技能》](https://www.bilibili.com/video/av53800224/?spm_id_from=333.788.b_636f6d6d656e74.124)<br>|
 
 

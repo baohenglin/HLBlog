@@ -9,7 +9,7 @@ Apple源码下载地址：<https://opensource.apple.com/tarballs/objc4/>
 
 ## isa详解-位域
 
-在arm64架构之前，isa就是一个普通的指针，存放着Class对象或者Meta-Class对象的内存地址。
+在 arm64 架构之前，isa 就是一个普通的指针，存放着 Class 对象（类对象）或者 Meta-Class 对象（元类对象）的内存地址。
 
 但是**从arm64架构开始，苹果对isa进行了优化，采用了一个共用体(union)结构，并且使用了“位域”技术。这样处理的好处是可以让一个64bit的内存空间存储了更多的信息，其中33bit用来存储 Class 对象或 Meta-Class 对象的内存地址。这也就是从arm64开始isa指针只有"&ISA_MASK"才能得到Class对象或Meta-Class对象的地址值的原因**(利用位运算)。
 

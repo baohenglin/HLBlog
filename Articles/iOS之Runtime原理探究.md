@@ -69,7 +69,7 @@ union isa_t {
 
 ![屏幕快照 2019-05-31 下午4.25.46.png](https://upload-images.jianshu.io/upload_images/4164292-f1d74a6969bad946.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-由上图可知，结构体objc_class中的成员变量bits &FAST_DATA_MASK得到class_rw_t的地址，进而可以读取其中的方法列表methods（对象方法或类方法）、属性列表properties、协议列表protocols等信息。结构体class_rw_t中的方法列表、属性列表、协议列表都包含当前类以及当前类的分类的方法列表、属性列表、协议列表。
+由上图可知，结构体objc_class中的成员变量 **bits & FAST_DATA_MASK** 得到 class_rw_t 的内存地址，进而可以读取其中的方法列表 methods（对象方法或类方法）、属性列表 properties、协议列表 protocols 等信息。结构体 class_rw_t 中的方法列表、属性列表、协议列表都包含当前类以及当前类的分类的方法列表、属性列表、协议列表。
 
 ### class_rw _t
 

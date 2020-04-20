@@ -88,7 +88,7 @@ class_rw_t 结构体里面的 class_ro_t *ro 指针指向结构体 class_ro_t。
 ![class_ro_t 底层结构示意图.png](https://upload-images.jianshu.io/upload_images/4164292-cf61122383a90122.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
-### method_t结构体
+### method_t 结构体
 
 method_list_ t 数组里面存放的是 method_t 结构体。method_t 是对方法/函数的封装。
 
@@ -98,7 +98,7 @@ method_t 结构体底层源码如下：
 struct method_t {
     SEL name;//函数名
     const char *types;//字符串编码，里面存放着返回值类型、参数类型。
-    MethodListIMP imp;//指向函数的指针（函数地址）
+    IMP imp;//指向函数的指针（函数地址）
 
     struct SortBySELAddress :
         public std::binary_function<const method_t&,
@@ -117,9 +117,13 @@ struct method_t {
 
 **types**：表示存放着函数的返回值类型、参数类型的字符串编码。比如定义一个 -(void)test方法，types是“v16@0:8”，其中的“v”表示函数返回值类型void，“@”表示“id”，“:”表示“SEL”，“16”表示整个字符串编码占16个字节，“0”和“8”表示对应的id和SEL分别从第几个字节开始。
 
-IMP：代表函数的具体实现。
+**IMP**：代表函数的具体实现。
 
-imp：是指向函数的指针（函数地址）。
+```
+typedef id _Nullable (*IMP)(id _Nonnull, SEL _Nonnull, ...);
+```
+
+**imp**：指向函数的指针（函数地址）。
 
 
 ### Type Encoding(类型编码)

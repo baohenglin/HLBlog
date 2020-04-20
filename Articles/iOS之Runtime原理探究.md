@@ -111,7 +111,17 @@ struct method_t {
 };
 ```
 
-**SEL**：代表方法或函数名，一般叫选择器，底层结构跟 char* 类似。SEL 可以通过 @selector() 或者 sel_registerName() 获得。此外可以通过sel_getName() 或者 NSStringFromSelector() 转成字符串。需要注意的是： **不同类中相同名字的方法，所对应的方法选择器是相同的** 。
+**SEL**：代表方法或函数名，一般叫选择器，底层结构跟 char* 类似。
+
+获取 SEL 的方法有两种： 可以通过 @selector() 或者 sel_registerName() 获得。
+
+```
+SEL sel1 = sel_registerName("test");
+SEL sel2 = @selector(test);
+
+```
+
+此外，可以通过sel_getName() 或者 NSStringFromSelector() 转成字符串。需要注意的是： **不同类中相同名字的方法，所对应的方法选择器是相同的** 。
 
 **name**：表示函数名。
 

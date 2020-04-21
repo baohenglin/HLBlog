@@ -169,6 +169,8 @@ i 24 @0 :8 i16 f20
 
 ### cache_t cache（方法缓存）
 
+![方法缓存.png](https://upload-images.jianshu.io/upload_images/4164292-e00599de0fd69f1b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
 Class内部结构中有一个“方法缓存”，也就是 struct objc_ class中有一个成员变量 cache_ t cache。cache_t cache是用“**散列表**(也称为哈希表)”来缓存曾经调用过的方法的，这样就提高方法的查找速度。
 
 **为什么说使用cache_t方法缓存技术可以提高查找方法的速度呢**？首先我们来回顾一下OC中是如何调用对象方法的。举个例子，比如：

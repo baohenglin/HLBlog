@@ -271,8 +271,13 @@ void cache_t::reallocate(mask_t oldCapacity, mask_t newCapacity)
 HLPerson *person = [[HLPerson alloc]init];
 [person test];
 ```
+将上面的代码转化为C++代码的 Clang 编译器指令：
 
-利用Clang编译器将上面的代码转化为C++代码，我们可以看到[person test]这行代码转化为:
+```
+xcrun -sdk iphoneos clang -arch arm64 -rewrite-objc main.m
+```
+
+利用Clang编译器指令将上面的代码转化为C++代码，我们可以看到[person test]这行代码转化为:
 
 ```
 objc_msgSend(person, sel_registerName(@"test"));

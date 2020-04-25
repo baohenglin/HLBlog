@@ -5,15 +5,14 @@
 <p align='center'>
 <img src="https://img.shields.io/badge/platform-iOS-ff69b4.svg">
 <img src="https://img.shields.io/badge/language-Objective--C-orange.svg">
-<img src="https://img.shields.io/badge/language-python-yellowgreen.svg">
-<img src="https://img.shields.io/badge/language-shell-green.svg">
 <img src="https://img.shields.io/badge/language-JavaScript-yellow.svg">
 <img src="https://img.shields.io/badge/language-Java-yellow.svg">
-<img src="https://img.shields.io/badge/language-PHP-yellow.svg">
+<img src="https://img.shields.io/badge/language-python-yellowgreen.svg">
+<img src="https://img.shields.io/badge/language-shell-green.svg">
+<!-- <img src="https://img.shields.io/badge/language-PHP-yellow.svg"> -->
 <img src="https://img.shields.io/badge/language-C-yellow.svg">
 <img src="https://img.shields.io/badge/language-C++-yellow.svg">
 <!--<img src="https://img.shields.io/badge/blog-https://baohenglin.github.io-blue.svg">-->
-
 </p>
 
 <p align='center'>

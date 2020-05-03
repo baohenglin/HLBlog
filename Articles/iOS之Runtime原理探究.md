@@ -363,7 +363,7 @@ void c_other(id self, SEL _cmd)
     if (sel == @selector(test)) {
 
     //方法3:添加C语言函数，如果是为“类方法”动态添加实现的话，class_addMethod的第一个参数必须是Meta-Class对象,也就是objc_getClass(self)
-        class_addMethod(self, sel, (IMP)c_other, "v16@0:8");
+        class_addMethod(self, sel, (IMP)c_other, "v16@0:8"); 如果 test 方法带有一个int 类型的参数，则为 "v20@0:8i16"
         //YES表示已经动态添加方法（其实返回NO效果也一样，为了遵守规范，最好使用YES）
         return YES;
     }
@@ -407,6 +407,11 @@ void c_other(id self, SEL _cmd)
 -(void)forwardInvocation:(NSInvocation *)anInvocation
 {
     [anInvocation invokeWithTarget:[[Cat alloc]init]];
+    //获取 test 参数 int 类型的 age 的示例。参数顺序：receiver、selector、other arguments
+    /* 
+    int age;
+    [anInvocation getArgument: &age atIndex:2]
+    */
 }
 ```
 

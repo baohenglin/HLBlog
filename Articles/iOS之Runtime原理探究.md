@@ -438,7 +438,34 @@ anInvocation.selector 方法名
 
 ## @dynamic
 
-@dynamic是用来通知编译器不要自动生成getter方法和setter方法的实现(并且不要自动生成成员变量)，等到运行时再添加方法实现的。
+@dynamic的作用：用来通知编译器不要自动生成 getter 方法和 setter 方法的实现（但是依然会自动生成 getter 和 setter 方法的声明），也不要自动生成带下划线的成员变量。
+
+```
+@dynamic age;
+
+```
+//C语言函数,将该方法动态添加为test方法的实现
+void setAge(id self, SEL _cmd, int age)
+{
+    NSLog(@"age is %d", age);
+}
+int age(id self, SEL _cmd) {
+ return 100;
+}
+//调用+resolveInstanceMethod方法进行动态解析方法，可以在此方法中动态添加方法。
++ (BOOL)resolveInstanceMethod:(SEL)sel
+{
+    if (sel == @selector(setAge:)) {
+    	class_addMethod(self, sel, (IMP)setAge, "v@:i");
+        return YES;
+    } else if (sel == @selector(age)) {
+    	class_addMethod(self, sel, (IMP)age, "i@:");
+        return YES;
+    }
+    return [super resolveInstanceMethod:sel];
+}
+```
+```
 
 
 <!--### objc_msgSend执行流程 - 源码跟读

@@ -379,17 +379,31 @@ void c_other(id self, SEL _cmd)
 
 ```
 //消息转发
+//（1）对象方法 的情况：
 - (id)forwardingTargetForSelector:(SEL)aSelector
 {
     if (aSelector == @selector(test)) {
-        //objc_msgSend(cat,aSelector);
-        return [[Cat alloc]init];
+        // objc_msgSend(HLCat,aSelector);
+        return [[HLCat alloc]init];
+	//return [HLCat class];
         //如果返回nil，则调用methodSignatureForSelector:方法
-//        return nil;
+        //return nil;
+    }
+    return [super forwardingTargetForSelector:aSelector];
+}
+//（2）类方法 的情况："类方法不存在消息转发"的说法是错误的。类方法也存在消息转发。
++ (id)forwardingTargetForSelector:(SEL)aSelector
+{
+    if (aSelector == @selector(test)) {
+    	//如果在此处返回不是HLCat的类对象，而是一个实例对象：rerurn [[HLCat alloc] init]; 也可以运行成功，但是此时调用的是 HLCat 中的对象方法 -(void)test; 因为本质上都是给消息接收者发送一个 test 消息。即 objc_msgSend(receiver, @selector(test))。
+	return [HLCat class];//返回 HLCat 的类对象。
+        //如果返回nil，则调用methodSignatureForSelector:方法
+        //return nil;
     }
     return [super forwardingTargetForSelector:aSelector];
 }
 //方法签名：返回值类型、参数类型
+//如果是针对 类方法 的情况，需要将“-”号改为“+”号。即 + (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
     if (aSelector == @selector(test)) {
@@ -402,10 +416,13 @@ void c_other(id self, SEL _cmd)
     }
     return [super methodSignatureForSelector:aSelector];
 }
-//NSInvocation封装了一个方法调用，包括方法调用者、方法名、方法参数
-//anInvocation.target 方法调用者
-//anInvocation.selector 方法名
-//[anInvocation getArgument:NULL atIndex:0];
+/*
+NSInvocation封装了一个方法调用，包括方法调用者、方法名、方法参数
+anInvocation.target 方法调用者
+anInvocation.selector 方法名
+[anInvocation getArgument:NULL atIndex:0];
+*/
+//如果是针对 类方法 的情况，需要将“-”号改为“+”号。即 +(void)forwardInvocation:(NSInvocation *)anInvocation
 -(void)forwardInvocation:(NSInvocation *)anInvocation
 {
     [anInvocation invokeWithTarget:[[Cat alloc]init]];

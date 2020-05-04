@@ -393,10 +393,12 @@ void c_other(id self, SEL _cmd)
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
     if (aSelector == @selector(test)) {
-        //方法签名,如果返回的方法签名为空，那么将不再调用-(void)forwardInvocation:(NSInvocation *)anInvocation方法，并抛出错误
+        //方式1：方法签名,如果返回的方法签名为空，那么将不再调用-(void)forwardInvocation:(NSInvocation *)anInvocation方法，并抛出错误
         return [NSMethodSignature signatureWithObjCTypes:"v16@0:8"];
+	//方式2：除了返回方式1外，还可以这样返回
+	//return [[[HLCat alloc]init]methodSignatureForSelector: aSelector];
         //如果返回nil，调用doesNotRecognizeSelector:方法并抛出错误"unrecognized selector sent to instance";如果返回不为nil，则调用forwardInvocation:方法。
-//        return nil;
+        //return nil;
     }
     return [super methodSignatureForSelector:aSelector];
 }

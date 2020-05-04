@@ -443,7 +443,6 @@ anInvocation.selector 方法名
 ```
 @dynamic age;
 
-```
 //C语言函数,将该方法动态添加为test方法的实现
 void setAge(id self, SEL _cmd, int age)
 {
@@ -464,7 +463,6 @@ int age(id self, SEL _cmd) {
     }
     return [super resolveInstanceMethod:sel];
 }
-```
 ```
 
 

@@ -34,7 +34,7 @@ iOS系列|[《编写高质量iOS与OS+X代码的52个有效方法》](https://gi
 |思考感悟|[《千里之行 始于足下》](https://github.com/baohenglin/HLBlog/blob/master/Articles/千里之行，始于足下.md)<br>|
 
 
-## *iOS开发*
+## *iOS Development*
 主题|文章|备注
 |:---|:---|:---|
 |Objective-C/iOS|[《iOS开发知识体系》](https://github.com/baohenglin/HLBlog/blob/master/Articles/iOS%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB.md)<br>[《iOS之OC对象的本质分析》](https://github.com/baohenglin/HLBlog/blob/master/Articles/《iOS之Objective-C对象的本质》.md)<br>[《iOS之KVO底层原理分析》](https://github.com/baohenglin/HLBlog/blob/master/Articles/KVO原理分析.md)<br>[《iOS之KVC底层原理分析》](https://github.com/baohenglin/HLBlog/blob/master/Articles/KVC底层原理分析.md)<br>[《iOS之Category底层原理探究》](https://github.com/baohenglin/HLBlog/blob/master/Articles/iOS开发之Category探究.md)<br>[《iOS之关联对象篇》](https://github.com/baohenglin/HLBlog/blob/master/Articles/OC关联对象篇.md)<br>[《iOS之Block探究篇》](https://github.com/baohenglin/HLBlog/blob/master/Articles/iOS之Block探究.md)<br>[《iOS之Runtime分析》](https://github.com/baohenglin/HLBlog/blob/master/Articles/iOS之Runtime原理探究.md)<br>[《iOS之RunLoop分析》](https://github.com/baohenglin/HLBlog/blob/master/Articles/iOS开发之RunLoop探究.md)<br>[《iOS之多线程底层原理探究》](https://github.com/baohenglin/HLBlog/blob/master/Articles/iOS之多线程底层原理探究.md)<br>[《iOS之内存管理分析》](https://github.com/baohenglin/HLBlog/blob/master/Articles/iOS之内存管理分析.md)<br>|
@@ -48,7 +48,7 @@ iOS系列|[《编写高质量iOS与OS+X代码的52个有效方法》](https://gi
 |工程化|[《iOS之性能优化》]()<br>[《iOS之架构模式-MVC、MVVM、MVP分析》]()<br>[《常见设计模式总结》]()<br>[《iOS之Crash日志监控、跟踪与分析》]()<br>[《iOS之热修复JSPatch》]()<br>[《iOS之组件化探索与实践》]()<br>[《iOS之路由的探索与实践》]()<br>[《如何将 iOS 工程打包速度提升十倍以上》]()<br>[《细聊 Cocoapods 与 Xcode 工程配置》]()<br>|
 |逆向加密|[《逆向之加壳脱壳》]()<br>[《代码混淆》]()<br>|-->
 
-## *🌐前端开发*
+## *🌐Front-end Development*
 主题|文章|备注
 |:---|:---|:---|
 |前端|[《前端学习路线图》](https://github.com/baohenglin/HLBlog/blob/master/Articles/前端学习路线图.md)<br>[《前端学习资料》](https://github.com/baohenglin/HLBlog/blob/master/Articles/Front-end%20development/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99.md)<br>|
@@ -76,7 +76,7 @@ iOS系列|[《编写高质量iOS与OS+X代码的52个有效方法》](https://gi
 <!--## *🖥️工程架构(架构&设计模式)*—>
 <!--## *🖥️职业修养*-->
 
-## *🖥️ 服务器端开发*
+## *🖥️ Server Development *
 主题|文章|备注
 |:---|:---|:---|
 |Java|[《Java 学习路线图》](https://github.com/baohenglin/HLBlog/blob/master/Articles/Java学习路线图.md)<br>[《Java开发学习资料》](https://github.com/baohenglin/HLBlog/blob/master/Articles/Java/Java%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99.md)<br>[《Java基础语法(一)》](https://github.com/baohenglin/HLBlog/blob/master/Articles/Java/Java%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95(%E4%B8%80).md)<br>[《Java基础语法(二)》](https://github.com/baohenglin/HLBlog/blob/master/Articles/Java/Java%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95(%E4%BA%8C).md)<br>|

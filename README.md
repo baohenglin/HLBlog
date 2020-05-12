@@ -76,7 +76,7 @@ iOS系列|[《编写高质量iOS与OS+X代码的52个有效方法》](https://gi
 <!--## *🖥️工程架构(架构&设计模式)*—>
 <!--## *🖥️职业修养*-->
 
-## *🖥️ Server Development *
+## *🖥️ Server Development*
 主题|文章|备注
 |:---|:---|:---|
 |Java|[《Java 学习路线图》](https://github.com/baohenglin/HLBlog/blob/master/Articles/Java学习路线图.md)<br>[《Java开发学习资料》](https://github.com/baohenglin/HLBlog/blob/master/Articles/Java/Java%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99.md)<br>[《Java基础语法(一)》](https://github.com/baohenglin/HLBlog/blob/master/Articles/Java/Java%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95(%E4%B8%80).md)<br>[《Java基础语法(二)》](https://github.com/baohenglin/HLBlog/blob/master/Articles/Java/Java%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95(%E4%BA%8C).md)<br>|

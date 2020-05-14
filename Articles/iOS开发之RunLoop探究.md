@@ -425,7 +425,7 @@ NSTimer *timer = [NSTimer timerWithTimeInterval:self.completionDelay target:self
 
 * (3)**UIImageView 延迟加载图片**以便使 UITableView 或 UICollectionView 滑动更流畅
 
-在 UITableView 的 cell 上显示网络图片，一般需要两步，第一步异步下载网络图片；第二步将下载好的网络图片更新到 UIImageView 上。在需要加载大量网络图片的情况下，如果边滑动边加载显示网络图片，大概率会造成界面卡顿（为什么会卡顿？）。面对这种问题，我们可以这样处理：**在滑动结束后再加载网络图片**，即**延迟加载图片**。那么“延迟加载图片”的这种解决方案具体如何实现呢？
+在 UITableView 的 cell 上显示网络图片，一般需要两步，第一步异步下载网络图片；第二步将下载好的网络图片更新到 UIImageView 上。在需要加载大量网络图片或图片很大的情况下，如果边滑动边加载显示网络图片，大概率会造成界面卡顿（为什么会卡顿？因为大量高清图片解压缩和渲染是非常耗时的操作，如果在滑动情况下，也就是在 UITrackingRunLoopMode 中加载这些图片，势必会造成卡顿）。面对这种问题，我们可以这样处理：**在滑动结束后再加载网络图片**，即**延迟加载图片**。那么“延迟加载图片”的这种解决方案具体如何实现呢？
 
 我们可以利用 RunLoop 的 Mode 特性来实现。RunLoop 有五种 Mode，默认情况下处于 NSDefaultRunLoopMode，当滑动 tableView 时，会退出当前的 NSDefaultRunLoopMode，进入 UITrackingRunLoopMode，为了避免加载图片对页面的流畅性产生负面影响，可以通过 performSelector:whithObject:afterDelay:inModes 方法在主线程的 NSDefaultRunLoopMode 里为 UIImageView 设置图片（加载显示图片）。具体代码如下所示：
 

@@ -403,13 +403,15 @@ RunLoop 具体的运行逻辑是这样的：
 RunLoop休眠(线程阻塞)的实现原理：平时执行应用层面的代码时处于用户态，当在用户态调用mach_msg()函数时会自动转化到内核态,并调用内核态的mach_msg()函数，此时如果没有消息需要处理就让线程休眠，如果有消息需要处理就唤醒线程，回归到用户态调用应用层面的API去处理消息。
 
 
-## RunLoop 在实际开发中的应用
+## RunLoop 在实际项目开发中的具体应用场景
 
 * (1)控制线程生命周期即**线程保活**（线程常驻）
 
 **线程保活的应用场景**：在 iOS 开发中，有时一些耗时操作会阻塞主线程，导致界面卡顿，那么我们就会创建一个子线程，然后将耗时操作放在子线程中来处理。可是当子线程中的任务执行完毕后，子线程就会立刻被销毁掉。如果频繁执行一个任务或者多个串行（非并发）任务，这种情况下宜采用线程保活的方式。线程保活的方式比传统的“创建线程-销毁线程-再创建线程-再销毁...”更节省CPU资源且更高效。比如 AFNetworking 中后台网络请求就使用了线程保活这种技术。
 
-* (2)**解决 NSTimer 在滑动时停止工作(失效)的问题**
+[线程保活示例](https://github.com/baohenglin/RunLoopThreadLive)
+
+* (2)**解决当滑动 UITableView 或 UIScrollView 时 NSTimer 停止工作(失效)的问题**
 
 &emsp;&emsp;NSTimer 在滑动时失效的原因是 NSTimer 默认是工作在 NSDefaultRunLoopMode 模式下，而当我们滑动时，RunLoop 会退出NSDefaultRunLoopMode 模式，并进入 UITrackingRunLoopMode 模式，所有 NSTimer 失效。
 
@@ -420,9 +422,21 @@ NSTimer *timer = [NSTimer timerWithTimeInterval:self.completionDelay target:self
 
 [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 ```
+
+* (3)**UIImageView 延迟加载图片**以便使 UITableView 或 UICollectionView 滑动更流畅
+
+在 UITableView 的 cell 上显示网络图片，一般需要两步，第一步异步下载网络图片；第二步将下载好的网络图片更新到 UIImageView 上。在需要加载大量网络图片的情况下，如果边滑动边加载显示网络图片，大概率会造成界面卡顿（为什么会卡顿？）。面对这种问题，我们可以这样处理：**在滑动结束后再加载网络图片**，即**延迟加载图片**。那么“延迟加载图片”的这种解决方案具体如何实现呢？
+
+我们可以利用 RunLoop 的 Mode 特性来实现。RunLoop 有五种 Mode，默认情况下处于 NSDefaultRunLoopMode，当滑动 tableView 时，会退出当前的 NSDefaultRunLoopMode，进入 UITrackingRunLoopMode，为了避免加载图片对页面的流畅性产生负面影响，可以通过 performSelector:whithObject:afterDelay:inModes 方法在主线程的 NSDefaultRunLoopMode 里为 UIImageView 设置图片（加载显示图片）。具体代码如下所示：
+
+```
+UIImage *downloadedImage = ....;
+[self.myImageView performSelector:@selector(setImage:) withObject:downloadedImage afterDelay:0 inModes:@[NSDefaultRunLoopMode]];
+```
  
-* (3)**监控应用卡顿**
-* (4)性能优化
+* (4)**监控应用卡顿**
+
+[利用 RunLoop 监控界面卡顿详解](https://github.com/baohenglin/HLBlog/blob/master/Articles/iOS界面卡顿监测.md)
 
 
 ## RunLoop总结

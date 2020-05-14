@@ -412,6 +412,14 @@ RunLoop休眠(线程阻塞)的实现原理：平时执行应用层面的代码�
 * (2)**解决 NSTimer 在滑动时停止工作(失效)的问题**
 
 &emsp;&emsp;NSTimer 在滑动时失效的原因是 NSTimer 默认是工作在 NSDefaultRunLoopMode 模式下，而当我们滑动时，RunLoop 会退出NSDefaultRunLoopMode 模式，并进入 UITrackingRunLoopMode 模式，所有 NSTimer 失效。
+
+【注意】[NSTimer scheduledTimerWithTimeInterval: repeats:block:]方法会自动将定时器添加到主线程的 NSDefaultRunLoopMode 模式下，如果要自定义 RunLoop 模式的话，可以改为使用 timerWithTimeInterval 方法创建定时器对象，并将定时器添加到当前线程的 NSRunLoopCommonModes 模式下(实际上是将timer 定时器添加到了 NSRunLoopCommonModes 模式下的 CFMutableSetRef _commonModeItems数组中)，这样就能解决timer失效的问题。代码如下：
+
+```
+NSTimer *timer = [NSTimer timerWithTimeInterval:self.completionDelay target:self selector:@selector(completionDelayTimerFired) userInfo:nil repeats:YES];
+
+[[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+```
  
 * (3)**监控应用卡顿**
 * (4)性能优化

@@ -403,17 +403,17 @@ RunLoop 具体的运行逻辑是这样的：
 RunLoop休眠(线程阻塞)的实现原理：平时执行应用层面的代码时处于用户态，当在用户态调用mach_msg()函数时会自动转化到内核态,并调用内核态的mach_msg()函数，此时如果没有消息需要处理就让线程休眠，如果有消息需要处理就唤醒线程，回归到用户态调用应用层面的API去处理消息。
 
 
-## RunLoop在实际开发中的应用
+## RunLoop 在实际开发中的应用
 
-* (1)控制线程生命周期（线程保活）
+* (1)控制线程生命周期（**线程保活**）
 
-线程保活的应用场景：频繁执行一个任务或者多个串行（非并发）任务，可以采用线程保活的方式。线程保活的方式比传统的“创建线程-销毁线程-再创建线程-再销毁...”更节省CPU资源且更高效。比如AFNetworking中后台网络请求就使用了线程保活这种技术。
+**线程保活的应用场景**：频繁执行一个任务或者多个串行（非并发）任务，可以采用线程保活的方式。线程保活的方式比传统的“创建线程-销毁线程-再创建线程-再销毁...”更节省CPU资源且更高效。比如 AFNetworking 中后台网络请求就使用了线程保活这种技术。
 
-* (2)解决NSTimer在滑动时停止工作(失效)的问题
+* (2)**解决 NSTimer 在滑动时停止工作(失效)的问题**
 
-&emsp;&emsp;NSTimer在滑动时失效的原因是NSTimer默认是工作在NSDefaultRunLoopMode模式下，而当我们滑动时，RunLoop会退出NSDefaultRunLoopMode模式，并进入UITrackingRunLoopMode模式，所有NSTimer失效。
+&emsp;&emsp;NSTimer 在滑动时失效的原因是 NSTimer 默认是工作在 NSDefaultRunLoopMode 模式下，而当我们滑动时，RunLoop 会退出NSDefaultRunLoopMode 模式，并进入 UITrackingRunLoopMode 模式，所有 NSTimer 失效。
  
-* (3)监控应用卡顿
+* (3)**监控应用卡顿**
 * (4)性能优化
 
 

@@ -250,17 +250,16 @@ CFRunLoopModeRef代表RunLoop的运行模式。**一个RunLoop包含若干个Mod
 
 ### CFRunLoopModeRef的5种Mode
 
-CFRunLoopModeRef中一共有5种Mode，分别是：
+CFRunLoopModeRef中一共有5种Mode，mode主要是用来指定事件在运行循环中的优先级的。这 5 种 mode 分别是：
 
-* kCFRunLoopDefaultMode(NSDefaultRunLoopMode)：App的默认Mode，通常主线程是在这个Mode下运行。
-* UITrackingRunLoopMode：界面跟踪Mode，用于ScrollView追踪触摸滑动，保证界面滑动时不受其他Mode影响。
-* kCFRunLoopCommonModes：通用模式，一旦设置此模式表示同时监听kCFRunLoopDefaultMode和UITrackingRunLoopMode这两种模式。其实kCFRunLoopMode并不是一种真的模式，它只是一个标记。将定时器的RunLoop模式设置为kCFRunLoopCommonModes意味着定时器(NSTimer)可以在“CFMutableSetRef __commonModes数组中存放的模式”下运行，而且kCFRunLoopDefaultMode和UITrackingRunLoopMode都存放在CFMutableSetRef __commonModes数组中。
-
-* UIInitializationRunLoopMode：在刚启动 App 时进入的第一个 Mode，启动完成后就不再使用。
+* NSDefaultRunLoopMode(kCFRunLoopDefaultMode)：App的默认Mode，空闲状态，通常主线程是在这个Mode下运行。
+* **UITrackingRunLoopMode**：**ScrollView 滑动时会切换到该 Mode**，这样可以保证界面滑动时不受其他 Mode 影响。
+* **NSRunLoopCommonModes**(kCFRunLoopCommonModes)：通用模式，一旦设置此模式表示同时监听 NSDefaultRunLoopMode(kCFRunLoopDefaultMode) 和 UITrackingRunLoopMode 这两种模式。其实 kCFRunLoopMode 并不是一种真的模式，它只是一个标记。将定时器的 RunLoop 模式设置为kCFRunLoopCommonModes 意味着定时器(NSTimer)可以在“CFMutableSetRef __commonModes数组中存放的模式”下运行，而且 kCFRunLoopDefaultMode 和UITrackingRunLoopMode 都存放在CFMutableSetRef __commonModes数组中。
+* UIInitializationRunLoopMode：在刚启动 App 时会切换到该 Mode，启动完成后就不再使用。
 * GSEventReceiveRunLoopMode：用来接受系统事件的内部 Mode，通常用不到。
 
 
-CFRunLoopModeRef的5种Mode中最常见常用的模式是kCFRunLoopDefaultMode(NSDefaultRunLoopMode)和UITrackingRunLoopMode这2种。
+CFRunLoopModeRef 的 5 种 Mode 中最常见常用的模式是 kCFRunLoopDefaultMode(NSDefaultRunLoopMode)和 UITrackingRunLoopMode 这2种。
 
 
 ## 添加Observer监听RunLoop的所有状态

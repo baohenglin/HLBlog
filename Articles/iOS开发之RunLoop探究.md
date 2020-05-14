@@ -261,6 +261,29 @@ CFRunLoopModeRef中一共有5种Mode，mode主要是用来指定事件在运行�
 
 CFRunLoopModeRef 的 5 种 Mode 中最常见常用的模式是 kCFRunLoopDefaultMode(NSDefaultRunLoopMode)和 UITrackingRunLoopMode 这2种。
 
+## CFRunLoopTimerRef
+
+CFRunLoopTimerRef 是基于时间的触发器。基本上可以认为 CFRunLoopTimerRef 就是 NSTimer，它是受 RunLoop 的 Mode 影响。而 GCD 的定时器不受 RunLoop 的 Mode 影响。
+
+## CFRunLoopSourceRef
+
+CFRunLoopSourceRef 是**事件源（输入源）**。
+
+按照**官方文档**，Source 可分为 3 类，包括：Custom Input Source、Cocoa Perform Selector Source 和 Port-Based Source。按照**函数调用栈**，Source 可分为 2 类，分别是 **Source0**（非基于 Port 的）和 **Source1**（基于 Port 的）。
+
+* Source0:**负责 App 内部事件，由 App 负责管理触发**，包括：
+
+&emsp;&emsp;(1)**触摸事件(UITouch 事件)处理**;
+
+&emsp;&emsp;(2)**performSelector:onThread: 方法**
+
+* Source1:Source1 是 CFRunLoopSourceRef 除了Source0 之外的另一个版本。Source1 除了包含回调指针外还包含一个**mach port**，和 Source0 需要手动触发不同，**Source1 可以监听系统端口和其他线程相互发送消息，它能够主动唤醒 RunLoop(由操作系统内核进行管理，例如 CFMessagePort 消息)**。
+
+&emsp;&emsp;(1)**监听系统内核与其他线程间通信**;
+
+&emsp;&emsp;(2)**接收、分发系统事件**
+
+
 
 ## 添加Observer监听RunLoop的所有状态
 
@@ -319,17 +342,17 @@ CFRunLoopObserverRef observer = CFRunLoopObserverCreateWithHandler(kCFAllocatorD
 
 RunLoop的大体上的运行逻辑其实就是循环处理某种模式下的Source0、Source1、Timers、Observers。那么Source0、Source1、Timers、Observers具体表示什么呢？
 
-* Source0:负责App内部事件，由App负责管理触发，包括：
+* Source0:负责 App 内部事件，由 App 负责管理触发，包括：
 
-&emsp;&emsp;(1)触摸事件(UITouch事件)处理;
+&emsp;&emsp;(1)触摸事件(UITouch 事件)处理;
 
-&emsp;&emsp;(2)performSelector:onThread:方法
+&emsp;&emsp;(2)performSelector:onThread: 方法
 
-* Source1:Source1是CFRunLoopSourceRef除了Source0之外的另一个版本。Source1除了包含回调指针外包含一个**mach port**，和Source0需要手动触发不同，Source1可以监听系统端口和其他线程相互发送消息，它能够主动唤醒RunLoop(由操作系统内核进行管理，例如CFMessagePort消息)。
+* Source1:Source1 是 CFRunLoopSourceRef 除了Source0 之外的另一个版本。Source1 除了包含回调指针外包含一个**mach port**，和 Source0 需要手动触发不同，**Source1 可以监听系统端口和其他线程相互发送消息，它能够主动唤醒RunLoop(由操作系统内核进行管理，例如 CFMessagePort 消息)**。
 
-&emsp;&emsp;(1)监听基于Port的线程间通信;
+&emsp;&emsp;(1)**监听基于 Port 的线程间通信**;
 
-&emsp;&emsp;(2)系统事件捕捉
+&emsp;&emsp;(2)**接收、分发系统事件**
 
 * Timers：
 

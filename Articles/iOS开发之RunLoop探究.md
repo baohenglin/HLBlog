@@ -246,7 +246,7 @@ struct __CFRunLoopMode {
 
 ## CFRunLoopModeRef
 
-CFRunLoopModeRef代表RunLoop的运行模式。一个RunLoop包含若干个Mode，每个Mode又包含若干个Source0/Source1/Timer/Observer。RunLoop启动时只能选择其中的一个Mode作为CurrentMode。如果需要切换Mode，只能退出当前Loop，再重新选择一个Mode进入，不同Mode中的Source0/Source1/Timer/Observer彼此分隔，互不影响。如果Mode里没有任何Source0/Source1/Timer/Observer，RunLoop会立马退出该Mode。
+CFRunLoopModeRef代表RunLoop的运行模式。**一个RunLoop包含若干个Mode，每个Mode又包含若干个Source0/Source1/Timer/Observer。RunLoop启动时只能选择其中的一个Mode作为CurrentMode。如果需要切换Mode，只能退出当前Loop，再重新选择一个Mode进入，不同Mode中的Source0/Source1/Timer/Observer彼此分隔，互不影响。如果Mode里没有任何Source0/Source1/Timer/Observer，RunLoop会立马退出该Mode**。
 
 ### CFRunLoopModeRef的5种Mode
 

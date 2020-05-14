@@ -380,7 +380,7 @@ RunLoop 具体的运行逻辑是这样的：
 * (5)处理 Source0（可能会再次处理 Blocks）；
 * (6)如果存在 Source1，就跳转到第 8 步，处理 Source1；
 * (7)通知 Observers：开始休眠，不再占用CPU资源（等待消息唤醒）；
-* (8)通知 Observers：结束休眠（被某个消息唤醒）；
+* (8)通知 Observers：结束休眠（被某个消息唤醒）。这个唤醒 RunLoop 的消息可能是 “Source0”（屏幕触摸事件或performSelector:onThread: 方法）、“RunLoop 设置的 timer 已经超时”或者是“RunLoop 被外部手动唤醒”等。
 
 
 &emsp;&emsp;✅处理 Source1
@@ -388,10 +388,6 @@ RunLoop 具体的运行逻辑是这样的：
 &emsp;&emsp;✅处理 Timer（比如 timer 启动）
 
 &emsp;&emsp;✅处理 GCD Async To Main Queue
-
-&emsp;&emsp;✅RunLoop 设置的 timer 已经超时
-
-&emsp;&emsp;✅RunLoop 被外部手动唤醒
 
 * (9)处理Blocks；
 

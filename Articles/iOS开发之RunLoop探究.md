@@ -88,7 +88,7 @@ CFRunLoopRef CFRunLoopGetCurrent(void) {
 }
 ```
 
-其中CFRunLoopGetMain和CFRunLoopGetCurrent中都调用了_CFRunLoopGet0()函数，_CFRunLoopGet0函数的底层实现源码如下：
+其中 CFRunLoopGetMain 和 CFRunLoopGetCurrent 中都调用了_CFRunLoopGet0()函数，_CFRunLoopGet0 函数的底层实现源码如下：
 
 ```
 //声明一个全局的可变字典 __CFRunLoops 用于存储每一条线程以及和该线程对应的RunLoop对象 ，key是线程pthread_t，value是RunLoop对象
@@ -241,18 +241,18 @@ struct __CFRunLoopMode {
 
 ![RunLoop相关的类之间的逻辑关系.png](https://upload-images.jianshu.io/upload_images/4164292-8aa39b9546acbadb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-综上所述可知，开头列出的5个类它们之间的关系是：CFRunLoopRef(__CFRunLoopMode)中存储着CFRunLoopModeRef类型的数据，CFRunLoopModeRef中存储着CFRunLoopSourceRef、 CFRunLoopTimerRef、CFRunLoopObserverRef类型的数据。
+综上所述可知，开头列出的5个类它们之间的关系是：CFRunLoopRef(__CFRunLoopMode)中存储着CFRunLoopModeRef类型的数据，CFRunLoopModeRef中存储着CFRunLoopSourceRef、 CFRunLoopTimerRef、CFRunLoopObserverRef 类型的数据。
 
 
 ## CFRunLoopModeRef
 
 CFRunLoopModeRef代表RunLoop的运行模式。**一个RunLoop包含若干个Mode，每个Mode又包含若干个Source0/Source1/Timer/Observer。RunLoop启动时只能选择其中的一个Mode作为CurrentMode。如果需要切换Mode，只能退出当前Loop，再重新选择一个Mode进入，不同Mode中的Source0/Source1/Timer/Observer彼此分隔，互不影响。如果Mode里没有任何Source0/Source1/Timer/Observer，RunLoop会立马退出该Mode**。
 
-### CFRunLoopModeRef的5种Mode
+### CFRunLoopModeRef 的 5 种 Mode
 
-CFRunLoopModeRef中一共有5种Mode，mode主要是用来指定事件在运行循环中的优先级的。这 5 种 mode 分别是：
+CFRunLoopModeRef 中一共有 5 种 Mode，mode 主要是用来指定事件在运行循环中的优先级的。这 5 种 mode 分别是：
 
-* NSDefaultRunLoopMode(kCFRunLoopDefaultMode)：App的默认Mode，空闲状态，通常主线程是在这个Mode下运行。
+* NSDefaultRunLoopMode(kCFRunLoopDefaultMode)：App 的默认 Mode，空闲状态，通常主线程是在这个 Mode 下运行。
 * **UITrackingRunLoopMode**：**ScrollView 滑动时会切换到该 Mode**，这样可以保证界面滑动时不受其他 Mode 影响。
 * **NSRunLoopCommonModes**(kCFRunLoopCommonModes)：通用模式，一旦设置此模式表示同时监听 NSDefaultRunLoopMode(kCFRunLoopDefaultMode) 和 UITrackingRunLoopMode 这两种模式。其实 kCFRunLoopMode 并不是一种真的模式，它只是一个标记。将定时器的 RunLoop 模式设置为kCFRunLoopCommonModes 意味着定时器(NSTimer)可以在“CFMutableSetRef __commonModes数组中存放的模式”下运行，而且 kCFRunLoopDefaultMode 和UITrackingRunLoopMode 都存放在CFMutableSetRef __commonModes数组中。
 * UIInitializationRunLoopMode：在刚启动 App 时会切换到该 Mode，启动完成后就不再使用。
@@ -285,24 +285,24 @@ CFRunLoopSourceRef 是**事件源（输入源）**。
 
 
 
-## 添加Observer监听RunLoop的所有状态
+## CFRunLoopObserverRef
 
-RunLoop的所有状态包括：
+CFRunLoopObserverRef 是观察者，可以监听 RunLoop 的所有状态。RunLoop的所有状态包括：
 
 ```
 /* Run Loop Observer Activities */
 typedef CF_OPTIONS(CFOptionFlags, CFRunLoopActivity) {
-    kCFRunLoopEntry = (1UL << 0),	//即将进入RunLoop
-    kCFRunLoopBeforeTimers = (1UL << 1),//即将处理Timer
-    kCFRunLoopBeforeSources = (1UL << 2),//即将处理Source
+    kCFRunLoopEntry = (1UL << 0),	//即将进入 RunLoop
+    kCFRunLoopBeforeTimers = (1UL << 1),//即将处理 Timer
+    kCFRunLoopBeforeSources = (1UL << 2),//即将处理 Source
     kCFRunLoopBeforeWaiting = (1UL << 5),//即将进入休眠
-    kCFRunLoopAfterWaiting = (1UL << 6),//即将从休眠中唤醒
-    kCFRunLoopExit = (1UL << 7),//即将推出RunLoop
+    kCFRunLoopAfterWaiting = (1UL << 6),//刚从休眠中唤醒
+    kCFRunLoopExit = (1UL << 7),//即将退出 RunLoop
     kCFRunLoopAllActivities = 0x0FFFFFFFU
 };
 ```
 
-添加Observer监听RunLoop的所有状态，代码如下：
+通过添加 Observer 监听 RunLoop 的所有状态，代码如下：
 
 ```
 CFRunLoopObserverRef observer = CFRunLoopObserverCreateWithHandler(kCFAllocatorDefault, kCFRunLoopAllActivities, YES, 0, ^(CFRunLoopObserverRef observer, CFRunLoopActivity activity) {
@@ -332,13 +332,13 @@ CFRunLoopObserverRef observer = CFRunLoopObserverCreateWithHandler(kCFAllocatorD
             break;
     }
     });
-    //添加Observer到RunLoop中
+    //添加 Observer（观察者）到 RunLoop 中，以监听 RunLoop 的状态变化。
     CFRunLoopAddObserver(CFRunLoopGetMain(), observer, kCFRunLoopCommonModes);
     //释放observer
     CFRelease(observer);
 ```
 
-## RunLoop的运行逻辑
+## RunLoop 的运行逻辑
 
 RunLoop的大体上的运行逻辑其实就是循环处理某种模式下的Source0、Source1、Timers、Observers。那么Source0、Source1、Timers、Observers具体表示什么呢？
 
@@ -369,29 +369,33 @@ RunLoop的大体上的运行逻辑其实就是循环处理某种模式下的Sour
 &emsp;&emsp;(3)Autoreleasepool(BeforeWaiting)
 
 
-RunLoop具体的运行逻辑是这样的：
+RunLoop 具体的运行逻辑是这样的：
 
 ![RunLoop的运行逻辑.png](https://upload-images.jianshu.io/upload_images/4164292-d817bb1ea03226a2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-* (1)通知Observers：进入RunLoop；
-* (2)通知Observers：即将处理Timers；
-* (3)通知Observers：即将处理Sources；
-* (4)处理Blocks（比如通过CFRunLoopPerformBlock函数添加的Block）；
-* (5)处理Source0（可能会再次处理Blocks）；
-* (6)如果存在Source1，就跳转到第8步，处理Source1；
-* (7)通知Observers：开始休眠，不再占用CPU资源（等待消息唤醒）；
-* (8)通知Observers：结束休眠（被某个消息唤醒）；
+* (1)通知 Observers：即将进入 RunLoop；
+* (2)通知 Observers：即将处理 Timers；
+* (3)通知 Observers：即将处理 Sources；
+* (4)处理 Blocks（比如：通过 CFRunLoopPerformBlock 函数添加的 Block）；
+* (5)处理 Source0（可能会再次处理 Blocks）；
+* (6)如果存在 Source1，就跳转到第 8 步，处理 Source1；
+* (7)通知 Observers：开始休眠，不再占用CPU资源（等待消息唤醒）；
+* (8)通知 Observers：结束休眠（被某个消息唤醒）；
 
 
-&emsp;&emsp;✅处理Source1
+&emsp;&emsp;✅处理 Source1
 
-&emsp;&emsp;✅处理Timer
+&emsp;&emsp;✅处理 Timer（比如 timer 启动）
 
-&emsp;&emsp;✅处理GCD Async To Main Queue
+&emsp;&emsp;✅处理 GCD Async To Main Queue
+
+&emsp;&emsp;✅RunLoop 设置的 timer 已经超时
+
+&emsp;&emsp;✅RunLoop 被外部手动唤醒
 
 * (9)处理Blocks；
 
-* (10)根据前面的执行结果，决定如何操作：有可能不退出当前的RunLoop，而是回到第2步继续执行；也有可能结束当前RunLoop，切换到其他的模式。如果切换到其他模式的话，则会执行(11)步；
+* (10)根据前面的执行结果，决定如何操作：有可能不退出当前的RunLoop，而是回到第2步继续执行；也有可能结束当前 RunLoop，切换到其他的模式。如果切换到其他模式的话，则会执行(11)步；
 * (11)通知Observers：退出RunLoop。
 
 

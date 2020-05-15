@@ -384,7 +384,18 @@ block属性的写法：
 
 当block从堆中被移除时，会调用block内部的dispose函数(__main_block_dispose_0函数)，__main_block_dispose_0函数内部会调用_Block_object_dispose函数，_Block_object_dispose函数会自动释放引用的auto变量类似于release操作。
 
+
+
+
+
+## block 的变量传递总结
+
+* 如果 block 访问的外部变量时局部变量，那么就是值传递，外界改了，不会影响 block 里面的值；
+* 如果 block 访问的外部变量是 __block 或者 static 修饰的，或者是全局变量，那么就是指针传递，block 里面的值会随着外界的改变而变化；
+
+
 ## 被__block修饰符修饰的基本类型
+
 
 默认情况下，block不能直接修改block外部的局部变量(auto变量)。那么怎么才能修改呢？有以下几种方案：
 

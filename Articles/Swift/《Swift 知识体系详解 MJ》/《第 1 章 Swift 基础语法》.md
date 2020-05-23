@@ -3,6 +3,8 @@
 
 ## 常量
 
+常量只能赋值 1 次，常量的值**不要求在编译时期确定，但使用之前必须赋值 1 次**。
+
 ```
 //方式1
 let age: Int = 20
@@ -11,5 +13,307 @@ let age: Int
 age = 20
 ```
 
+常量的值**不要求在编译时期确定，但使用之前必须赋值 1 次**。
 
+```
+func getAge() -> Int {
+  return 10;
+}
 
+let age = getAge()
+print(age)
+```
+
+## 常见数据类型
+
+![Swift常见数据类型.png](https://upload-images.jianshu.io/upload_images/4164292-3efc25e2b333769c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+Swift 中的数据类型分为两大类：值类型（value type）和引用类型（reference type）。其中值类型包括：枚举（enum）和结构体（struct）。引用类型包括类（class）。
+
+* 枚举：Optional
+* 结构体：Bool、Int、Float、Double、Character、String、Array、Dictionary、Set。
+
+其中 Int 整数类型又包括：Int8、Int16、Int32、Int64、UInt8、UInt16、UInt32、UInt64。在 32 bit 机器上，Int 等价于 Int32，在 64 bit 机器上，Int 等价于 Int64。
+
+在 Swift 中将 Int 设计为 Struct 的好处，整型可以直接调用方法。比如 UInt8.max、Int16.min。
+
+## 字面量
+
+```
+//布尔
+let bool = true
+
+//字符串
+let string = "bhl"
+
+//字符（可存储ASCII字符、Unicode字符）
+let character: Character = "a"
+
+// 整数
+let intDecimal = 17 //十进制
+let intBinary = 0b10001 //二进制
+let intOctal = 0o21 //八进制
+let intHexadecimal = 0x11 //十六进制
+
+//数组
+let array = [1, 3, 5, 7]
+//字典
+let dictionary = ["age" : 18,"height" : 168]
+```
+
+## 类型转化
+
+```
+let int1: UInt16 = 2_000
+let int2: UInt8 = 1
+let int3 = int1 + UInt16(int2)
+```
+
+字面量可以直接相加，因为数字字面量本身没有明确的类型。
+
+```
+let result = 3 + 0.14159
+```
+
+## 元组（tuple）
+
+```
+let http404Error = (404, "Not Found")
+print("The status code is \(http404Error.0)")
+
+let (statusCode, statusMessage) = http404Error
+print("The status code is \(statusCode)")
+
+//如果不想接受某个值，可以使用下划线 来忽略。
+let (statusCode, _) = http404Error
+
+let http404Error = (statusCode: 404, description: "Not Found")
+print("The status code is \(http404Error.statusCode)")
+```
+
+## 流程控制
+
+### if-else
+
+```
+let age = 4
+if age >= 22 {
+  print("get married")
+} else if age >= 18 {
+  print("Being a adult")
+} else if age >= 7 {
+  print("go to school")
+} else {
+  print("just a child")
+}
+```
+
+* if 后面的条件可以省略小括号；
+* 条件后面的大括号不可以省略；
+* if 后面的条件只能是 Bool 类型。
+
+###  while 
+
+```
+var num = 5
+while num > 0 {
+  print("num is \(num)")
+  num -= 1
+}
+// 打印了 5 次
+```
+
+#### repeat-while 
+
+repeat-while 相当于 C 语言的 do-while。从 Swift3 开始，去除了自增（++）、自减（--）运算符
+
+```
+var num = -1
+repeat {
+  print("num is \(num)")
+} while num > 0 
+// 打印了 1 次
+```
+
+### for 循环
+
+* 闭区间运算符：“a...b” 表示 “a <= 取值 <= b”
+
+```
+let names = ["Anna", "Jack", "Brian", "Jamth"]
+//i 默认是 let，需要时可以声明为var
+for i in 0...3 {
+  print(names[i])
+}
+//Anna Jack Brian Jamth
+```
+
+```
+let names = ["Anna", "Jack", "Brian", "Jamth"]
+let range = 1...3
+for i in range {
+  print(names[i])
+}
+```
+
+```
+let names = ["Anna", "Jack", "Brian", "Jamth"]
+let a = 1
+let b = 3
+for i in a...b {
+  print(names[i])
+}
+```
+
+**如果 for 循环内部没有用到 i，那么可以使用下划线 _ 代替 i**
+
+```
+for _ in 1...3 {
+  
+}
+```
+
+* 半开区间运算符：“a..<b” 表示“a <= 取值 < b”
+
+**for - 区间运算符用在数组上**
+
+```
+let names = ["Anna", "Jack", "Brian", "Jamth"]
+for name in names[0...3] {
+  print(name)
+}
+//Anna Jack Brian Jamth
+```
+
+* 单侧区间：让区间朝一个方向尽可能的远。
+
+```
+for name in names[2...] {
+  print(name)
+}
+for name in names[...2] {
+  print(name)
+}
+for name in names[..<2] {
+  print(name)
+}
+```
+
+```
+let range = ...5
+range.contains(7) //false
+range.contains(-3) //true
+```
+**区间类型**
+
+```
+let range1: ClosedRange<Int> = 1...3
+let range2: Range<Int> = 1..<3
+let range3: PartialRangeThrough<Int> = ...5
+```
+
+字符、字符串也能使用区间运算符，但默认不能用在 for-in 中。如下所示：
+
+```
+//字符串
+let stringRange1 = "cc"..."ff"
+stringRange1.contains("cd") //true
+
+let characterRange: ClosedRange<Character> = "\0"..."~"
+characterRange.contains("G") //true
+```
+
+* 带间隔的区间值
+
+```
+let hours = 11
+let hourInterval = 2
+// tickMark 的取值：从 4 开始，累加 2，不超过 11
+for tickMark in stride(from: 4, through: hours, by: hourInterval) {
+  print(tickMark)
+} // 4 6 8 10
+```
+
+### switch
+
+```
+var number = 1
+switch number {
+  case 1:
+    print("number is 1")
+    break
+  case 2:
+    print("number is 2")
+    break
+  default:
+    print("number is other")
+    break
+}
+```
+
+* 在 case、default 后面不能写大括号 {}
+* 默认可以不写 break，并不会贯穿到后面的条件；
+* switch 必须要保证能处理所有情况，否则报错。
+* 如果不想做任何事，加个 break 即可。
+
+#### switch 也支持 Character、String 类型
+
+```
+// 复合条件
+let string = "Jack"
+switch string {
+  case "Jack":
+    fallthrough
+  case "Rose":
+    print("right person")
+  default:
+    break
+}
+// Right person 
+```
+
+等价于
+
+let string = "Jack"
+switch string {
+  case "Jack",  "Rose":
+    print("right person")
+  default:
+    break
+}
+
+**fallthrough**：用来实现贯穿效果。
+
+ ```
+var number = 1
+switch number {
+  case 1:
+    print("number is 1")
+    fallthrough
+  case 2:
+    print("number is 2")
+    fallthrough
+  default:
+    print("number is other")
+}
+```
+
+#### 区间匹配、元组匹配
+
+元组匹配
+
+```
+let point = (1, 1)
+switch point {
+  case (0, 0):
+    print("the origin")
+  case (_, 0):
+    print("on the x-axis")  
+  case (0, _):
+    print("on the y-axis")  
+  case (-2...2, -2...2):
+    print("inside the box")  
+  default:
+    print(outside of the box)
+}
+```

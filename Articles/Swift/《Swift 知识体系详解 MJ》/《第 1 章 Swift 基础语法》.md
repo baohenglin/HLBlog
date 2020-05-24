@@ -771,6 +771,67 @@ switch score {
 // grade A
 ```
 
+```
+enum Date {
+  case digit(year: Int, month: Int, day: Int)
+  case string(String)
+}
+var date = Date.digit(year: 2011, month: 9, day: 10)
+date = .string("2020-10-01")
 
+switch date {
+case .digit(let year, let month, let day):
+  print(year, month, day)
+case let .string(value):
+  print(value)
+}
+```
 
+### 原始值（Raw Values）
+
+枚举成员可以使用相同类型的默认值预先关联，这个默认值叫做原始值。
+
+```
+enum Grade : String {
+  case perfect = "A"
+  case great = "B"
+  case good = "c"
+  case bad = "d"
+}
+print(Grade.perfect.rawValue) //A
+print(Grade.great.rawValue) //B
+print(Grade.good.rawValue) //C
+print(Grade.bad.rawValue) //D
+```
+
+### 隐式原始值
+
+如果枚举的原始值类型是 Int、String，Swift 会自动分配原始值。
+
+```
+enum Direction : String {
+  case north = "north"
+  case south = "south"
+  case east = "east"
+  case west = "west"
+}
+//等价于
+enum Direction : String {
+  case north, south, east, west
+}
+print(Direction.north) //north
+print(Direction.north.rawValue) //north
+```
+
+### 递归枚举（Recursive Enumeration）
+
+```
+indirect enum ArithExpr {
+  case number(Int)
+  case sum(ArithExpr, ArithExpr)
+  case difference(ArithExpr, ArithExpr)
+}
+```
+
+必须在 enum 前面加上 关键字 indirect，否则会报错。
 

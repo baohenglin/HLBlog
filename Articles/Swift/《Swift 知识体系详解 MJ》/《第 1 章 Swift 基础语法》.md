@@ -440,6 +440,153 @@ func sum(_ v1: Int, _ v2: Int) -> Int {
 sum(10, 20)
 ```
 
+#### 默认参数值（Default Parameter Value）
+
+参数可以有默认值。
+
+```
+func check(name: String = "nobody", age: Int, job: String = "none") {
+  print("name=\(name), age=\(age), job=\(job)")
+}
+check(age: 15)
+//name=nobody, age=15, job=none
+```
+
+C++ 的默认参数值有个限制：必须从右往左设置。由于 Swift 拥有参数标签，因此并没有此类限制。但是在省略参数标签时，需要特别注意，避免出错。
+
+#### 可变参数（Variadic Parameter）
+
+```
+func sum(_ numbers: Int...) -> Int {
+  var total = 0
+  for number in numbers {
+    total += number
+  }
+  return total
+}
+sum(10, 20, 30, 40)
+//100
+```
+
+注意点：
+
+* 一个函数最多只能有 1 个可变参数。
+* 紧跟在可变参数后面的参数不能省略参数标签。
+
+```
+//参数 string 不能省略标签
+func test(_ numbers: Int..., string: String, _ other: String) {}
+test(10, 20, 30, string: "Jack", "Rose")
+```
+
+#### 输入输出参数（In-Out Parameter） 
+
+**可以用 inout 定义一个输入输出参数：可以在函数内部修改外部实参的值**（重点）。
+
+```
+func swapValues(_ v1: inout Int, _ v2: inout Int){
+  let tmp = v1
+  v1 = v2
+  v2 = tmp
+}
+var num1 = 10
+var num2 = 20
+swapValues(&num1, &num2)
+```
+
+注意点：
+
+* 可变参数不能标记为 inout；
+* inout 参数不能有默认值
+* **inout 参数的本质是地址传递（引用传递）**
+
+利用元组来实现两个变量交换的功能：
+
+```
+func swapValues(_ v1: inout Int, _ v2: inout Int) {
+  (v1, v2) = (v2, v1)
+}
+```
+* inout 参数只能传入可以被多次赋值的变量。
+
+常用汇编指令含义：
+
+```
+callq 函数地址  //表示函数调用
+mov           //表示移动赋值
+lea           //传参：地址传递
+%XXX          //百分号表示XXX寄存器
+(%rdi)        //表示查找 rdi 寄存器所存储的内存地址
+```
+
+#### 函数重载（Function Overload）
+
+函数重载规则：
+
+* 函数名相同；
+* 参数个数不同 || 参数类型不同 || 参数标签不同
+
+```
+func sum(v1: Int, v2: Int) -> Int {
+  v1 + v2
+}
+
+//参数个数不同
+func sum(v1: Int, v2: Int, v3: Int) -> Int {
+  v1 + v2 + v3
+}
+
+//参数类型不同
+func sum(v1: Int, v2: Double) -> Double {
+  v1 + v2
+}
+func sum(v1: Double, v2: Int) -> Double {
+  v1 + v2
+}
+
+//参数标签不同
+func sum(_ v1: Int, _ v2: Int) -> Int {
+  v1 + v2
+}
+func sum(a: Int, b: Int) -> Int {
+  a + b
+}
+```
+
+函数重载注意点：
+
+* 返回值类型与函数重载无关；
+* 可变参数、省略参数标签、函数重载一起使用产生二义性时，编译器有可能会报错。
+
+```
+func sum(v1: Int, v2: Int) -> Int {
+  v1 + v2
+}
+func sum(_ v1: Int, _ v2: Int) -> Int {
+  v1 + v2
+}
+func sum(_ numbers: Int...) -> Int {
+  var total = 0
+  for number in numbers {
+    total += number
+  }
+  return total
+}
+sum(10, 20)
+//error: ambiguous use of "sum"
+```
+
+#### 内联函数（Inline Function）
+
+如果开启了编译器优化（Build Settings 中 Debug模式默认没有开启优化，Release 模式默认开启优化 Optimize for Speed），编译器会自动将**某些函数**变成内联函数，将函数展开为函数体。这样就避免了函数调用时栈空间的开辟与释放等资源的消耗。
+
+那么哪些函数不会被编译器自动优化为内联函数呢？
+
+* 函数体比较长；
+* 包含递归调用；
+* 包含动态派发（动态绑定）；
+
+
 
 
 

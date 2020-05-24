@@ -586,6 +586,22 @@ sum(10, 20)
 * 包含递归调用；
 * 包含动态派发（动态绑定）；
 
+##### @inline
+
+```
+//永远不会被内联（即使开启了编译器优化）
+@inline(never) func test() {
+  print("test")
+}
+```
+
+```
+// 开启编译器优化后，即使代码很长，也会被内联（递归调用函数、动态派发的函数除外）
+@inline(__always) func test() {
+  print("test")
+}
+```
+
 #### 函数类型（Function Type）
 
 每一个函数都是有类型的，函数类型由**形式参数类型、返回值类型**组成。
@@ -710,4 +726,51 @@ func forward(_ forward: Bool) -> (Int) -> Int {
 forward(true)(3) //4
 forward(false)(3) //2
 ```
+
+## 枚举
+
+### 枚举的基本用法
+
+```
+enum Direction {
+  case north
+  case south
+  case east
+  case west
+}
+
+//等价于
+enum Direction {
+  case north, south, east, west
+}
+
+var dir = Direction.west
+dir = Direction.east
+dir = .north
+print(dir) //north
+```
+
+### 关联值（Associated Values）
+
+有时会将枚举的成员值跟其他类型的值关联存储在一起，会非常有用。
+
+```
+enum Score {
+  case points(Int)
+  case grade(Character)
+}
+var score = Score.points(96)
+score = .grade("A")
+
+switch score {
+  case let .points(i):
+    print(i, "points")
+  case let .grade(i):
+    print("grade", i)
+}
+// grade A
+```
+
+
+
 

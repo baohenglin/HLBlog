@@ -590,6 +590,8 @@ sum(10, 20)
 
 每一个函数都是有类型的，函数类型由**形式参数类型、返回值类型**组成。
 
+##### 函数类型定义变量
+
 ```
 func test() {}
 //函数类型是：() -> Void 或者 () -> ()
@@ -598,10 +600,114 @@ func sum(a: Int, b: Int) -> Int {
   a + b
 }
 // 函数类型是：(Int, Int) -> Int
+
+//定义 (Int, Int) -> Int 函数类型的变量 fn
+var fn: (Int, Int) -> Int = sum
+fn(2, 3) //结果等于 5
+// 通过变量来调用函数时不需要写参数标签
 ```
 
+##### 函数类型作为函数参数
 
+```
+func sum(v1: Int, v2: Int) -> Int {
+  v1 + v2
+}
+func difference(v1: Int, v2: Int) -> Int {
+  v1 - v2
+}
+func pritResult(_ mathFn: (Int, Int) -> Int, _ a: Int, _ b: Int) {
+  print("Result:\(mathfn(a, b))")
+}
+printResult(sum, 5, 2) //Result: 7
+printResult(difference, 5, 2) //Result:3
+```
 
+##### 函数类型作为函数返回值
 
+返回值是函数类型的函数，叫做**高阶函数**（Higher-Order Function）。如下所示：
 
+```
+func next(_ input: Int) -> Int {
+  input + 1
+}
+func previous(_ input: Int) -> Int {
+  input - 1
+}
+func forward(_ forward: Bool) -> (Int) -> Int {
+  forward ? next : previous
+}
+forward(true)(3) //4
+forward(false)(3) //2
+```
+
+#### typealias
+
+typealias 用来给类型起别名。
+
+```
+typealias Byte = Int8
+typealias Short = Int16
+typealias Long = Int64
+
+//给元组起别名
+typealias Date = (year: Int, month: Int, day: Int)
+func test(_ date: Date) {
+  print(date.0)
+  print(date.year)
+}
+test((2020, 5, 24))
+
+// 给函数类型起别名
+typealias IntFn = (Int, Int) -> Int
+
+func difference(v1: Int, v2: Int) -> Int {
+  v1 - v2
+}
+let fn: IntFn = difference
+fn(20, 10) //10
+
+func setFn(_ fn: IntFn) { }
+setFn(difference)
+
+func getFn() -> IntFn { difference }
+```
+
+按照 Swift 标准库的定义，Void 就是空元组。
+
+```
+public typealias Void = ()
+```
+
+示例：
+
+```
+//函数没有返回值
+//方式1：不写返回值
+func test() {}
+
+//方式2：返回值写 Void
+func test() -> Void {}
+
+//方式3：返回值写 空元组
+func test() -> () {}
+```
+
+#### 嵌套函数（Nested Function）
+
+将函数定义在函数内部叫做“嵌套函数”
+
+```
+func forward(_ forward: Bool) -> (Int) -> Int {
+  func next(_ input: Int) -> Int {
+    input + 1
+  }
+  func previous(_ input: Int) -> Int {
+    input - 1
+  }
+  return forward ? next : previous
+}
+forward(true)(3) //4
+forward(false)(3) //2
+```
 

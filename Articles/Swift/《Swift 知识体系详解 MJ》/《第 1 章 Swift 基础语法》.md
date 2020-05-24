@@ -317,3 +317,132 @@ switch point {
     print(outside of the box)
 }
 ```
+
+#### 值绑定
+
+```
+let point = (1, 1)
+switch point {
+  case (let x, 0):
+    print("on the x-axis with an x value of \(x)")
+  case (0, let y):
+    print("on the y-axis with an x value of \(y)")  
+  case let (x, y):
+    print("somewhere else at (\(x), \(y))")  
+}
+```
+
+#### where
+
+```
+let point = (1, -1)
+switch point {
+  case let (x, y) where x == y:
+    print("on the line x== y")
+  case let (x, y) where x == -y:
+    print("on the line x== -y")
+  case let (x, y) :
+    print("(\(x),\(y)) is just some arbitrary point")
+}
+```
+
+```
+var numbers = [10, 20, -10, -20, 30, -30]
+var sum = 0
+// 使用 where 来过滤 num
+for num in numbers where num > 0 {
+  sum += num
+}
+print(sum)
+// 60
+```
+
+## 函数
+
+### 函数的定义
+
+#### 完整的函数定义的格式：
+
+```
+//形参默认是 let，也只能是 let
+func 函数名(参数名1: 参数类型1, 参数名2: 参数类型2,……) -> 返回值类型 {
+
+}
+```
+示例如下：
+
+```
+func pi() -> Double {
+  return 3.14
+}
+func sum(v1: Int, v2: Int) -> Int {
+  return v1 + v2
+}
+sum(v1: 10, v2: 20)
+```
+
+#### 无返回值的函数：
+
+```
+//方式1：
+func sayHello() -> Void {
+  print("Hello")
+}
+//方式2：
+func sayHello() -> () {
+  
+}
+//方式3：
+func sayHello() {
+  print("Hello")
+}
+```
+
+**隐式返回（Implicit Return）**：如果整个函数体是一个单一表达式，那么函数会隐式返回这个表达式。
+
+```
+func sum(v1: Int, v2: Int) -> Int {
+  v1 + v2
+}
+sum(v1: 10, v2: 20) //30
+```
+
+#### 返回元组：实现多返回值
+
+```
+func calculate(v1: Int, v2: Int) -> (sum: Int, difference: Int, average: Int) {
+  let sum = v1 + v2
+  return (sum, v1 - v2, sum >> 1)
+}
+let result = calculate(v1: 20, v2: 10)
+result.sum //30
+result.difference //10
+result.average //15
+```
+
+#### 函数的文档注释
+
+#### 参数标签（Argument Label）
+
+```
+func goToWork(at time: String) {
+  print("this time is \(time)")
+}
+goToWork(at: "08:00")
+```
+
+上面示例中 “at” 是参数标签。**也可以使用下划线“_”省略参数标签**。
+
+```
+func sum(_ v1: Int, _ v2: Int) -> Int {
+  v1 + v2
+}
+sum(10, 20)
+```
+
+
+
+
+
+
+

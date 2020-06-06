@@ -1,4 +1,42 @@
-|书名|章节|备注|
-|:---|:--|:---:
-《HTTP权威指南》|[《第 1 章 HTTP概述》]()<br>[《第 2 章 URL与资源》]()<br>[《第 3 章 HTTP报文》]()<br>[《第 4 章 连接管理》]()<br>[《第 5 章 Web服务器》]()<br>[《第 6 章 代理》]()<br>[《第 7 章 缓存》]()<br>[《第 8 章 集成点：网关、隧道及中继》]()<br>[《第 9 章 Web机器人》]()<br>[《第 10 章 HTTP-NG》]()<br>[《第 11 章 客户端识别与 cookie 机制》]()<br>[《第 12 章 基本认证机制》]()<br>[《第 13 章 摘要认证》]()<br>[《第 14 章 安全 HTTP》]()<br>[《第 15 章 实体和编码》]()<br>[《第 16 章 国际化》]()<br>[《第 17 章 内容协商与转码》]()<br>[《第 18 章 Web主机托管》]()<br>[《第 19 章 发布系统》]()<br>[《第 20 章 重定向与负载均衡》]()<br>[《第 21 章 日志记录与使用情况跟踪》]()<br>|
+# CSS 
+
+## CSS 权重
+
+### 权重规则：
+
+* 通配符的权重是 0
+* 标签、伪元素的权重是 0001
+* class、类属性值二者的权重是 0010
+* id 的权重是 0100
+* 行内样式的权重是 1000
+
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FQY</title>
+  <style>
+    div {
+      color: red;
+    }
+    #hdcms {
+      color: purple
+    }
+    .fengqingyang {
+      color: green;
+    }
+  </style> 
+</head>
+
+<body>
+  <div class="fengqingyang" id="hdcms">BHL</div>
+</body>
+```
+
+### 元素继承权重
+
+继承没有权重，也就是 NULL。
+
+
 

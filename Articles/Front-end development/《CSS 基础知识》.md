@@ -259,6 +259,45 @@ h2 {
 }
 ```
 
+### 文本线条
+
+#### 添加隐藏删除线、下换线、删除线、上划线等效果
+
+```
+<style>
+    a {
+      /* 隐藏删除线 */
+      text-decoration: none;
+    }
+    .underline {
+      /* 下划线 */
+      text-decoration: underline;
+    }
+    .through {
+      text-decoration: line-through;
+    }
+    .overline {
+      /* 上划线 */
+      text-decoration: overline;
+    }
+</style>
+
+<body>
+  <a href="">google.com</a>
+  <hr>
+  <span class="underline">下划线</span>
+  <hr>
+  <span class="through">删除线</span>
+  <hr>
+  <span class="overline">上划线</span>
+</body>
+```
+
+#### 阴影控制
+
+参数顺序为：颜色、水平偏移、垂直偏移、模糊度
+
+
 
 
 

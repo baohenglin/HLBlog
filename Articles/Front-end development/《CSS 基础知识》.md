@@ -120,8 +120,144 @@ strong:last-child {
 <strong>hdcms.com</strong>
 ```
 
+### 文本字号
 
+字号用于控制字符的显示大小，包括 xx-small | x-small | small | meidum | large | x-large | xx-large。
 
+#### 百分数
+
+百分数是子元素相对于父元素的大小。如果父元素是 20px，子元素设置为 200%，那么子元素字体大小为父元素字体大小的 2 倍。
+
+```
+<style>
+  article {
+  	font-size: 20px;
+  }
+
+  span {
+  	font-size: 500%;
+  }
+</style>
+...
+
+<article>
+	<span>houdunren.com</span>
+</article>
+```
+
+#### em
+
+em单位等同于百分数单位。
+
+```
+<style>
+  article {
+  	font-size: 20px;
+  }
+
+  span {
+  	font-size: 5em;
+  }
+</style>
+...
+
+<article>
+	<span>houdunren.com</span>
+</article>
+```
+
+### 文本颜色
+
+#### 字符串颜色
+
+```
+color:red;
+```
+
+#### 十六进制网页颜色
+
+如果颜色字符相同，比如 #dddddd，可以简写为 #ddd
+
+```
+color:#ddffde
+```
+
+#### 使用 RGB 颜色
+
+```
+color:rgb(38, 149, 162);
+```
+
+#### 透明颜色
+
+透明色可以 0~1 之间的值。0 表示透明，1 表示不透明。
+
+```
+color:rgba(38, 149, 162, .2);
+```
+
+### 行高定义
+
+```
+div {
+   line-height: 2em;
+}
+```
+
+### 倾斜风格：控制字符的倾斜样式
+
+```
+<style>
+  span {
+  	font-style: italic;
+  }
+
+  em {
+  	font-style: normal;
+  }
+</style>
+...
+
+<span>houdunren.com</span>
+<hr>
+<em>hdcms.com</em>
+```
+
+### 组合定义
+
+可以使用 font 一次将字符样式定义，但要注意以下两点：
+
+* 必须有字体规则；
+* 必须有字符大小规则。
+
+```
+span {
+   font: bold italic 20px/1.5 'Courier New', Courier,monospace;
+}
+```
+
+上例中的 20px 为字体大小，1.5 为 1.5 倍行高定义。
+
+## 文本样式
+
+### 大小转换
+
+```
+span {
+    /* 小号大写字母 */
+   font-variant: small-caps;
+}
+h2 {
+  /* 首字母大写 */
+  text-transform: capitalize;
+
+  /* 全部大写 */
+  text-transform: uppercase;
+
+  /* 全部小写 */
+  text-transform: lowercase;
+}
+```
 
 
 

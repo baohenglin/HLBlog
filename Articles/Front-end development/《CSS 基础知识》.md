@@ -72,6 +72,38 @@ h2 中的span并没有继承 h2 的颜色，就是因为继承没有权重。而
 
 sass和less主要区别:在于二者的实现方式不同。less 是基于 JavaScript 的，在客户端处理，所以安装的时候用 npm。sass 是基于 ruby，所以在服务器处理。
 
+## 文本控制
+
+### 字体设置
+
+可以定义多个字体，系统会依次查找。比如 'Courier New'字体不存在将使用 Courier 以此类推。
+
+```
+font-family: 'Courier New', Courier, monospace;
+```
+
+#### 自定义字体
+
+可以声明自定义字段，如果客户端不存在将下载该字体，使用方式也是通过 font-family 引入。
+
+```
+<style>
+  @font-face {
+  	font-family: "houdunren";
+  	src: 	url("SourceHanSansSC-Light.otf") format("opentype"),
+  				url("SourceHanSansSC-Heavy.otf") format("opentype");
+  }
+
+  span {
+  	font-family: 'houdunren';
+  }
+</style>
+```
+
+
+
+
+
 
 
 

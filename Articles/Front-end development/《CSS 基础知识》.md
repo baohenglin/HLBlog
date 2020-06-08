@@ -100,7 +100,25 @@ font-family: 'Courier New', Courier, monospace;
 </style>
 ```
 
+### 字重定义
 
+字重指字的粗细定义。font-weight 的取值范围 normal | bold | bolder | lighter | 100 ~900。其中 400 对应 normal，700 对应 bold，一般情况下使用 bold 或 normal 的较多。
+
+```
+<style>
+span {
+	font-weight: bold;
+}
+
+strong:last-child {
+	font-weight: normal;
+}
+</style>
+...
+
+<span>houdunren.com</span>
+<strong>hdcms.com</strong>
+```
 
 
 

@@ -975,5 +975,53 @@ while let num = Int(strs[index]), num > 0 {
 print(sum)
 ```
 
- ### 
+ ### 空合并运算法 ??（Nil-Coalescing Operator）
+ 
+ ```
+ a ?? b
+ //表示如果 a 不为 nil，则返回a；如果a为nil，则返回b。
+ //a 必须是可选项，b可以是可选项，也可以不是可选项。但是 b 和 a 的存储类型必须相同。如果 b 不是可选项，那么返回 a 时会自动解包。
+ ```
+ 
+ ```
+ let a: Int? = 1
+ let b: Int? = 2
+ let c = a ?? b
+ //c是 Int?，Optional(1)
+ ```
+ 
+ ```
+ let a: Int? = nil
+ let b: Int? = 2
+ let c = a ?? b
+ //c是 Int?, Optional(2)
+ ```
+ 
+ ```
+ let a: Int? = 1
+ let b: Int = 2
+ let c = a ?? b
+ //c是 Int, 而不是 Int?，c=1
+ ```
+ 
+ ### ??跟if let 配合使用
+ 
+ ```
+ let a: Int? = nil
+ let b: Int? = 2
+ if let c = a ?? b {
+    print(c)
+ }
+ //类似于 if a != nil || b != nil
+ ```
+ 
+ ```
+ let a: Int? = nil
+ let b: Int? = 2
+ if let c = a, let d = b {
+  print(c)
+  print(d)
+ }
+ // 类似于 if a != nil && b != nil
+ ```
 

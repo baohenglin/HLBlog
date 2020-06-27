@@ -823,7 +823,7 @@ print(Direction.north) //north
 print(Direction.north.rawValue) //north
 ```
 
-### 递归枚举（Recursive Enumeration）
+### 递归枚举（Recursive Enumeration） 20202.06.27
 
 ```
 indirect enum ArithExpr {
@@ -831,7 +831,19 @@ indirect enum ArithExpr {
   case sum(ArithExpr, ArithExpr)
   case difference(ArithExpr, ArithExpr)
 }
+//等价于
+enum ArithExpr {
+  case number(Int)
+  indirect case sum(ArithExpr, ArithExpr)
+  indirect case difference(ArithExpr, ArithExpr)
+}
 ```
 
-必须在 enum 前面加上 关键字 indirect，否则会报错。
+递归枚举必须在 enum 前面加上 关键字 indirect，否则会报错。
+
+### MemoryLayout
+
+可以使用 MemoryLayout 获取数据类型占用的内存大小。
+
+
 

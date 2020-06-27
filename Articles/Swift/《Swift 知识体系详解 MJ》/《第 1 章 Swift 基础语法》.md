@@ -845,5 +845,135 @@ enum ArithExpr {
 
 可以使用 MemoryLayout 获取数据类型占用的内存大小。
 
+```
+MemoryLayout<Int>.size //8
+MemoryLayout<Int>.stride //8
+MemoryLayout<Int>.alignment //8 内存对齐
 
+var age = 10
+MemoryLayout.size(ofValue: age) //8
+MemoryLayout.stride(ofValue: age) //8 
+MemoryLayout.alignment(ofValue: age) //8
+```
+
+```
+enum Password {
+  case number(Int, Int, Int, Int)
+  case other
+}
+MemoryLayout<Password>.size //40字节 分配占用的空间大小
+MemoryLayout<Password>.stride //33字节 实际用到的空间大小
+MemoryLayout<Password>.alignment //8 对齐参数
+```
+
+原始值是不会存储到枚举变量里面的，关联值是存储在枚举变量里的。
+
+### 可选项（Optional） 重点
+
+可选项，一般也叫可选类型，它允许将值设置为 nil。声明方式：在类型名称后面加个问号“?”来定义可选项。
+
+```
+var name: String? = "Jack"
+name = nil
+
+var age: Int? //默认为nil
+age = 10
+age = nil
+```
+
+```
+var array = [1, 15, 40, 29]
+fun get(_ index: Int) -> Int? {
+  if index < 0 || index >= array.count {
+    return nil
+  }
+  return array[index]
+}
+print(get(1)) //Optional(15)
+print(get(-1)) //nil
+print(get(4)) //nil
+```
+
+### 强制解包（Forced Unwrapping）
+
+可选项是对其他类型的一层包装，可以将它理解为一个盒子。如果为 nil，那么它是一个空盒子。如果不为 nil，那么盒子里装的是：被包装类型的数据。
+
+**如果要从可选项中取出被包装的数据（将盒子里面装的东西取出来），需要使用感叹号! 进行强制解包**
+
+```
+var age: Int? = 10
+let ageInt: Int = age!
+ageInt += 10
+```
+
+**如果对值为 nil 的可选项（空盒子）进行强制解包，将会产生运行时错误**。
+
+```
+var age: Int?
+age!
+//Fatal error: Unexpectedly found nil while unwrapping an Optional value
+```
+
+### 判断可选项是否包含值
+
+```
+let number = Int("123")
+if number != nil {
+  print("字符串转换整数成功：\(number!)")
+} else {
+  print("字符串转换整数失败")
+}
+//字符串转换整数成功：123
+```
+
+### 可选项绑定（Optional Binding）
+
+可以通过**可选项绑**定来判断可选项是否包含值。比如：let number = Int("123")。如果包含就自动解包，把值赋给一个临时的常量（let）或者变量（var），并返回 ture，否则返回 false。
+
+```
+if let number = Int("123") {
+  print("字符串转换整数成功：\(number)")
+  // number 是强制解包之后的 Int 值，所以不用加 !
+  // number 作用域仅限于这个大括号
+} else {
+  print("字符串转换整数失败")
+}
+//字符串转换整数成功：123
+```
+
+```
+if let first = Int("4") {
+  if let second = Int("42") {
+    if first < second && second < 100 {
+      print("\(first) < \(second) < 100")
+    }
+   }
+}
+// 4 < 42 < 100
+
+//等价于
+if let first = Int("4"),
+  let second = Int("42"),
+  first < second && second < 100 {
+  print("\(second) < \(second) < 100")  
+}
+```
+
+### while 循环中使用可选项绑定
+
+遍历数组，将遇到的正数都加起来，如果遇到负数或者非数字，停止遍历。
+
+```
+var strs = ["10", "20", "abc", "-20", "30"]
+var index = 0
+var sum = 0
+//可选项 let num = Int(strs[index]), num > 0
+while let num = Int(strs[index]), num > 0 {
+  sum += num
+  index += 1
+}
+print(sum)
+```
+
+ ### 
 

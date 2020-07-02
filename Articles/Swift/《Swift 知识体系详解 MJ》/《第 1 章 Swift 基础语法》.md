@@ -1127,6 +1127,7 @@ var num1: Int? = nil
 var num2: Int?? = num1 //内层的盒子是 nil
 var num3: Int?? = nil //最外层大盒子就是 nil
 print(num2 == num3) //false
+print(num1 == num3) //false
 (num2 ?? 1) ?? 2 //结果为2
 (num3 ?? 1) ?? 2 //1
 ```

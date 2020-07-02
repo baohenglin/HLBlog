@@ -928,7 +928,7 @@ if number != nil {
 
 ### 可选项绑定（Optional Binding）
 
-可以通过**可选项绑**定来判断可选项是否包含值。比如：let number = Int("123")。如果包含就自动解包，把值赋给一个临时的常量（let）或者变量（var），并返回 ture，否则返回 false。
+可以通过**可选项绑定**来判断可选项是否包含值。比如：let number = Int("123")。如果包含就自动解包，把值赋给一个临时的常量（let）或者变量（var），并返回 ture，否则返回 false。
 
 ```
 if let number = Int("123") {
@@ -1024,4 +1024,82 @@ print(sum)
  }
  // 类似于 if a != nil && b != nil
  ```
+ 
+ ### if 语句实现登录 （可选项绑定）
+ 
+ ```
+ //字典根据key取出来的值是可选类型。而数组取出来就是真实类型，不是可选类型。
+ func login(_ info: [String: String]) {
+  let username: String
+  //通过可选项绑定来判断可选项是否包含值。比如：let number = Int("123")。如果包含就自动解包，把值赋给一个临时的常量（let）或者变量（var），并返回 ture，否则返回 false。
+  if let tmp = info["username"] {
+    username = tmp
+  } else {
+    print("请输入用户名")
+    return
+  }
+  let password: String
+  if let tmp = info["password"] {
+    password = tmp
+  } else {
+    print("请输入密码")
+    return
+  }
+  print("用户名：\(username)","密码：\(password)","登录ing")
+ }
+ login(["username": "jack","password":"123456"])
+ login(["password":"123456"])
+ login(["username": "jack"])
+ ```
+ 
+ ### guard 语句
+ 
+ ```
+ guard 条件 else {
+  //do something...
+  退出当前作用域
+  //return、break、continue、throw error
+ }
+ ```
+ 
+ 当 guard 语句的条件为 false时，就会执行大括号里面的代码；当 guard 语句的条件为 true 时，就会跳过 guard 语句。guard 语句特别适合用来“提前退出”。
+ 
+ 当使用 guard 语句进行可选项绑定时，绑定的常量（let）、变量（var）也能在外层作用域中使用。
+ 
+ ```
+ func login(_ info: [String: String]) {
+  guard let username = info["username"] else {
+    print("请输入用户名")
+    return
+  }
+  guard let password = info["password"] else {
+    print("请输入密码")
+    return
+  }
+  print("用户名：\(username)","密码：\(password)","登录ing")
+ }
+ ```
+
+### 隐式解包（Implicitly Unwrapped Optional）
+
+在某些情况下，可选项一旦被设定值之后，就会一直拥有值。在这种情况下，可以去掉检查，也不必每次访问的时候都进行解包，因为它能确定每次访问的时候都有值。
+
+隐式解包的定义：在类型后面加一个感叹号!来定义一个隐式解包的可选项。
+
+```
+let num1: Int! = 10
+let num2: Int = num1
+if num1 != nil {
+  print(num1 + 6) //16
+}
+if let num3 = num1 {
+  print(num3)
+}
+```
+
+
+
+
+
+ 
 

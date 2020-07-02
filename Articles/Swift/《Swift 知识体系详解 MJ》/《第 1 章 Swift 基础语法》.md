@@ -1004,7 +1004,7 @@ print(sum)
  //c是 Int, 而不是 Int?，c=1
  ```
  
- ### ??跟if let 配合使用
+ ### ?? 跟if let 配合使用
  
  ```
  let a: Int? = nil
@@ -1096,6 +1096,49 @@ if let num3 = num1 {
   print(num3)
 }
 ```
+
+```
+let num1: Int! = nil
+let num2: Int = num1 
+// Fatal error: Unexpectedly found nil while implicitly unwrapping an Optional value
+```
+
+### 字符串插值
+
+可选项在字符串插值或直接打印时，编译器会发出警告。
+
+```
+var age: Int? = 10
+print("My age is \(age)")
+```
+
+消除警告的3种方法：
+
+```
+print("My age is \(age!)") //强制解包
+print("My age is \(String(describing: age))")
+print("My age is \(age ?? 0)")
+```
+
+### 多重可选项
+
+```
+var num1: Int? = nil
+var num2: Int?? = num1 //内层的盒子是 nil
+var num3: Int?? = nil //最外层大盒子就是 nil
+print(num2 == num3) //false
+(num2 ?? 1) ?? 2 //结果为2
+(num3 ?? 1) ?? 2 //1
+```
+
+可以使用lldb指令**frame variable -R**或 **fr v -R**来查看变量的真实类型。
+
+
+
+
+
+
+
 
 
 

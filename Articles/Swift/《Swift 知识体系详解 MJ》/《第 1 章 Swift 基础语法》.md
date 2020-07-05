@@ -1201,7 +1201,11 @@ x86、x64汇编根据编译器的不同，有2种书写格式：Intel（Windows�
 
 ![常见的汇编指令](https://upload-images.jianshu.io/upload_images/4164292-59d493f401d94540.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
+#### LLDB 常见指令
 
+![lldb常见指令](https://upload-images.jianshu.io/upload_images/4164292-6904a27c891d15c3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+![image.png](https://upload-images.jianshu.io/upload_images/4164292-fd3edae95c26fa37.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
 

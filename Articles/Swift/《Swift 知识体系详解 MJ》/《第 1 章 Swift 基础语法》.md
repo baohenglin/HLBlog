@@ -1186,6 +1186,21 @@ movw %bx %ax
 
 ![编程语言的发展](https://upload-images.jianshu.io/upload_images/4164292-5a4761b91b7483b6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
+#### 汇编语言的种类
+
+* 8086汇编（16bit）
+* x86汇编（32bit）
+* x64汇编（64bit）
+* ARM汇编（嵌入式、移动设备）
+
+x86、x64汇编根据编译器的不同，有2种书写格式：Intel（Windows派系）和AT&T（Unix派系）。iOS模拟器是AT&T汇编，iOS真机设备是ARM汇编。
+
+
+
+#### 常见的汇编指令
+
+![常见的汇编指令](https://upload-images.jianshu.io/upload_images/4164292-59d493f401d94540.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
 
 
 

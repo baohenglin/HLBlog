@@ -1141,13 +1141,43 @@ print(num1 == num3) //false
 
 **关联值**：有时候将枚举的成员值和其他类型的值存储在一起，这种类型的值就是关联值。
 
-**枚举变量内存分布**：1个字节存储成员值，N 个字节存储关联值（N 取占用内存最大的关联值）。任何一个 case 的关联值都共用这 N 个字节。
+**枚举变量内存分布**：枚举中有多个 case 的情况下，1个字节用来存储成员值，N 个字节存储关联值（N 取占用内存最大的关联值）。任何一个 case 的关联值都共用这 N 个字节。
 
+```
+enum TestEnum {
+  case test
+}
+print(MemoryLayout<TestEnum>.size) // 0 字节 只有一个枚举值，不需要存储某个值来区分是哪个枚举。
+print(MemoryLayout<TestEnum>.stride) // 1 字节
+print(MemoryLayout<TestEnum>.alignment) // 1 字节 内存对齐
+```
 
+```
+enum TestEnum {
+  case test(Int)
+}
+var t = TestEnum.test(10)
+print(MemoryLayout<TestEnum>.size) // 8 字节
+print(MemoryLayout<TestEnum>.stride) // 8 字节
+print(MemoryLayout<TestEnum>.alignment) // 8 字节 内存对齐
+```
 
+再增加一个 case 的情况
 
+```
+enum TestEnum {
+  case test(Int)
+  case test1
+}
+var t = TestEnum.test(10)
+print(MemoryLayout<TestEnum>.size) // 9 字节：1个字节用来存储成员值，8个字节用来存储关联值
+print(MemoryLayout<TestEnum>.stride) // 16 字节
+print(MemoryLayout<TestEnum>.alignment) // 8 字节 内存对齐
+```
 
+### 汇编语言（Assembly Language）
 
+**汇编语言**：用符号代替了机器语言的0和1，比机器语言便于阅读和记忆。
 
 
 

@@ -1179,6 +1179,13 @@ print(MemoryLayout<TestEnum>.alignment) // 8 字节 内存对齐
 
 **汇编语言**：用符号代替了机器语言的0和1，比机器语言便于阅读和记忆。
 
+```
+movw %bx %ax
+操作：将寄存器BX的内容送入寄存器AX
+```
+
+![编程语言的发展](https://upload-images.jianshu.io/upload_images/4164292-5a4761b91b7483b6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
 
 
 

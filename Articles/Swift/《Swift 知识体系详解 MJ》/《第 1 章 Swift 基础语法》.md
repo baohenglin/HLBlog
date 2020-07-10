@@ -1195,7 +1195,17 @@ movw %bx %ax
 
 x86、x64汇编根据编译器的不同，有2种书写格式：Intel（Windows派系）和AT&T（Unix派系）。iOS模拟器是AT&T汇编，iOS真机设备是ARM汇编。
 
+#### 寄存器
 
+常用的寄存器有 16个，分别是rax、rbx、rcx、rdx、rsi、rdi、rbp、rsp、r8、r9、r10、r11、r12、r13、r14、r15。
+
+寄存器的具体用途：
+
+```
+（1）rax 寄存器常用来存放函数的返回值
+（2）rdi、rsi、rdx、rcx、r8、r9等寄存器常用于存放函数参数；
+（3）rsp、rbp等寄存器用于栈操作
+```
 
 #### 常见的汇编指令
 

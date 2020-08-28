@@ -36,10 +36,19 @@ dealloc 方法可以这样来写：
 
 在 Mac OS X及iOS应用程序所对应的 application delegate 中，都含有一个会于程序终止时调用的方法。如果一定要清理某些对象，那么可在此方法中调用那些对象的“清理方法”。
 
+在 Mac OS X 系统里，应用程序终止时会调用 NSApplicationDelegate 之中的下述方法：
 
 ```
 - (void)applicationWillTerminate:(NSNotication *)notification
 ```
+
+而在 iOS 系统里，应用程序终止时则会调用 UIApplicationDelegate 之中的下列方法：
+
+```
+- (void)applicationWillTerminate:(UIApplication *)application
+```
+
+如果对象管理着某些资源，那么在 dealloc 中也要调用“清理方法”，以防开发者忘了清理这些资源。忘记清理资源的情况经常会发生，所以最好能输出一行消息，提示程序员代码里含有编程错误。在系统回收对象之前，必须调用 close 以释放其资源，否则 close 方法就失去意义了，因此，没有适时调用 close 方法就是编程错误。输出错误消息可促使开发者纠正此问题。而且，在程序员忘记调用close的情况下，我们应该在 dealloc 
 
 
 

@@ -48,7 +48,23 @@ dealloc 方法可以这样来写：
 - (void)applicationWillTerminate:(UIApplication *)application
 ```
 
-如果对象管理着某些资源，那么在 dealloc 中也要调用“清理方法”，以防开发者忘了清理这些资源。忘记清理资源的情况经常会发生，所以最好能输出一行消息，提示程序员代码里含有编程错误。在系统回收对象之前，必须调用 close 以释放其资源，否则 close 方法就失去意义了，因此，没有适时调用 close 方法就是编程错误。输出错误消息可促使开发者纠正此问题。而且，在程序员忘记调用close的情况下，我们应该在 dealloc 
+如果对象管理着某些资源，那么在 dealloc 中也要调用“清理方法”，以防开发者忘了清理这些资源。忘记清理资源的情况经常会发生，所以最好能输出一行消息，提示程序员代码里含有编程错误。在系统回收对象之前，必须调用 close 以释放其资源，否则 close 方法就失去意义了，因此，没有适时调用 close 方法就是编程错误。输出错误消息可促使开发者纠正此问题。而且，在程序员忘记调用close的情况下，我们应该在 dealloc 中补上这次调用，以防止泄露内存。下面举例说明 close 与 dealloc 方法应如何来写：
+
+```
+- (void)close {
+  /* clean up resources */
+  _closed = YES;
+}
+
+- (void)dealloc {
+  if (!_closed) {
+    NSLog(@"ERROR: close was not called before dealloc!");
+    [self close];
+  }
+}
+```
+
+有时可能不想只输出一条错误消息，而是要抛出异常来表明不调用 close 方法是严重的编程错误。编写 dealloc 方法时还需注意，**不要在 dealloc 方法里面随便调用其他方法**。
 
 
 

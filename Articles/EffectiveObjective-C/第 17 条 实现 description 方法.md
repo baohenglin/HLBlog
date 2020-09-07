@@ -5,3 +5,19 @@
 ```
 NSLog(@"object = %@", object);
 ```
+
+在构建需要打印到日志的字符串时，object 对象会收到 description 消息，该方法所返回的描述信息将取代“格式字符串”（format string）里的“%@”。比方说，object 是个数组，若用下列代码打印其信息：
+
+```
+NSArray *object = @[@"A string", @(123)];
+NSLog(@"object = %@", object);
+```
+
+则会输出：
+
+```
+object = (
+  "A string",
+  123
+)
+```

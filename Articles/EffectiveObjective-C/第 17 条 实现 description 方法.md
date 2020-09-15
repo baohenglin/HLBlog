@@ -75,6 +75,24 @@ NSLog(@"person = %@", person);
 // person = <EOCPerson: 0x7fb249c030f0, "Bob Smith"> 
 ```
 
+这样就比覆写之前所输出的信息更加清楚，也更为有用了。笔者建议：在新实现的 description 方法中，也应该像默认的实现那样，打印出类的名字和指针地址。因为这些内容有时也许会用到。不过 NSArray 类的对象就没有打印这两项内容。显然在实现 description 方法时，没有固定规则可循，应根据当前对象来决定在 description 方法里打印何种信息。
+
+有个简单的办法，可以在 description 中输出很多互不相同的信息，那就是**借助 NSDictionary 类的 description 方法**。此方法输出的信息的格式如下：
+
+```
+{
+  key: value;
+  foo: bar;
+}
+```
+
+**在自定义的 description 方法中，把待打印的信息放到字典里面，然后将字典对象的 description 方法所输出的内容包含在字符串里并返回，这样就可以实现精简的信息输出方法了。
+
+
+
+
+
+
 
 
 

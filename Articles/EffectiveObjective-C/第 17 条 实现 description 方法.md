@@ -22,15 +22,58 @@ object = (
 )
 ```
 
-然而，如果在自定义的类上这么做，那么输出的信息却是下面这样：
+然而，如果在**自定义的类**上这么做，那么输出的信息却是下面这样：
 
 ```
 object = <EOCPerson: 0x7fd9a1600600>
 ```
 
-与 object 为数组时所输出的信息相比，上面这种内容不太有用。除非在自己的类里覆写 description 方法，否则打印信息时就会调用 NSObject 类所实现的默认方法。此方法定义在 NSObject 协议里，不过 NSObject 类也实现了它。因为 NSObject 并不是唯一的“根类”，所以许多方法都要定义在 NSObject 协议里。比方说，NSProxy 也是一个遵守了 NSObject 协议的“根类”。由于 description 等方法定义在 NSObject 协议里，因此像 NSProxy 这种“根类”及其子类也必须实现它们。如前所见，这些实现好的方法并没有打印出较为有用的内容，只不过是输出了**类名和对象的内存地址**。只有在你想判断两指针是否真的指向同一对象时，这种信息才有用处。除此之外，再也看不出其他有用的内容了。我们想打印出来的对象信息应该比这更多才对。
+与 object 为数组时所输出的信息相比，上面这种内容不太有用。**除非在自定义的类里覆写 description 方法**，否则打印信息时就会调用 NSObject 类所实现的默认方法。此方法定义在 **NSObject 协议**里，不过 **NSObject 类也实现了它**。因为 NSObject 并不是唯一的“根类”，所以许多方法都要定义在 NSObject 协议里。比方说，NSProxy 也是一个遵守了 NSObject 协议的“根类”。由于 description 等方法定义在 NSObject 协议里，因此像 NSProxy 这种“根类”及其子类也必须实现它们。如前所见，这些实现好的方法并没有打印出较为有用的内容，只不过是输出了**类名和对象的内存地址**。只有在你想判断两指针是否真的指向同一对象时，这种信息才有用处。除此之外，再也看不出其他有用的内容了。我们想打印出来的对象信息应该比这更多才对。
 
+要想输出更为有用的信息也很简单，**只需覆写 description 方法并将描述此对象的字符串返回即可**。例如，有下面这个代表个人信息的类：
 
+```
+#import <Foundation/Foundation.h>
+
+@interface EOCPerson : NSObject
+
+@property (nonatomic, copy, readonly) NSString *firstName;
+@property (nonatomic, copy, readonly) NSString *lastName;
+
+- (id)initWithFirstName:(NSString*)firstName 
+              lastName:(NSString*)lastName;
+@end
+
+@implementation EOCPerson
+
+- (id)initWithFirstName:(NSString*)firstName
+              lastName:(NSString*)lastName
+{
+  if (self = [super init]) {
+    _firstName = [firstName copy];
+    _lastName = [lastName copy];
+  }
+  return self;
+}
+@end
+```
+
+**该类的 description 方法通常可以这样实现**：
+
+```
+- (NSString *)description {
+  return [NSString stringWithFormat:@"<%@: %p, \"%@ %@\">",[self class], self, _firstName, _lastName];
+}
+```
+
+假如按上面的代码来写，那么 EOCPerson 对象就会输出如下格式的信息：
+
+```
+EOCPerson *person = [[EOCPerson alloc]initWithFirstName:@"Bob" lastName:@"Smith"];
+NSLog(@"person = %@", person);
+// Output:
+// person = <EOCPerson: 0x7fb249c030f0, "Bob Smith"> 
+```
 
 
 

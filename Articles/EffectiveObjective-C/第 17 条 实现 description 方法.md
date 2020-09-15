@@ -1,5 +1,11 @@
 # 第 17 条：实现 description 方法
 
+
+要点：
+
+* 实现 description 方法返回一个有意义的字符串，用以描述该实例。
+* 若想在调试时打印出更详尽的对象描述信息，则应实现 debugDescription 方法。
+
 调试程序时，经常需要打印并查看对象信息。一种办法是编写代码把对象的全部属性都输出到日志中。不过最常用的做法还是像下面这样：
 
 ```
@@ -115,6 +121,62 @@ NSLog(@"person = %@", person);
   return self;
 }
 ```
+
+我们可以像下面这样编写 description 方法来打印出地名和经纬度，用 NSDictionary 来实现此功能：
+
+```
+- (NSString *)description {
+  return [NSString stringWithFormat:@"<%@: %p, %@>",
+          [self class],
+          self,
+          @{@"title": _title,
+            @"latitude":@(_latitude),
+            @"longitude":@(_longitude)}
+          ];
+}
+```
+
+输出的信息格式为：
+
+```
+location = <EOCLocation: 0x7f98f2e01d20, {
+  latitude = "51.506";
+  longitude = 0;
+  title = London;
+}>
+```
+
+用 NSDictionary 来实现此功能可以令代码更易维护：如果以后还要向类中新增属性，并且要在 description 方法中打印，那么只需修改字典内容即可。
+
+NSObject 协议中还有个 debugDescription 方法。该方法与 description 方法的区别在于，debugDescription 方法是开发者在调试器（debugger）中以控制台命令打印对象时才调用的。在 NSObject 类的默认实现中，此方法只是直接调用了 description。
+
+当我们不想把类名与指针地址这种额外内容放在普通的描述信息里，但是却希望调试的时候能够很方便地看到它们，此时可以像下面这样来做：
+
+```
+- (NSString *)description {
+  return [NSString stringWithFormat:@"%@ %@",
+          _firstName, _lastName];
+}
+- (NSString *)debugDescription {
+  return [NSString stringWithFormat:@"<%@: %p, \"%@ %@\">",
+          [self class], self, _firstName, _lastName];
+}
+```
+
+Foundation 框架的 NSArray 类就是这么做的。
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

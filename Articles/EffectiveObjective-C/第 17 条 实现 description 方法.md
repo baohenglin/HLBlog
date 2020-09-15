@@ -86,9 +86,35 @@ NSLog(@"person = %@", person);
 }
 ```
 
-**在自定义的 description 方法中，把待打印的信息放到字典里面，然后将字典对象的 description 方法所输出的内容包含在字符串里并返回，这样就可以实现精简的信息输出方法了。
+**在自定义的 description 方法中，把待打印的信息放到字典里面，然后将字典对象的 description 方法所输出的内容包含在字符串里并返回，这样就可以实现精简的信息输出方法了**。
 
+例如，下面这个类表示某地点的名称和地理坐标（纬度与经度）：
 
+```
+#import <Foundation/Foundation.h>
+
+@interface EOCLocation : NSObject
+@property (nonatomic, copy, readonly) NSString *title;
+@property (nonatomic, assign, readonly) float latitude;
+@property (nonatomic, assign, readonly) float longitude;
+- (id)initWithTitle:(NSString*)title
+            latitude:(float)latitude
+            longitude:(float)longitude;
+@end
+
+@implementation EOCLocation 
+- (id)initWithTitle:(NSString*)title
+            latitude:(float)latitude
+            longitude:(float)longitude
+{
+  if ((self = [super init])) {
+    _title  = [title copy];
+    _latitude = latitude;
+    _longitude = longitude;
+  }
+  return self;
+}
+```
 
 
 

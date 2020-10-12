@@ -70,3 +70,11 @@ NSError 的用法更加灵活，因为经由此对象，我们可以把导致错
 
 有关错误的额外信息，其中或许包含一段“本地化的描述”（localized description），或许还含有导致该错误发生的另外一个错误，经由此种信息，可将相关错误串成一条“错误链”（chain of errors）
 
+在设计 API 时，NSError 的第一种常见用法是通过委托协议来传递此错误。有错误发生时，当前对象会把错误信息经由协议中的某个方法传给其委托对象（delegate）。例如，NSURLConnection 在其委托协议 NSURLConnectionDelegate 之中就定义了如下方法：
+
+```
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+```
+
+
+

@@ -70,11 +70,39 @@ NSError 的用法更加灵活，因为经由此对象，我们可以把导致错
 
 有关错误的额外信息，其中或许包含一段“本地化的描述”（localized description），或许还含有导致该错误发生的另外一个错误，经由此种信息，可将相关错误串成一条“错误链”（chain of errors）
 
-在设计 API 时，NSError 的第一种常见用法是通过委托协议来传递此错误。有错误发生时，当前对象会把错误信息经由协议中的某个方法传给其委托对象（delegate）。例如，NSURLConnection 在其委托协议 NSURLConnectionDelegate 之中就定义了如下方法：
+在设计 API 时，**NSError 的第一种常见用法是通过委托协议来传递此错误**。有错误发生时，当前对象会把错误信息经由协议中的某个方法传给其委托对象（delegate）。例如，NSURLConnection 在其委托协议 NSURLConnectionDelegate 之中就定义了如下方法：
 
 ```
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 ```
 
+当 NSURLConnection 出错之后（比如与远程服务器的连接操作超时了），就会调用此方法以处理相关错误。这个委托方法未必非得实现不可：是不是必须处理此错误，可交由 NSURLConnection 类的用户来判断。这比抛出异常要好，因为调用者至少可以自己决定 NSURLConnection 是否回报此错误。
+
+**NSError 的另外一种常见用法是：经由方法的“输出参数”返回给调用者**。比如像这样：
+
+```
+- (BOOL)doSomething:(NSError**)error
+```
+
+传递给方法的参数是个指针，而该指针本身又指向另外一个指针，那个指针指向 NSError 对象。或者也可以把它当成一个直接指向 NSError 对象的指针。这样一来，此方法不仅能有普通的返回值，而且还能经由“输出参数”把 NSError 对象回传给调用者。其用法如下：
+
+```
+NSError *error = nil;
+BOOL ret = [object doSomething:&error];
+if (error) {
+  // There was an error
+}
+```
+
+像这样的方法一般都会返回 Boolean 值，用以表示该操作是成功了还是失败了。如果调用者不关注具体的错误信息，那么直接判断这个 Boolean 值就好；若是关注具体错误，那就检查经由“输出参数”所返回的那个错误对象。在不想知道具体错误的时候，可以给 error参数传入 nil。比方说，可以如下使用此方法：
+
+```
+BOOL ret = [object doSomething:nil];
+if (ret) {
+  // There was an error
+}
+```
+
+实际上，在使用 ARC 时，编译器会把方法签名中的 NSError** 转换成 NSError*_ _ autoreleasing* ，也就是说，指针所指的对象会在方法执行完毕后自动释放。这个对象必须自动释放，因为“doSomething:”方法不能保证其调用者可以把此方法中创建的 NSError 释放掉，所以必须加入 autorelease。这就与大部分方法（以 new、alloc、copy、mutableCopy 开头的方法当然不在此列）的返回值所具备的语义相同了。
 
 

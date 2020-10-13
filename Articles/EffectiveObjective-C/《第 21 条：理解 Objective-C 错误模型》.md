@@ -105,4 +105,6 @@ if (ret) {
 
 实际上，在使用 ARC 时，编译器会把方法签名中的 NSError** 转换成 NSError*_ _ autoreleasing* ，也就是说，指针所指的对象会在方法执行完毕后自动释放。这个对象必须自动释放，因为“doSomething:”方法不能保证其调用者可以把此方法中创建的 NSError 释放掉，所以必须加入 autorelease。这就与大部分方法（以 new、alloc、copy、mutableCopy 开头的方法当然不在此列）的返回值所具备的语义相同了。
 
+该方法通过下列代码把 NSError 对象传递到“输出参数”中：
+
 

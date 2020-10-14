@@ -107,4 +107,21 @@ if (ret) {
 
 该方法通过下列代码把 NSError 对象传递到“输出参数”中：
 
+```
+- (BOOL)doSomething:(NSError**)error {
+  // Do something that may cause an error
+  if (/* there was an error */) {
+    if (error) {
+      // Pass the 'error' through the out-parameter
+      *error = [NSError errorWithDomain:domain code:code userInfo:userInfo];
+    }
+    return NO;
+  } else {
+    return YES;
+  }
+}
+```
+
+这段代码以 * error 语法为 error 参数“解引用”（derefernce），也就是说，error所指的那个指针现在要指向一个新的 NSError 对象了。在解引用之前，必须先保证 error 参数不是 nil，因为空指针解引用会导致“段错误”（segmentation fault）并使应用程序崩溃。调用者在不关心具体错误时，会给 error 参数传入 nil，所以必须判断这种情况。 
+
 

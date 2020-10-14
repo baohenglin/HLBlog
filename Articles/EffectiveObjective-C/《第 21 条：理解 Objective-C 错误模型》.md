@@ -124,4 +124,19 @@ if (ret) {
 
 这段代码以 * error 语法为 error 参数“解引用”（derefernce），也就是说，error所指的那个指针现在要指向一个新的 NSError 对象了。在解引用之前，必须先保证 error 参数不是 nil，因为空指针解引用会导致“段错误”（segmentation fault）并使应用程序崩溃。调用者在不关心具体错误时，会给 error 参数传入 nil，所以必须判断这种情况。 
 
+NSError 对象里的“错误范围”（domain）、“错误码”（code）、“用户信息”（user information）等部分应该按照具体的错误情况填入适当内容。这样的话，调用者就可以根据错误类型分别处理各种错误了。错误范围应该定义成 NSString 型的全局常量，而错误码则定义成枚举类型为准。例如，可以把这些值定义成下面这样：
+
+```
+//EOCErrors.h
+extern NSString *const EOCErrorDomain;
+typedef NS_ENUM(NSUInteger, EOCError) {
+  EOCErrorUnknown               = -1,
+  EOCErrorInternalInconsistency = 100,
+  EOCErrorGeneralFault          = 105,
+  EOCErrorBadInput              = 500,
+};
+//EOCError.m
+NSString *const EOCErrorDomain = @"EOCErrorDomain";
+```
+最好能为你自己的程序库中所发生的错误指定一个专用的“错误范围”字符串，使用此字符串创建 NSError 对象，并将其返回给库的使用者，这样的话，他们就能确信：该错误肯定是由你的程序库所回报的。用枚举类型来表示错误码也是明智之举，因为这些枚举不仅解释了错误码的含义，而且还给它们起了个有意义的名字。此外，也可以在定义这些枚举的头文件里对每个错误类型详加说明。
 

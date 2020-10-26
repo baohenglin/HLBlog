@@ -46,5 +46,50 @@ copy 方法由 NSObject 实现，该方法只是以“默认区”为参数来�
 
 举个例子，假如 EOCPerson 中含有一个数组，与其他 EOCPerson 对象建立或解除朋友关系的那些方法都需要操作这个数组。那么在这种情况下，你得把这个包含朋友对象的数组也一并拷贝过来。下面列出了实现此功能所需的全部代码：
 
+```
+#import <Foundation/Foundation.h>
+
+@interface EOCPerson : NSObject<NSCopying>
+
+@property (nonatomic, copy, readonly) NSString *firstName;
+@property (nonatomic, copy, readonly) NSStriing *lastName;
+
+- (id)initWithFirstName:(NSString*)firstName
+              andLastName:(NSString*)lastName;
+- (void)addFriend:(EOCPerson*)person;
+- (void)removeFriend:(EOCPerson *)person;
+
+@end
+
+@implementation EOCPerson {
+   NSMutableSet *_friends;
+}
+
+- (id)initWithFirstName:(NSString*)firstName
+            andLastName:(NSString*)lastName {
+   if ((self = [super init])) {
+     _firstName = [firstName copy];
+     _lastName = [lastName copy];
+     _friends = [NSMutableSet new];
+   }
+   return self;
+}
+- (void)addFriend:(EOCPerson*)person {
+  [_friends addObject:person];
+}
+- (void)removeFriend:(EOCPerson*)person {
+  [_friends removeObject:person];
+}
+- (id)copyWithZone:(NSZone*)zone {
+  EOCPerson *copy = [[[self class] allocWithZone:zone]
+                     initWithFirstName:_firstName
+                           andLastName:_lastName];
+   copy->_friends = [_friends mutableCopy];
+   return copy;
+}
+@end
+```
+
+
 
 

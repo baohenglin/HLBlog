@@ -128,7 +128,7 @@ copy 方法由 NSObject 实现，该方法只是以“默认区”为参数来�
 在 EOCPerson 那个例子中，存放朋友对象的 set 是用“copyWithZone:”方法来拷贝的，根据刚才讲的内容可知，这种浅拷贝方式不会逐个复制 set 中的元素。若需要深拷贝的话，则可像下面这样，编写一个专供深拷贝使用的方法：
 
 ```
-- (id)copyWithZone:(NSZone*)zone {
+- (id)deepCopy {
   EOCPerson *copy = [[[self class] allocWithZone:zone]
                      initWithFirstName:_firstName
                            andLastName:_lastName];
@@ -138,7 +138,7 @@ copy 方法由 NSObject 实现，该方法只是以“默认区”为参数来�
 }
 ```
 
-
+因为没有专门定义深拷贝的协议，所以其具体执行方式由每个类来确定，你只需决定自己所写的类是否要提供深拷贝方法即可。另外，不要假定遵从了 NSCopying 协议的对象都会执行深拷贝。在绝大多数情况下，执行的都是浅拷贝。如果需要在某对象上执行深拷贝，那么除非该类的文档说它是用深拷贝来实现 NSCopying 协议的，否则，要么寻找能够执行深拷贝的相关方法，要么自己编写方法来做。
 
 
 

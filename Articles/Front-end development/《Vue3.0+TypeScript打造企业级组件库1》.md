@@ -74,3 +74,29 @@
 
 了解 vue3 项目的结构；学习vue3项目的一些基本开发知识；了解vue3和vue2开发的一些区别。
 
+
+
+```
+// 全局安装 vue/cli 命令：
+npm i -g @vue/cli
+
+//创建项目
+vue create projectName
+```
+
+## 2-2 代码格式化工具 prettier
+
+首先在 扩展里搜索并安装 prettier，然后创建一个名为“.prettierrc”的配置文件。
+
+```
+配置文件内容：
+{
+  "semi": false, //代码中是否使用分号
+  "singleQuote": true, //是否使用单引号
+  "arrowParens": "always" //写匿名函数时，参数是否使用括号括起来
+  "trailingComma": "all", //书写对象的属性时是否每一行后面都加一个逗号。
+}
+```
+
+
+
